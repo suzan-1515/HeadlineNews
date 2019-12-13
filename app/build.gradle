@@ -1,90 +1,73 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
-
-apply plugin: 'com.jakewharton.butterknife'
-
+apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion versions.compileSdk
+
     defaultConfig {
         applicationId "com.cognota.headlinenews"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
-        debug {
-            buildConfigField("String", "BASE_URL", "\"https://www.panchpokharithangpalmun.com/\"")
-            buildConfigField("String", "DATABASE_NAME", "\"thangpal.db\"")
-            minifyEnabled false
-        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://www.panchpokharithangpalmun.com/\"")
-            buildConfigField("String", "DATABASE_NAME", "\"thangpal.db\"")
+            postprocessing {
+                removeUnusedCode false
+                removeUnusedResources false
+                obfuscate false
+                optimizeCode false
+                proguardFile 'proguard-rules.pro'
+            }
+        }
+        debug{
+            postprocessing {
+                removeUnusedCode true
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility versions.sourceCompat
+        targetCompatibility versions.targetCompat
+    }
+
+    //For testing
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
         }
     }
 }
 
-kapt {
-    correctErrorTypes = true
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(':core')
+    kapt deps.android.roomCompiler
+    kapt deps.google.daggerProcessor
+    kapt deps.google.daggerAndroidProcessor
 
-    // android support libraries
-    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
-    implementation "androidx.cardview:cardview:$rootProject.supportLibraryVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintVersion"
-    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerviewVersion"
-    implementation "androidx.recyclerview:recyclerview-selection:$rootProject.recyclerviewVersion"
+    //Local unit tests
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockitoKotlin
+    testImplementation deps.test.robolectric
+    testImplementation deps.test.mockWebServer
+    testImplementation deps.test.livedataTesting
+    testImplementation deps.test.roomTesting
 
-    implementation "androidx.core:core-ktx:$rootProject.corektxVersion"
-    implementation "androidx.collection:collection-ktx:$rootProject.collectionVersion"
-
-    //Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-
-    //Room
-    implementation "androidx.room:room-runtime:$rootProject.roomDatabase"
-    kapt "androidx.room:room-compiler:$rootProject.roomDatabaseCompiler"
-    implementation "androidx.room:room-ktx:$rootProject.roomDatabase"
-
-    //Lifecycle and Viewmodel
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$rootProject.lifecycleVersion"
-
-    //Epoxy
-    implementation "com.airbnb.android:epoxy:$rootProject.epoxyVersion"
-    kapt "com.airbnb.android:epoxy-processor:$rootProject.epoxyVersion"
-
-    //Glide
-    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
-
-    //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.gsonVersion"
-    implementation "com.squareup.okhttp3:okhttp:$rootProject.okHTTPVersion"
-
-    //Timber
-    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
-
-
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation deps.test.junit
+    androidTestImplementation deps.test.mockitoKotlin
+    androidTestImplementation deps.test.atslRunner
+    androidTestImplementation deps.test.atslRules
+    androidTestImplementation deps.test.roomTesting
+    androidTestImplementation deps.test.livedataTesting
 }

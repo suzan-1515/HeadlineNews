@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">HeadlineNews</string>
+    <string name="app_name">Times Of Nepal</string>
+    <string name="know_more">Know More ></string>
+    <string name="failed_post_try_again">Failed to load posts. Please try again later.</string>
+    <string name="user_image">User\'s Avatar Image</string>
+    <string name="movieImage">movie</string>
+    <string name="button_trailers">b</string>
+    <string name="no_comments_error">No comments found for this post!</string>
+    <string name="news_feed_not_found">News feeds are not available at the moment!</string>
+    <string name="ok">OK</string>
+    <string name="no_network_connection">Network connection not available.</string>
+    <string name="retry">Retry</string>
+    <string name="service_error">There seems to be server error at the moment. Please try again later!</string>
+    <string name="feed_not_available">News feed not available at the moment. Try again later.</string>
 </resources>

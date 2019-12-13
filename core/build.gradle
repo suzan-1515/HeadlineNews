@@ -1,0 +1,90 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            postprocessing {
+                removeUnusedCode false
+                removeUnusedResources false
+                obfuscate false
+                optimizeCode false
+                proguardFile 'proguard-rules.pro'
+            }
+            buildConfigField 'String', 'BASE_URL', '"https://timesofnepal.com.np/"'
+        }
+        debug {
+            postprocessing {
+                removeUnusedCode false
+            }
+            buildConfigField 'String', 'BASE_URL', '"https://timesofnepal.com.np/"'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility versions.sourceCompat
+        targetCompatibility versions.targetCompat
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api deps.support.appCompat
+    api deps.support.recyclerView
+    api deps.support.cardView
+    api deps.support.support
+    api deps.support.constraintLayout
+    api deps.support.designSupport
+    api deps.support.preference
+    api deps.support.multidex
+
+    api deps.android.lifecycleExt
+    api deps.android.lifecycleCommon
+    api deps.android.roomRuntime
+    api deps.android.roomRx
+
+    api deps.kotlin.stdlib7
+    api deps.kotlin.coroutineCore
+    api deps.kotlin.coroutineAndroid
+
+    api deps.reactivex.rxJava
+    api deps.reactivex.rxAndroid
+
+    api deps.google.dagger
+    api deps.google.daggerAndroid
+    api deps.google.daggerSupport
+    kapt deps.google.daggerProcessor
+    kapt deps.google.daggerAndroidProcessor
+    api deps.google.gson
+
+    api deps.square.picasso
+    api deps.square.okhttpDownloader
+
+    api deps.square.retrofit
+    api deps.square.okhttp
+    api deps.square.gsonConverter
+    api deps.square.retrofitRxAdapter
+
+    api deps.square.timber
+    api deps.square.threeten
+
+    api deps.additional.jodaTime
+
+    api deps.facebook.stetho
+    api deps.facebook.networkInterceptor
+}
