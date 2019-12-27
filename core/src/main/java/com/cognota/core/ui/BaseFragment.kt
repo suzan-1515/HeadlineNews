@@ -1,12 +1,10 @@
 package com.cognota.core.ui
 
-import androidx.lifecycle.ViewModelProvider
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import androidx.fragment.app.Fragment
 
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+//    @Inject
+//    lateinit var viewModelFactory: ViewModelProvider.Factory
 
 }

@@ -19,17 +19,20 @@ android {
     }
     buildTypes {
         release {
-            postprocessing {
-                removeUnusedCode false
-                removeUnusedResources false
-                obfuscate false
-                optimizeCode false
-                proguardFile 'proguard-rules.pro'
+            release {
+                postprocessing {
+                    removeUnusedCode false
+                    removeUnusedResources false
+                    obfuscate false
+                    optimizeCode false
+                    proguardFile 'proguard-rules.pro'
+                }
+
             }
-        }
-        debug{
-            postprocessing {
-                removeUnusedCode true
+            debug {
+                postprocessing {
+                    removeUnusedCode false
+                }
             }
         }
     }
@@ -44,6 +47,15 @@ android {
             includeAndroidResources = true
         }
     }
+// To inline the bytecode built with JVM target 1.8 into
+// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
+
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+
 }
 
 androidExtensions {
@@ -51,23 +63,10 @@ androidExtensions {
 }
 
 dependencies {
-    implementation project(':core')
+    implementation project(':feed')
+
     kapt deps.android.roomCompiler
     kapt deps.google.daggerProcessor
     kapt deps.google.daggerAndroidProcessor
 
-    //Local unit tests
-    testImplementation deps.test.junit
-    testImplementation deps.test.mockitoKotlin
-    testImplementation deps.test.robolectric
-    testImplementation deps.test.mockWebServer
-    testImplementation deps.test.livedataTesting
-    testImplementation deps.test.roomTesting
-
-    androidTestImplementation deps.test.junit
-    androidTestImplementation deps.test.mockitoKotlin
-    androidTestImplementation deps.test.atslRunner
-    androidTestImplementation deps.test.atslRules
-    androidTestImplementation deps.test.roomTesting
-    androidTestImplementation deps.test.livedataTesting
 }

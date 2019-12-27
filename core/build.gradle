@@ -20,10 +20,10 @@ android {
     buildTypes {
         release {
             postprocessing {
-                removeUnusedCode false
+                removeUnusedCode true
                 removeUnusedResources false
                 obfuscate false
-                optimizeCode false
+                optimizeCode true
                 proguardFile 'proguard-rules.pro'
             }
             buildConfigField 'String', 'BASE_URL', '"https://timesofnepal.com.np/"'
@@ -46,6 +46,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api deps.support.appCompat
     api deps.support.recyclerView
+    api deps.support.viewpager2
     api deps.support.cardView
     api deps.support.support
     api deps.support.constraintLayout
@@ -71,6 +72,11 @@ dependencies {
     kapt deps.google.daggerProcessor
     kapt deps.google.daggerAndroidProcessor
     api deps.google.gson
+
+    api deps.additional.smoothBottomBar
+    api deps.navigation.navFrag
+    api deps.navigation.navUi
+    api deps.navigation.navDynamic
 
     api deps.square.picasso
     api deps.square.okhttpDownloader

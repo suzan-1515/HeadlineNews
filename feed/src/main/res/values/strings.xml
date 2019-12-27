@@ -1,0 +1,12 @@
+<resources>
+    <string name="know_more">Know More ></string>
+    <string name="ok">OK</string>
+    <string name="no_network_connection">Network connection not available.</string>
+    <string name="retry">Retry</string>
+    <string name="service_error">There seems to be server error at the moment. Please try again later!</string>
+    <string name="feed_not_available">News feed not available at the moment. Try again later.</string>
+    <string name="for_you">For You</string>
+    <string name="saved">Saved</string>
+    <string name="setting">Setting</string>
+
+</resources>

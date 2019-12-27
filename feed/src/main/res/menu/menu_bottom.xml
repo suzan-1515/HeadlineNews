@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/menu_for_you"
+            android:icon="@drawable/ic_person_outline_black_24dp"
+            android:title="@string/for_you" />
+
+    <item
+            android:id="@+id/menu_saved"
+            android:icon="@drawable/ic_bookmark_border_black_24dp"
+            android:title="@string/saved" />
+
+    <item
+            android:id="@+id/menu_setting"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/setting" />
+
+
+</menu>

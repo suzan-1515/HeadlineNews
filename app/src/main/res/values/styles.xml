@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="android:colorBackground">@color/primaryColor</item>
+        <item name="colorError">@color/error_text</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="AppTheme.PopupOverlay" parent="Widget.AppCompat.PopupMenu.Overflow" />
+
+</resources>
