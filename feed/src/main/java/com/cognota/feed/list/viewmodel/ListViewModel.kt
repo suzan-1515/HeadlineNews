@@ -1,13 +1,12 @@
-package com.cognota.headlinenews.list.viewmodel
+package com.cognota.feed.list.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cognota.core.ui.BaseViewModel
 import com.cognota.core.ui.StatefulResource
-import com.cognota.headlinenews.R
-import com.cognota.headlinenews.commons.di.NewsSharedDependencyProvider
-import com.cognota.headlinenews.commons.domain.FeedDTO
-import com.cognota.headlinenews.list.data.ListDataContract
+import com.cognota.feed.R
+import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.list.data.ListDataContract
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -33,7 +32,7 @@ class ListViewModel(
                 resource.isNetworkIssue() -> {
                     mutableLatestFeeds.value = StatefulResource<List<FeedDTO>?>()
                         .apply {
-                            setMessage(R.string.service_error)
+                            setMessage(R.string.no_network_connection)
                             setState(StatefulResource.State.ERROR_NETWORK)
                         }
                 }
@@ -50,11 +49,6 @@ class ListViewModel(
                     }
             }
         }
-    }
-
-    override fun onCleared() {
-        NewsSharedDependencyProvider.destroyListComponent()
-        super.onCleared()
     }
 
 }
