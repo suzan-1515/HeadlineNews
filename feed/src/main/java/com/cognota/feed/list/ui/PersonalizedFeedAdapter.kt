@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.FeedDTO
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.feed_item.view.*
+import kotlinx.android.synthetic.main.item_feed.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ class PersonalizedFeedAdapter @Inject constructor(private val picasso: Picasso) 
         viewType: Int
     ) = ListViewHolder(
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.feed_item, parent, false), interaction
+            .inflate(R.layout.item_feed, parent, false), interaction
     )
 
     override fun onBindViewHolder(
@@ -54,26 +54,26 @@ class PersonalizedFeedAdapter @Inject constructor(private val picasso: Picasso) 
             val clicked = getItem(adapterPosition)
             interaction?.feedClicked(
                 clicked,
-                itemView.tvTitle,
-                itemView.tvBody,
-                itemView.tvAuthorName,
-                itemView.ivAvatar
+                itemView.title,
+                itemView.preview,
+                itemView.date,
+                itemView.thumbnail
             )
         }
 
         fun bind(item: FeedDTO, picasso: Picasso) = with(itemView) {
-            tvTitle.text = item.title
-            tvBody.text = item.description
-            tvAuthorName.text = item.publishedDate.toString()
+            title.text = item.title
+            preview.text = item.description
+            date.text = item.publishedDate.toString()
             Timber.d("Feed image url: %s", item.image)
             picasso.load(item.image)
-                .into(itemView.ivAvatar)
+                .into(itemView.thumbnail)
 
             //SharedItem transition
-            ViewCompat.setTransitionName(tvTitle, item.title)
-            ViewCompat.setTransitionName(tvBody, item.description)
-            ViewCompat.setTransitionName(tvAuthorName, item.source)
-            ViewCompat.setTransitionName(ivAvatar, item.image)
+            ViewCompat.setTransitionName(title, item.title)
+            ViewCompat.setTransitionName(preview, item.description)
+            ViewCompat.setTransitionName(date, item.source)
+            ViewCompat.setTransitionName(thumbnail, item.image)
         }
     }
 

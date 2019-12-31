@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/secondaryColor</item>
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="android:colorBackground">@color/primaryColor</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
         <item name="colorError">@color/error_text</item>
         <item name="android:windowContentTransitions">true</item>
     </style>

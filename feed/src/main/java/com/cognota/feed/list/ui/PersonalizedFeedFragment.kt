@@ -60,8 +60,8 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
         Timber.d("personalized fragment")
 
         adapterPersonalized.interaction = this
-        rvPosts.adapter = adapterPersonalized
-        srlPosts.setOnRefreshListener { viewModel.getLatestFeed() }
+        rvFeeds.adapter = adapterPersonalized
+        srlFeeds.setOnRefreshListener { viewModel.getLatestFeed() }
 
         initiateDataListener()
         viewModel.getLatestFeed()
@@ -76,14 +76,7 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
 
                 when (resource.state) {
                     StatefulResource.State.LOADING -> {
-                        srlPosts.isRefreshing = true
-                        //                    snackBar =
-                        //                        Snackbar.make(
-                        //                            view_pager_wrapper,
-                        //                            getString(R.string.searching),
-                        //                            Snackbar.LENGTH_INDEFINITE
-                        //                        )
-                        //                    snackBar?.show()
+                        srlFeeds.isRefreshing = true
                     }
                     StatefulResource.State.SUCCESS -> {
                         if (resource.hasData()) {
@@ -92,7 +85,7 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
-                                srlPosts.rootView,
+                                srlFeeds.rootView,
                                 getString(
                                     resource.message
                                         ?: R.string.feed_not_available
@@ -102,12 +95,12 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                                 .setAction(R.string.ok) { snackBar?.dismiss() }
                         }
                         snackBar?.show()
-                        srlPosts.isRefreshing = false
+                        srlFeeds.isRefreshing = false
                     }
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
                         snackBar = Snackbar.make(
-                            srlPosts.rootView,
+                            srlFeeds.rootView,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -119,12 +112,12 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                                 snackBar?.dismiss()
                             }
                         snackBar?.show()
-                        srlPosts.isRefreshing = false
+                        srlFeeds.isRefreshing = false
                     }
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            srlPosts.rootView,
+                            srlFeeds.rootView,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG
@@ -134,7 +127,7 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                                 snackBar?.dismiss()
                             }
                         snackBar?.show()
-                        srlPosts.isRefreshing = false
+                        srlFeeds.isRefreshing = false
                     }
                     else -> Timber.d("Unknown state")
                 }

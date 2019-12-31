@@ -15,14 +15,14 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <me.ibrahimsn.lib.SmoothBottomBar
+    <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomBar"
             android:layout_width="0dp"
             android:layout_height="@dimen/bottom_nav_height"
-            app:backgroundColor="?attr/colorPrimary"
-            app:iconTint="@color/secondaryLightColor"
-            app:iconTintActive="@color/primaryTextColor"
-            app:indicatorColor="@color/secondaryLightColor"
+            app:elevation="12dp"
+            app:itemIconTint="@color/bottom_navigation_color"
+            app:itemTextColor="@color/secondaryTextLightColor"
+            app:labelVisibilityMode="selected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

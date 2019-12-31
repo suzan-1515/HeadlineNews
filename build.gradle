@@ -20,6 +20,7 @@ buildscript {
             'okhttpDownloader' : '1.1.0',
             'timber'           : '4.7.1',
             'picasso'          : '2.71828',
+            'circularImageview'    : '3.0.0',
             'rxJava'           : '2.2.14',
             'rxAndroid'        : '2.1.1',
             'jodaTime'         : "2.10.5",
@@ -98,6 +99,7 @@ buildscript {
             additional: [
                     'jodaTime'       : "joda-time:joda-time:${versions.jodaTime}",
                     'smoothBottomBar': "com.github.ibrahimsn98:SmoothBottomBar:${versions.smoothBottomBar}",
+                    'circularImageview': "de.hdodenhof:circleimageview:${versions.circularImageview}",
             ],
             test      : [
                     'junit'          : "junit:junit:${versions.junit}",

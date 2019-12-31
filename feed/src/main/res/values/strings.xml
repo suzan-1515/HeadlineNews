@@ -8,5 +8,8 @@
     <string name="for_you">For You</string>
     <string name="saved">Saved</string>
     <string name="setting">Setting</string>
+    <string name="search_hint">Enter news tag</string>
+    <string name="top_stories_for_you">Top stories for you right now</string>
+    <string name="read_more"><![CDATA[Read More >]]></string>
 
 </resources>

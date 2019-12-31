@@ -81,6 +81,8 @@ dependencies {
     api deps.square.picasso
     api deps.square.okhttpDownloader
 
+    api deps.additional.circularImageview
+
     api deps.square.retrofit
     api deps.square.okhttp
     api deps.square.gsonConverter

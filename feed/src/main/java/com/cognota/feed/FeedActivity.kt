@@ -29,8 +29,13 @@ class FeedActivity : BaseActivity() {
         nav_viewpager.currentItem = 0
         nav_viewpager.isUserInputEnabled = false
 
-        bottomBar.onItemSelected = {
-            nav_viewpager.currentItem = it
+        bottomBar.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.menu_for_you -> nav_viewpager.currentItem = 0
+                R.id.menu_saved -> nav_viewpager.currentItem = 1
+                R.id.menu_setting -> nav_viewpager.currentItem = 2
+            }
+            true
         }
     }
 
