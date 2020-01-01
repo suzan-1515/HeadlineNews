@@ -2,7 +2,6 @@ package com.cognota.feed.commons.domain
 
 import com.cognota.feed.commons.data.local.FeedType
 import java.io.Serializable
-import java.util.*
 
 data class FeedDTO(
     val category: String?,
@@ -10,10 +9,10 @@ data class FeedDTO(
     val id: String,
     val image: String?,
     val link: String?,
-    val publishedDate: Date,
+    val publishedDate: String?,
     val source: String?,
     val title: String,
-    val updatedDate: Date,
+    val updatedDate: String?,
     val uuid: String?,
     val type: FeedType,
     val relatedFeed: List<FeedDTO>?

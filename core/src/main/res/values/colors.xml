@@ -8,8 +8,8 @@
     <color name="secondaryDarkColor">#102027</color>
     <color name="primaryTextColor">#000000</color>
     <color name="primaryTextLightColor">@color/secondaryDarkColor</color>
-    <color name="secondaryTextColor">#FCFCFC</color>
-    <color name="secondaryTextLightColor">@color/secondaryLightColor</color>
+    <color name="secondaryTextColor">@color/secondaryLightColor</color>
+    <color name="secondaryTextLightColor">#FCFCFC</color>
     <color name="error_text">@color/secondaryColor</color>
 
 </resources>

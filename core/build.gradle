@@ -73,7 +73,6 @@ dependencies {
     kapt deps.google.daggerAndroidProcessor
     api deps.google.gson
 
-    api deps.additional.smoothBottomBar
     api deps.navigation.navFrag
     api deps.navigation.navUi
     api deps.navigation.navDynamic

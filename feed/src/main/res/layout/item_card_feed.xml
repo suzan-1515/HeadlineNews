@@ -3,10 +3,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/card_margin"
-        android:background="@color/primaryLightColor"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
@@ -19,7 +19,7 @@
 
         <TextView
                 android:id="@+id/title"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -29,40 +29,28 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Google’s new free app teaches kids to read by listening to them" />
 
-        <com.google.android.material.card.MaterialCardView
-                android:id="@+id/image_container"
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
-                android:clickable="false"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:contentPadding="4dp"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="H,1:.5"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/title">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@null"
-                    android:scaleType="centerCrop"
-                    tools:src="@tools:sample/backgrounds/scenic" />
-        </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView
                 android:id="@+id/preview"
                 style="@style/TextAppearance.MaterialComponents.Body2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:maxLines="3"
-                android:textColor="@color/secondaryTextLightColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/image_container"
-                app:layout_constraintTop_toBottomOf="@+id/image_container"
+                android:textColor="@color/secondaryTextColor"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/image"
                 tools:text="Google has just ripped the beta label off Rivet, its \nfree mobile app designed to help young children learn to read. " />
 
         <TextView

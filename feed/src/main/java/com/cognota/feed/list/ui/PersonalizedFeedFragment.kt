@@ -15,6 +15,8 @@ import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.list.adapter.FeedController
+import com.cognota.feed.list.adapter.PersonalizedFeedAdapter
 import com.cognota.feed.list.viewmodel.ListViewModel
 import com.cognota.feed.list.viewmodel.ListViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -32,6 +34,9 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
 
     @Inject
     lateinit var adapterPersonalized: PersonalizedFeedAdapter
+
+    @Inject
+    lateinit var feedController: FeedController
 
     private val viewModel: ListViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
@@ -59,8 +64,8 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
         super.onViewCreated(view, savedInstanceState)
         Timber.d("personalized fragment")
 
-        adapterPersonalized.interaction = this
-        rvFeeds.adapter = adapterPersonalized
+//        adapterPersonalized.interaction = this
+        rvFeeds.setControllerAndBuildModels(feedController)
         srlFeeds.setOnRefreshListener { viewModel.getLatestFeed() }
 
         initiateDataListener()
@@ -81,7 +86,7 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                     StatefulResource.State.SUCCESS -> {
                         if (resource.hasData()) {
                             Timber.d("Data received %d", resource.getData()?.size)
-                            adapterPersonalized.swapData(resource.getData()!!)
+                            feedController.setFeeds(resource.getData())
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(

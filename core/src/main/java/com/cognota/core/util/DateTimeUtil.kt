@@ -1,6 +1,5 @@
 package com.cognota.core.util
 
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -9,17 +8,21 @@ object DateTimeUtil {
     const val DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss"
     const val DEFAULT_DATE_FORMAT = "d MMM, EEEE, yyyy"
 
-    var serverDateFormat: DateFormat =
+    var serverDateFormat: SimpleDateFormat =
         SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z", Locale.getDefault())
-    var defaultDateFormat: DateFormat =
+    var defaultDateFormat: SimpleDateFormat =
         SimpleDateFormat("d MMM, EEEE, yyyy", Locale.getDefault())
 
-    fun parse(date: String): Date {
-        return serverDateFormat.parse(date)!!
+    fun parse(date: String?): Date? {
+        return date?.let { serverDateFormat.parse(it) }
     }
 
-    fun parse(date: Date): String {
-        return defaultDateFormat.format(date)
+    fun format(date: Date?): String? {
+        return date?.let { defaultDateFormat.format(it) }
+    }
+
+    fun parse(date: Date?): String? {
+        return date?.let { defaultDateFormat.format(it) }
     }
 
 }

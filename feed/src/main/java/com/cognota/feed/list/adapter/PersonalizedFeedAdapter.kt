@@ -1,4 +1,4 @@
-package com.cognota.feed.list.ui
+package com.cognota.feed.list.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -57,7 +57,7 @@ class PersonalizedFeedAdapter @Inject constructor(private val picasso: Picasso) 
                 itemView.title,
                 itemView.preview,
                 itemView.date,
-                itemView.thumbnail
+                itemView.image
             )
         }
 
@@ -67,13 +67,13 @@ class PersonalizedFeedAdapter @Inject constructor(private val picasso: Picasso) 
             date.text = item.publishedDate.toString()
             Timber.d("Feed image url: %s", item.image)
             picasso.load(item.image)
-                .into(itemView.thumbnail)
+                .into(itemView.image)
 
             //SharedItem transition
             ViewCompat.setTransitionName(title, item.title)
             ViewCompat.setTransitionName(preview, item.description)
             ViewCompat.setTransitionName(date, item.source)
-            ViewCompat.setTransitionName(thumbnail, item.image)
+            ViewCompat.setTransitionName(image, item.image)
         }
     }
 

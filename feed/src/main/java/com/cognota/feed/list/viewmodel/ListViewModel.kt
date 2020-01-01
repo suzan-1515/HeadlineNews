@@ -26,6 +26,7 @@ class ListViewModel(
             val resource = feedRepository.getLatestFeeds().await()
             when {
                 resource.hasData() -> {
+                    Timber.d("has data")
                     //return the value
                     mutableLatestFeeds.value = StatefulResource.success(resource)
                 }

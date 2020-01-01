@@ -1,6 +1,5 @@
 package com.cognota.feed.list.data.mapper
 
-import com.cognota.core.data.persistence.converter.BaseConverter
 import com.cognota.feed.commons.data.local.FeedType
 import com.cognota.feed.commons.data.remote.model.FeedResponse
 import com.cognota.feed.list.data.entity.FeedEntity
@@ -17,23 +16,23 @@ class FeedResponseMapper @Inject constructor() {
             feed = feedEntity,
             relatedFeed = response.relatedFeedResponse?.map {
                 FeedEntity(
-                    author = response.author,
-                    category = response.category,
-                    content = response.content,
-                    description = response.description,
-                    encloserType = response.encloserType,
-                    encloserUrl = response.encloserUrl,
-                    fetchDate = BaseConverter().toOffsetDateTime(response.fetchDate),
-                    id = response.id,
-                    image = response.image,
-                    link = response.link,
-                    pubDate = BaseConverter().toOffsetDateTime(response.pubDate),
-                    source = response.source,
-                    title = response.title,
-                    updateDate = BaseConverter().toOffsetDateTime(response.updateDate),
-                    uuid = response.uuid,
+                    author = it.author,
+                    category = it.category,
+                    content = it.content,
+                    description = it.description,
+                    encloserType = it.encloserType,
+                    encloserUrl = it.encloserUrl,
+                    fetchDate = it.fetchDate,
+                    id = it.id,
+                    image = it.image,
+                    link = it.link,
+                    pubDate = it.pubDate,
+                    source = it.source,
+                    title = it.title,
+                    updateDate = it.updateDate,
+                    uuid = it.uuid,
                     relatedFeedId = feedEntity.id,
-                    type = feedType.toString()
+                    type = feedEntity.type
                 )
             })
     }
@@ -47,14 +46,14 @@ class FeedResponseMapper @Inject constructor() {
             description = response.description,
             encloserType = response.encloserType,
             encloserUrl = response.encloserUrl,
-            fetchDate = BaseConverter().toOffsetDateTime(response.fetchDate),
+            fetchDate = response.fetchDate,
             id = response.id,
             image = response.image,
             link = response.link,
-            pubDate = BaseConverter().toOffsetDateTime(response.pubDate),
+            pubDate = response.pubDate,
             source = response.source,
             title = response.title,
-            updateDate = BaseConverter().toOffsetDateTime(response.updateDate),
+            updateDate = response.updateDate,
             uuid = response.uuid,
             relatedFeedId = null,
             type = feedType.toString()

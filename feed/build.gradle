@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -15,6 +16,11 @@ android {
 
     }
 
+    kapt {
+        correctErrorTypes = true
+    }
+
+
 }
 
 dependencies {
@@ -24,5 +30,8 @@ dependencies {
     kapt deps.android.roomCompiler
     kapt deps.google.daggerProcessor
     kapt deps.google.daggerAndroidProcessor
+
+    kapt deps.airbnb.epoxyProcessor
+    implementation deps.airbnb.epoxy
 
 }

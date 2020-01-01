@@ -20,41 +20,19 @@
 
         <EditText
                 android:id="@+id/search_edit_text"
+                style="@style/TextAppearance.MaterialComponents.Caption"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/ic_edittext_bg"
                 android:hint="@string/search_hint"
                 android:inputType="text"
-                android:padding="10dp"
-                android:textAlignment="center"
+                android:padding="12dp"
+                android:textAlignment="textStart"
                 android:textStyle="bold" />
 
 
     </RelativeLayout>
-
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/rvTopic"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="8dp"-->
-    <!--            android:background="@color/primaryLightColor"-->
-    <!--            android:orientation="horizontal"-->
-    <!--            android:scrollbars="none"-->
-    <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-    <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--            app:layout_constraintRight_toRightOf="parent"-->
-    <!--            app:layout_constraintTop_toBottomOf="@+id/search_container"-->
-    <!--            tools:listitem="@layout/item_topic" />-->
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/top_stories_caption"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="@string/top_stories_for_you"
-            app:layout_constraintTop_toBottomOf="@+id/search_container" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srlFeeds"
@@ -64,9 +42,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_stories_caption">
+            app:layout_constraintTop_toBottomOf="@+id/search_container">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.airbnb.epoxy.EpoxyRecyclerView
                 android:id="@+id/rvFeeds"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

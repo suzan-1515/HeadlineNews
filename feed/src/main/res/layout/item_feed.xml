@@ -1,6 +1,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/card_margin"
@@ -15,11 +16,12 @@
             android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/thumbnail"
+                android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/date"
                 app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintHeight_min="128dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />
@@ -33,7 +35,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/thumbnail"
+                app:layout_constraintStart_toEndOf="@id/image"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Back to beige: decoding this season’s most unlikely, of the " />
 
@@ -44,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:textColor="@color/secondaryTextLightColor"
+                android:textColor="@color/secondaryTextColor"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/title"
@@ -56,23 +58,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/secondaryTextLightColor"
-                app:layout_constraintStart_toStartOf="@+id/preview"
-                app:layout_constraintTop_toBottomOf="@+id/preview"
+                android:textColor="@color/secondaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@+id/image"
+                app:layout_constraintStart_toStartOf="@+id/title"
                 tools:text="1 hrs ago" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/readmore"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/read_more"
-                android:textColor="@color/secondaryColor"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/date"
-                app:layout_constraintTop_toTopOf="@+id/date" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

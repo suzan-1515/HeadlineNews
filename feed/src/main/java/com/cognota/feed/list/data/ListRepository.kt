@@ -29,12 +29,8 @@ class ListRepository @Inject constructor(
     override suspend fun getLatestFeeds(): Deferred<Resource<List<FeedDTO>?>> {
         val dataFetchHelper =
             object :
-                DataFetchHelper.LocalFirstUntilStale<List<FeedWithRelatedEntity>?, List<FeedDTO>?>(
-                    "latest_feed",
-                    sharedPreferences,
-                    "latest_feed",
-                    "latest_feed",
-                    TimeUnit.SECONDS.toSeconds(15) //storing news information for 15ø sec only.
+                DataFetchHelper.NetworkFirstLocalFailover<List<FeedWithRelatedEntity>?, List<FeedDTO>?>(
+                    "latest_feed"
                 ) {
 
                 override suspend fun getDataFromNetwork(): Response<out Any?> {
@@ -55,13 +51,12 @@ class ListRepository @Inject constructor(
                 }
 
                 override suspend fun convertDataToDto(data: List<FeedWithRelatedEntity>?): List<FeedDTO>? {
-                    return if (data.isNullOrEmpty()) null
-                    else
-                        data.let { list ->
-                            list.map {
-                                feedDTOMapper.toDTO(it)
-                            }
+                    return data?.let { list ->
+                        list.map {
+                            feedDTOMapper.toDTO(it)
                         }
+                    }
+
                 }
 
                 override suspend fun storeFreshDataToLocal(data: List<FeedWithRelatedEntity>?): Boolean {
@@ -110,13 +105,11 @@ class ListRepository @Inject constructor(
                 }
 
                 override suspend fun convertDataToDto(data: List<FeedEntity>?): List<FeedDTO>? {
-                    return if (data.isNullOrEmpty()) null
-                    else
-                        return data.let { list ->
-                            list.map {
-                                feedDTOMapper.toDTO(it)
-                            }
+                    return data?.let { list ->
+                        list.map {
+                            feedDTOMapper.toDTO(it)
                         }
+                    }
                 }
 
                 override suspend fun storeFreshDataToLocal(data: List<FeedEntity>?): Boolean {
@@ -166,13 +159,11 @@ class ListRepository @Inject constructor(
                 }
 
                 override suspend fun convertDataToDto(data: List<FeedEntity>?): List<FeedDTO>? {
-                    return if (data.isNullOrEmpty()) null
-                    else
-                        return data.let { list ->
-                            list.map {
-                                feedDTOMapper.toDTO(it)
-                            }
+                    return data?.let { list ->
+                        list.map {
+                            feedDTOMapper.toDTO(it)
                         }
+                    }
                 }
 
                 override suspend fun storeFreshDataToLocal(data: List<FeedEntity>?): Boolean {

@@ -6,6 +6,7 @@ import androidx.room.Transaction
 import com.cognota.core.data.persistence.dao.BaseDao
 import com.cognota.feed.list.data.entity.FeedEntity
 import com.cognota.feed.list.data.relation.FeedWithRelatedEntity
+import timber.log.Timber
 
 @Dao
 abstract class NewsDao : BaseDao<FeedEntity>() {
@@ -25,6 +26,7 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
         feeds.map {
             insert(it.feed)
             it.relatedFeed?.let { relatedFeeds ->
+                Timber.d("inserting related feed of feed: %s", it.feed.title)
                 insert(relatedFeeds)
             }
         }
