@@ -11,5 +11,8 @@
     <string name="search_hint">Enter news tag</string>
     <string name="top_stories_for_you">Top stories for you right now</string>
     <string name="read_more"><![CDATA[Read More >]]></string>
+    <string name="source_with_time">%s · %s</string>
+    <string name="error_fetching_sources">Failed to fetch news sources</string>
+    <string name="sources_not_available">Failed to fetch news sources at a moment. Please try again later</string>
 
 </resources>

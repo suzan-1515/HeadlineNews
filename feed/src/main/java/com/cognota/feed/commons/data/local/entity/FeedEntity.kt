@@ -1,4 +1,4 @@
-package com.cognota.feed.list.data.entity
+package com.cognota.feed.commons.data.local.entity
 
 
 import androidx.room.ColumnInfo

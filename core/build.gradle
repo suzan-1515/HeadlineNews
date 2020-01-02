@@ -77,9 +77,9 @@ dependencies {
     api deps.navigation.navUi
     api deps.navigation.navDynamic
 
-    api deps.square.picasso
     api deps.square.okhttpDownloader
 
+    api deps.image.picassoTransformation
     api deps.additional.circularImageview
 
     api deps.square.retrofit

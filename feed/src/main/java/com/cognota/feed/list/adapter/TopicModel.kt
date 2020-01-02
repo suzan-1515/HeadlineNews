@@ -1,5 +1,6 @@
 package com.cognota.feed.list.adapter
 
+import android.net.Uri
 import android.view.View
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
@@ -19,7 +20,7 @@ abstract class TopicModel(private val picasso: Picasso) :
     @EpoxyAttribute
     lateinit var title: String
     @EpoxyAttribute
-    lateinit var icon: String
+    lateinit var icon: Uri
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var clickListener: View.OnClickListener
 
@@ -30,8 +31,18 @@ abstract class TopicModel(private val picasso: Picasso) :
             )
         }
         title.let { holder.title.text = it }
-        icon.let {
-            picasso.load(it).into(holder.icon)
+        if (::icon.isInitialized) {
+            picasso.load(icon)
+                .resize(100, 100)
+                .onlyScaleDown()
+                .centerCrop()
+                .into(holder.icon)
+        } else {
+            picasso.load(R.drawable.ic_block_black_24dp)
+                .into(holder.icon)
+        }
+        clickListener.let {
+            holder.card.setOnClickListener(it)
         }
     }
 

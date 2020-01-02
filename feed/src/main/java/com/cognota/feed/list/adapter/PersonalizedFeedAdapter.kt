@@ -73,7 +73,7 @@ class PersonalizedFeedAdapter @Inject constructor(private val picasso: Picasso) 
             ViewCompat.setTransitionName(title, item.title)
             ViewCompat.setTransitionName(preview, item.description)
             ViewCompat.setTransitionName(date, item.source)
-            ViewCompat.setTransitionName(image, item.image)
+            ViewCompat.setTransitionName(image, item.image.toString())
         }
     }
 

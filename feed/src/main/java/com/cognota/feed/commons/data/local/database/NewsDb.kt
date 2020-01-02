@@ -2,17 +2,16 @@ package com.cognota.feed.commons.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.cognota.core.data.persistence.converter.BaseConverter
 import com.cognota.feed.commons.data.local.dao.NewsDao
-import com.cognota.feed.list.data.entity.FeedEntity
+import com.cognota.feed.commons.data.local.entity.CategoryEntity
+import com.cognota.feed.commons.data.local.entity.FeedEntity
+import com.cognota.feed.commons.data.local.entity.SourceEntity
 
 @Database(
-    entities = [FeedEntity::class],
+    entities = [FeedEntity::class, SourceEntity::class, CategoryEntity::class],
     version = 1,
     exportSchema = false
 )
-@TypeConverters(BaseConverter::class)
 abstract class NewsDb : RoomDatabase() {
     abstract fun newsDao(): NewsDao
 }

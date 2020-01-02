@@ -4,27 +4,16 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/card_margin"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@android:color/white"
+        app:cardUseCompatPadding="true"
         app:contentPadding="@dimen/card_padding">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/date"
-                app:layout_constraintDimensionRatio="W,1:1"
-                app:layout_constraintHeight_min="128dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/title"
@@ -34,8 +23,8 @@
                 android:layout_marginStart="5dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintEnd_toStartOf="@+id/image"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Back to beige: decoding this season’s most unlikely, of the " />
 
@@ -44,24 +33,54 @@
                 style="@style/TextAppearance.MaterialComponents.Body2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:textColor="@color/secondaryTextColor"
-                app:layout_constraintEnd_toEndOf="@+id/title"
-                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintEnd_toEndOf="@id/title"
+                app:layout_constraintStart_toStartOf="@id/title"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="As far as trends go, you’d be forgiven for assuming that beige equals boring. " />
+                tools:text="For assuming that beige for assuming that beige equals boring. " />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/sourceIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/date"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/preview"
+                app:layout_constraintVertical_bias="1.0"
+                tools:src="@tools:sample/avatars" />
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/date"
                 style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
                 android:textColor="@color/secondaryTextColor"
-                app:layout_constraintBottom_toBottomOf="@+id/image"
-                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
+                app:layout_constraintEnd_toEndOf="@id/title"
+                app:layout_constraintStart_toEndOf="@id/sourceIcon"
+                app:layout_constraintTop_toTopOf="@+id/sourceIcon"
                 tools:text="1 hrs ago" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/date"
+                app:layout_constraintDimensionRatio="H,1:.6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title"
+                app:layout_constraintTop_toTopOf="@id/title"
+                app:layout_constraintWidth_percent=".4"
+                tools:src="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

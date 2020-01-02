@@ -15,6 +15,7 @@ import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.SourceDTO
 import com.cognota.feed.list.adapter.FeedController
 import com.cognota.feed.list.adapter.PersonalizedFeedAdapter
 import com.cognota.feed.list.viewmodel.ListViewModel
@@ -69,6 +70,7 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
         srlFeeds.setOnRefreshListener { viewModel.getLatestFeed() }
 
         initiateDataListener()
+//        viewModel.getSources()
         viewModel.getLatestFeed()
     }
 
@@ -87,6 +89,70 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                         if (resource.hasData()) {
                             Timber.d("Data received %d", resource.getData()?.size)
                             feedController.setFeeds(resource.getData())
+                        } else {
+                            Timber.d("Empty data received")
+                            snackBar = Snackbar.make(
+                                srlFeeds.rootView,
+                                getString(
+                                    resource.message
+                                        ?: R.string.feed_not_available
+                                ),
+                                Snackbar.LENGTH_LONG
+                            )
+                                .setAction(R.string.ok) { snackBar?.dismiss() }
+                        }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    StatefulResource.State.ERROR_NETWORK -> {
+                        Timber.d("Network error")
+                        snackBar = Snackbar.make(
+                            srlFeeds.rootView,
+                            getString(
+                                resource.message
+                                    ?: R.string.no_network_connection
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction(R.string.retry) {
+                                viewModel.getLatestFeed()
+                                snackBar?.dismiss()
+                            }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    StatefulResource.State.ERROR_API -> {
+                        Timber.d("Api error")
+                        snackBar = Snackbar.make(
+                            srlFeeds.rootView,
+                            getString(
+                                resource.message ?: R.string.service_error
+                            ), Snackbar.LENGTH_LONG
+                        )
+                            .setAction(R.string.retry) {
+                                viewModel.getLatestFeed()
+                                snackBar?.dismiss()
+                            }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    else -> Timber.d("Unknown state")
+                }
+            })
+
+        viewModel.sources.observe(
+            requireActivity(),
+            Observer<StatefulResource<List<SourceDTO>?>> { resource ->
+                snackBar?.dismiss()
+
+                when (resource.state) {
+                    StatefulResource.State.LOADING -> {
+                        srlFeeds.isRefreshing = true
+                    }
+                    StatefulResource.State.SUCCESS -> {
+                        if (resource.hasData()) {
+                            Timber.d("Data received %d", resource.getData()?.size)
+                            feedController.setSources(resource.getData())
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
