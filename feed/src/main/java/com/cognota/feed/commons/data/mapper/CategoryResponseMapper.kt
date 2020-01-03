@@ -1,12 +1,12 @@
 package com.cognota.feed.commons.data.mapper
 
 import com.cognota.feed.commons.data.local.entity.CategoryEntity
-import com.cognota.feed.commons.data.remote.model.Category
+import com.cognota.feed.commons.data.remote.model.SourceResponse
 import javax.inject.Inject
 
 class CategoryResponseMapper @Inject constructor() {
 
-    fun toEntity(response: Category): CategoryEntity {
+    fun toEntity(response: SourceResponse.Category): CategoryEntity {
 
         return CategoryEntity(
             id = response.id,

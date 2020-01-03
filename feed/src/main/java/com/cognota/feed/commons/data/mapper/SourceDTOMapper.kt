@@ -19,5 +19,18 @@ class SourceDTOMapper @Inject constructor() {
 
     }
 
+    fun toEntity(entity: SourceDTO): SourceEntity {
+
+        return SourceEntity(
+            id = entity.id,
+            code = entity.code,
+            favicon = entity.favicon,
+            icon = entity.icon,
+            name = entity.name,
+            priority = entity.priority
+        )
+
+    }
+
 
 }

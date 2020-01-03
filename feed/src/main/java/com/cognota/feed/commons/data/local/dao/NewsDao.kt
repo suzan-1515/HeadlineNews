@@ -4,21 +4,25 @@ import androidx.room.*
 import com.cognota.core.data.persistence.dao.BaseDao
 import com.cognota.feed.commons.data.local.entity.CategoryEntity
 import com.cognota.feed.commons.data.local.entity.FeedEntity
+import com.cognota.feed.commons.data.local.entity.RelatedFeedEntity
 import com.cognota.feed.commons.data.local.entity.SourceEntity
 import com.cognota.feed.commons.data.local.relation.FeedWithRelatedEntity
+import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
 
 @Dao
 abstract class NewsDao : BaseDao<FeedEntity>() {
 
     @Transaction
-    @Query("SELECT * from feed where type = 'latest' order by update_date desc")
+    @Query("SELECT * from feed where type = 'LATEST' order by update_date desc")
     abstract fun findLatestFeeds(): List<FeedWithRelatedEntity>?
 
-    @Query("SELECT * from feed where type = 'top' order by update_date desc")
-    abstract fun findTopFeeds(): List<FeedEntity>?
+    @Transaction
+    @Query("SELECT * from feed where type = 'TOP' order by update_date desc")
+    abstract fun findTopFeeds(): List<FeedWithSourcesEntity>?
 
-    @Query("SELECT * from feed where category = :category order by update_date desc")
-    abstract fun findFeedsByCategory(category: String): List<FeedEntity>?
+    @Transaction
+    @Query("SELECT * from feed where category_code = :category order by update_date desc")
+    abstract fun findFeedsByCategory(category: String): List<FeedWithSourcesEntity>?
 
     @Query("SELECT * from source order by priority asc")
     abstract fun findSources(): List<SourceEntity>?
@@ -32,15 +36,11 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Query("SELECT * from category where enable = 'Y' order by priority asc")
     abstract fun findCategories(): List<CategoryEntity>?
 
-    @Transaction
-    open fun upsertAllFeedWithRelated(feeds: List<FeedWithRelatedEntity>) {
-        feeds.map {
-            insert(it.feed)
-            it.relatedFeed?.let { relatedFeeds ->
-                insert(relatedFeeds)
-            }
-        }
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertRelatedFeeds(sources: List<RelatedFeedEntity>): List<Long>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertRelatedFeed(source: RelatedFeedEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertSources(sources: List<SourceEntity>): List<Long>
@@ -63,6 +63,6 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Query("DELETE from feed where type = type = :type ")
     abstract fun deleteAllTopFeed(type: String)
 
-    @Query("DELETE from feed where category = :category")
+    @Query("DELETE from feed where category_code = :category")
     abstract fun deleteAllFeedByCategory(category: String)
 }

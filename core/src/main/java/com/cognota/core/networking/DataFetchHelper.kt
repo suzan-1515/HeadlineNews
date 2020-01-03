@@ -179,8 +179,7 @@ abstract class DataFetchHelper<T, V>(
         DataFetchStyle.NETWORK_ONLY
     ) {
         abstract override suspend fun getDataFromNetwork(): Response<out Any?>
-        abstract override suspend fun convertApiResponseToData(response: Response<out Any?>): S
-        abstract override suspend fun convertDataToDto(data: S?): V
+        abstract override suspend fun convertDataToDto(response: Response<out Any?>): V
     }
 
     abstract class LocalFirstNetworkRefreshAlways<S, V>(
@@ -199,9 +198,8 @@ abstract class DataFetchHelper<T, V>(
     ) {
         abstract override suspend fun getDataFromLocal(): S?
         abstract override suspend fun getDataFromNetwork(): Response<out Any?>
-        abstract override suspend fun convertApiResponseToData(response: Response<out Any?>): S
         abstract override suspend fun convertDataToDto(data: S?): V
-        abstract override suspend fun storeFreshDataToLocal(data: S): Boolean
+        abstract override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean
     }
 
     abstract class LocalFirstUntilStale<S, V>(
@@ -220,9 +218,8 @@ abstract class DataFetchHelper<T, V>(
     ) {
         abstract override suspend fun getDataFromLocal(): S?
         abstract override suspend fun getDataFromNetwork(): Response<out Any?>
-        abstract override suspend fun convertApiResponseToData(response: Response<out Any?>): S
         abstract override suspend fun convertDataToDto(data: S?): V
-        abstract override suspend fun storeFreshDataToLocal(data: S): Boolean
+        abstract override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean
     }
 
     abstract class NetworkFirstLocalFailover<S, V>(
@@ -233,9 +230,8 @@ abstract class DataFetchHelper<T, V>(
     ) {
         abstract override suspend fun getDataFromLocal(): S
         abstract override suspend fun getDataFromNetwork(): Response<out Any?>
-        abstract override suspend fun convertApiResponseToData(response: Response<out Any?>): S
         abstract override suspend fun convertDataToDto(data: S?): V
-        abstract override suspend fun storeFreshDataToLocal(data: S): Boolean
+        abstract override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean
     }
 
     /**
@@ -293,12 +289,39 @@ abstract class DataFetchHelper<T, V>(
     }
 
     /**
+     * Optionally Provide a conversion from an API response to the required type
+     *
+     * see: [ReflectsApiResponse]
+     * @param response Response<Any>
+     * @return T
+     */
+    open suspend fun convertDataToDto(response: Response<out Any?>): V {
+        try {
+            return response as V
+        } catch (e: Exception) {
+            throw ClassCastException(
+                "$e - Cannot convert data to dto style, " +
+                        "override this method to provide conversion."
+            )
+        }
+    }
+
+    /**
      * Store the data for future retrieval
      * @param data T
      * @return If data was stored or not
      */
     open suspend fun storeFreshDataToLocal(data: T): Boolean {
-        throw NotImplementedError("storeFreshDataToLocal should be implemented to support $dataFetchStyle")
+        return false
+    }
+
+    /**
+     * Store the data for future retrieval
+     * @param data T
+     * @return If data was stored or not
+     */
+    open suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean {
+        return false
     }
 
     /**
@@ -341,22 +364,22 @@ abstract class DataFetchHelper<T, V>(
 
         when (dataFetchStyle) {
             DataFetchStyle.NETWORK_FIRST_LOCAL_FAILOVER -> {
-                resource.data = refreshDataFromNetwork(
+                val success = refreshDataFromNetwork(
                     resource,
                     DataFetchStyle.NETWORK_FIRST_LOCAL_FAILOVER
                 )
-                if (resource.data == null) {
-                    log("Unable to get data from network, failing over to local")
-                    resource.data = convertDataToDto(getDataFromLocal())
-                    resource.fresh = false
-                    resource.dataFetchStyleResult = Result.LOCAL_DATA_NETWORK_FAIL
-                } else {
+                if (success) {
                     resource.fresh = true
                     resource.dataFetchStyleResult = Result.NETWORK_DATA_FIRST
+                } else {
+                    log("Unable to get data from network, failing over to local")
+                    resource.fresh = false
+                    resource.dataFetchStyleResult = Result.LOCAL_DATA_NETWORK_FAIL
                 }
+                resource.data = convertDataToDto(getDataFromLocal())
             }
             DataFetchStyle.NETWORK_ONLY -> {
-                resource.data = refreshDataFromNetwork(resource, DataFetchStyle.NETWORK_ONLY)
+                resource.data = convertDataToDto(getDataFromNetwork())
                 resource.fresh = true
                 resource.dataFetchStyleResult = Result.NETWORK_DATA_ONLY
             }
@@ -367,22 +390,22 @@ abstract class DataFetchHelper<T, V>(
             }
             DataFetchStyle.LOCAL_FIRST_NETWORK_REFRESH_ALWAYS -> {
                 resource.data = convertDataToDto(getDataFromLocal())
-                //TODO:
                 //always refreshing following it
-                val dataFromNetwork =
+                val status =
                     refreshDataFromNetwork(
                         resource,
                         DataFetchStyle.LOCAL_FIRST_NETWORK_REFRESH_ALWAYS
                     )
                 if (resource.data == null) {
                     log("Local data was empty, so returning data from network first")
-                    resource.data = dataFromNetwork
+                    resource.data = convertDataToDto(getDataFromLocal())
+                    resource.fresh = true
                     resource.dataFetchStyleResult = DataFetchStyle.Result.NETWORK_DATA_LOCAL_MISSING
                 } else {
                     log("Returning local data first, refreshing in background")
+                    resource.fresh = false
                     resource.dataFetchStyleResult = DataFetchStyle.Result.LOCAL_DATA_FIRST
                 }
-                resource.fresh = true
             }
             DataFetchStyle.LOCAL_FIRST_UNTIL_STALE -> {
                 if (cacheKey == null || sharedPreferences == null) {
@@ -396,23 +419,23 @@ abstract class DataFetchHelper<T, V>(
                     )
                 ) {
                     log("Cache is stale")
-                    resource.data = refreshDataFromNetwork(
+                    val status = refreshDataFromNetwork(
                         resource,
                         DataFetchStyle.LOCAL_FIRST_UNTIL_STALE
                     )
-                    if (resource.data == null) {
-                        log("Unsuccessfully stored fresh data from network, getting stale data from local")
-                        resource.data = convertDataToDto(getDataFromLocal())
-                        resource.fresh = false
-                        resource.dataFetchStyleResult =
-                            Result.LOCAL_DATA_NETWORK_FAIL
-                    } else {
+                    if (status) {
                         log("Successfully stored fresh data from network")
                         resource.fresh = true
                         resource.dataFetchStyleResult =
                             DataFetchStyle.Result.NETWORK_DATA_LOCAL_STALE
                         RepositoryUtil.resetCache(sharedPreferences, cacheKey, cacheDescriptor)
+                    } else {
+                        log("Unsuccessfully stored fresh data from network, getting stale data from local")
+                        resource.fresh = false
+                        resource.dataFetchStyleResult =
+                            Result.LOCAL_DATA_NETWORK_FAIL
                     }
+                    resource.data = convertDataToDto(getDataFromLocal())
                 } else {
                     log("Cache isn't stale")
                     resource.data = convertDataToDto(getDataFromLocal())
@@ -436,7 +459,7 @@ abstract class DataFetchHelper<T, V>(
     private suspend fun refreshDataFromNetwork(
         resource: Resource<V>,
         dataFetchStyle: DataFetchStyle
-    ): V? {
+    ): Boolean {
         //Some styles depend on data getting stored locally, gently throw a log error to let them know
         val forceStoreLocally = arrayListOf(
             DataFetchStyle.NETWORK_FIRST_LOCAL_FAILOVER,
@@ -445,8 +468,8 @@ abstract class DataFetchHelper<T, V>(
         ).contains(dataFetchStyle)
 
         val response: Response<out Any?>
-        var convertedToData: T? = null
         var storedFreshData = false
+        var hasData = false
         try {
             response = getDataFromNetwork() //this can throw an exception IOException, Timeouts,
             resource.response = response
@@ -456,12 +479,12 @@ abstract class DataFetchHelper<T, V>(
                     "Response body was null! Verify correct response object was used for service call"
                 Timber.e(resource.errorMessage)
                 //if body was null, no point in attempting to convert it or store it
-                return null
+                return hasData
             }
 
-            convertedToData = convertApiResponseToData(response)
             log("Converted data for storage")
-            storedFreshData = storeFreshDataToLocal(convertedToData)
+            storedFreshData = storeFreshRawDataToLocal(response)
+            hasData = true
         } catch (e: Exception) {
             //IOExceptions, conversion exceptions, or local storage exception
             resource.throwable = e
@@ -473,7 +496,7 @@ abstract class DataFetchHelper<T, V>(
                 Timber.e("$dataFetchStyle requires data to be stored locally for the style to work correctly!")
             }
         }
-        return convertDataToDto(convertedToData)
+        return hasData
     }
 
     private fun log(message: String) {

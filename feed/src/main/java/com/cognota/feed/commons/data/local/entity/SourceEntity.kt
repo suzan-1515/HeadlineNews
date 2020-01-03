@@ -15,7 +15,7 @@ data class SourceEntity(
     @ColumnInfo(name = "favicon")
     val favicon: String?,
     @ColumnInfo(name = "icon")
-    val icon: String,
+    val icon: String?,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "priority")

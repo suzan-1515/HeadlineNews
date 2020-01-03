@@ -5,11 +5,9 @@ import com.cognota.core.di.FeatureScope
 import com.cognota.feed.commons.data.local.dao.NewsDao
 import com.cognota.feed.commons.data.mapper.*
 import com.cognota.feed.commons.data.remote.service.NewsAPIService
-import com.cognota.feed.list.adapter.PersonalizedFeedAdapter
 import com.cognota.feed.list.data.ListDataContract
 import com.cognota.feed.list.data.ListRepository
 import com.cognota.feed.list.viewmodel.ListViewModelFactory
-import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
@@ -49,12 +47,6 @@ class FeedListModule {
         categoryDTOMapper
     )
 
-    /*Repository*/
-    @Provides
-    @FeatureScope
-    fun personalizedFeedAdapter(
-        picasso: Picasso
-    ) = PersonalizedFeedAdapter(picasso)
 
     @Provides
     @FeatureScope

@@ -3,14 +3,15 @@ package com.cognota.feed.commons.data.local.relation
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.cognota.feed.commons.data.local.entity.FeedEntity
+import com.cognota.feed.commons.data.local.entity.RelatedFeedEntity
 
 data class FeedWithRelatedEntity(
     @Embedded
-    val feed: FeedEntity,
+    val feed: FeedWithSourcesEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "related_feed"
+        entityColumn = "parent_id",
+        entity = RelatedFeedEntity::class
     )
-    val relatedFeed: List<FeedEntity>?
+    val relatedFeeds: List<RelatedFeedWithSourcesEntity>?
 )

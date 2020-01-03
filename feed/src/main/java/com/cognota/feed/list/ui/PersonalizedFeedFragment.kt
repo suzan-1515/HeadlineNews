@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,10 +12,8 @@ import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
-import com.cognota.feed.commons.domain.FeedDTO
-import com.cognota.feed.commons.domain.SourceDTO
+import com.cognota.feed.commons.domain.PersonalisedFeedDTO
 import com.cognota.feed.list.adapter.FeedController
-import com.cognota.feed.list.adapter.PersonalizedFeedAdapter
 import com.cognota.feed.list.viewmodel.ListViewModel
 import com.cognota.feed.list.viewmodel.ListViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -28,13 +24,10 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interaction {
+class PersonalizedFeedFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ListViewModelFactory
-
-    @Inject
-    lateinit var adapterPersonalized: PersonalizedFeedAdapter
 
     @Inject
     lateinit var feedController: FeedController
@@ -65,12 +58,10 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
         super.onViewCreated(view, savedInstanceState)
         Timber.d("personalized fragment")
 
-//        adapterPersonalized.interaction = this
         rvFeeds.setControllerAndBuildModels(feedController)
         srlFeeds.setOnRefreshListener { viewModel.getLatestFeed() }
 
         initiateDataListener()
-//        viewModel.getSources()
         viewModel.getLatestFeed()
     }
 
@@ -78,7 +69,7 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
         //Observe the outcome and update state of the screen  accordingly
         viewModel.latestFeeds.observe(
             requireActivity(),
-            Observer<StatefulResource<List<FeedDTO>?>> { resource ->
+            Observer<StatefulResource<PersonalisedFeedDTO>> { resource ->
                 snackBar?.dismiss()
 
                 when (resource.state) {
@@ -87,8 +78,8 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                     }
                     StatefulResource.State.SUCCESS -> {
                         if (resource.hasData()) {
-                            Timber.d("Data received %d", resource.getData()?.size)
-                            feedController.setFeeds(resource.getData())
+                            Timber.d("Feed data received ")
+                            feedController.setData(resource.getData())
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
@@ -140,78 +131,6 @@ class PersonalizedFeedFragment : BaseFragment(), PersonalizedFeedAdapter.Interac
                 }
             })
 
-        viewModel.sources.observe(
-            requireActivity(),
-            Observer<StatefulResource<List<SourceDTO>?>> { resource ->
-                snackBar?.dismiss()
-
-                when (resource.state) {
-                    StatefulResource.State.LOADING -> {
-                        srlFeeds.isRefreshing = true
-                    }
-                    StatefulResource.State.SUCCESS -> {
-                        if (resource.hasData()) {
-                            Timber.d("Data received %d", resource.getData()?.size)
-                            feedController.setSources(resource.getData())
-                        } else {
-                            Timber.d("Empty data received")
-                            snackBar = Snackbar.make(
-                                srlFeeds.rootView,
-                                getString(
-                                    resource.message
-                                        ?: R.string.feed_not_available
-                                ),
-                                Snackbar.LENGTH_LONG
-                            )
-                                .setAction(R.string.ok) { snackBar?.dismiss() }
-                        }
-                        snackBar?.show()
-                        srlFeeds.isRefreshing = false
-                    }
-                    StatefulResource.State.ERROR_NETWORK -> {
-                        Timber.d("Network error")
-                        snackBar = Snackbar.make(
-                            srlFeeds.rootView,
-                            getString(
-                                resource.message
-                                    ?: R.string.no_network_connection
-                            ),
-                            Snackbar.LENGTH_LONG
-                        )
-                            .setAction(R.string.retry) {
-                                viewModel.getLatestFeed()
-                                snackBar?.dismiss()
-                            }
-                        snackBar?.show()
-                        srlFeeds.isRefreshing = false
-                    }
-                    StatefulResource.State.ERROR_API -> {
-                        Timber.d("Api error")
-                        snackBar = Snackbar.make(
-                            srlFeeds.rootView,
-                            getString(
-                                resource.message ?: R.string.service_error
-                            ), Snackbar.LENGTH_LONG
-                        )
-                            .setAction(R.string.retry) {
-                                viewModel.getLatestFeed()
-                                snackBar?.dismiss()
-                            }
-                        snackBar?.show()
-                        srlFeeds.isRefreshing = false
-                    }
-                    else -> Timber.d("Unknown state")
-                }
-            })
-    }
-
-    override fun feedClicked(
-        feed: FeedDTO,
-        tvTitle: TextView,
-        tvBody: TextView,
-        tvAuthorName: TextView,
-        ivAvatar: ImageView
-    ) {
 
     }
 

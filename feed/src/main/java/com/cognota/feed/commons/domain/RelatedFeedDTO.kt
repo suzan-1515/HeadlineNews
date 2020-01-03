@@ -8,7 +8,7 @@ import com.cognota.feed.commons.data.local.FeedType
 import java.io.Serializable
 import java.util.*
 
-data class FeedDTO(
+data class RelatedFeedDTO(
     val description: String?,
     val id: String,
     val image: String?,
@@ -17,6 +17,7 @@ data class FeedDTO(
     val title: String,
     val updatedDate: String?,
     val type: FeedType,
+    val parentFeed: FeedDTO,
     var source: SourceDTO,
     var category: CategoryDTO
 ) : Serializable {

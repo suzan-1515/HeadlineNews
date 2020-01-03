@@ -5,6 +5,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.cognota.feed.commons.domain.CategoryDTO
 import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.PersonalisedFeedDTO
 import com.cognota.feed.commons.domain.SourceDTO
 import com.squareup.picasso.Picasso
 import timber.log.Timber
@@ -17,9 +18,17 @@ class FeedController @Inject constructor(
 ) :
     EpoxyController() {
 
+    private lateinit var personalisedFeeds: PersonalisedFeedDTO
     private var feeds: List<FeedDTO> = mutableListOf()
     private var sources: List<SourceDTO> = mutableListOf()
     private var categories: List<CategoryDTO> = mutableListOf()
+
+    fun setData(personalisedFeeds: PersonalisedFeedDTO?) {
+        personalisedFeeds?.let {
+            this.personalisedFeeds = personalisedFeeds
+            requestModelBuild()
+        }
+    }
 
     fun setFeeds(feeds: List<FeedDTO>?) {
         feeds?.let {
@@ -47,93 +56,118 @@ class FeedController @Inject constructor(
 
     override fun buildModels() {
 
-        HeaderModel_().apply {
-            id("sources_header")
-            title("News sources")
-        }.addIf(!sources.isNullOrEmpty(), this)
-
-        carousel {
-            id("source_carousel")
-            models(
-                sources.map {
-                    TopicModel_(picasso).apply {
-                        id(it.id)
-                        it.icon()?.let { icon(it) }
-                        title(it.name)
-                        clickListener { model, parentView, clickedView, position ->
-                            Timber.d("Source clicked: %s", model.title())
-                        }
-                    }
-                }.toMutableList()
-            )
-        }
-
-        HeaderModel_().apply {
-            id("feed_header")
-            title("Top stories for you right now")
-        }.addIf(!feeds.isNullOrEmpty(), this)
-
-        for (feed in feeds) {
-            if (feed.relatedFeed.isNullOrEmpty()) {
-                Timber.d("empty related feed for feed: %s", feed.title)
-                feedList(picasso, context) {
-                    id(feed.id)
-                    title(feed.title)
-                    feed.thumbnail()?.let { image(it) }
-                    feed.description?.let { preview(it) }
-                    feed.sourceDTO?.let {
-                        source(it.name)
-                        it.icon()?.let { icon -> sourceIcon(icon) }
-                    }
-                    date(feed.publishedDate())
-                    clickListener { model, parentView, clickedView, position ->
-                        Timber.d("Feed clicked: %s", model.title())
-                    }
+        if (::personalisedFeeds.isInitialized) {
+            personalisedFeeds.sources?.let {
+                header {
+                    id("sources_header")
+                    title("News sources")
                 }
 
-            } else {
                 carousel {
-                    id(feed.id)
-                    numViewsToShowOnScreen(1.2f)
+                    id("source_carousel")
+                    paddingDp(4)
                     models(
-                        feed.relatedFeed.map {
-                            FeedCardModel_(picasso, context).apply {
-                                id(it.id)
-                                title(it.title)
-                                it.thumbnail()?.let { image(it) }
-                                it.description?.let { preview(it) }
-                                it.sourceDTO?.let { source ->
+                        it.map { source ->
+                            TopicModel_(picasso).apply {
+                                id(source.id)
+                                source.icon()?.let { icon -> icon(icon) }
+                                title(source.name)
+                                clickListener { model, parentView, clickedView, position ->
+                                    Timber.d("Source clicked: %s", model.title())
+                                }
+                            }
+                        }.toMutableList()
+                    )
+                }
+            }
+
+            personalisedFeeds.categories?.let {
+                header {
+                    id("categories_header")
+                    title("News categories")
+                }
+
+                carousel {
+                    id("categories_carousel")
+                    paddingDp(4)
+                    models(
+                        it.map { category ->
+                            TopicModel_(picasso).apply {
+                                id(category.id)
+                                category.icon()?.let { icon -> icon(icon) }
+                                title(category.name)
+                                clickListener { model, parentView, clickedView, position ->
+                                    Timber.d("Category clicked: %s", model.title())
+                                }
+                            }
+                        }.toMutableList()
+                    )
+                }
+            }
+
+            personalisedFeeds.feeds?.let {
+                header {
+                    id("feed_header")
+                    title("Top stories for you right now")
+                }
+
+                for (feed in it) {
+                    if (feed.feedWithRelatedFeeds.isNullOrEmpty()) {
+                        feedList(picasso, context) {
+                            id(feed.feeds.id)
+                            title(feed.feeds.title)
+                            feed.feeds.thumbnail()?.let { image -> image(image) }
+                            feed.feeds.description?.let { desc -> preview(desc) }
+                            feed.feeds.source.let { source ->
+                                source(source.name)
+                                source.icon()?.let { icon -> sourceIcon(icon) }
+                            }
+                            date(feed.feeds.publishedDate())
+                            clickListener { model, parentView, clickedView, position ->
+                                Timber.d("Feed clicked: %s", model.title())
+                            }
+                        }
+
+                    } else {
+                        carousel {
+                            id(feed.feeds.id)
+                            numViewsToShowOnScreen(1.2f)
+                            paddingDp(4)
+                            models(listOf(FeedCardModel_(picasso, context).apply {
+                                id(feed.feeds.id)
+                                title(feed.feeds.title)
+                                feed.feeds.thumbnail()?.let { image -> image(image) }
+                                feed.feeds.description?.let { desc -> preview(desc) }
+                                feed.feeds.source.let { source ->
                                     source(source.name)
                                     source.icon()?.let { icon ->
                                         sourceIcon(icon)
                                     }
                                 }
-                                date(feed.publishedDate())
+                                date(feed.feeds.publishedDate())
                                 clickListener { model, parentView, clickedView, position ->
                                     Timber.d("Feed clicked: %s", model.title())
                                 }
-                            }
-
-                        }.toMutableList()
-                            .plus(
+                            }) + feed.feedWithRelatedFeeds.map { related ->
                                 FeedCardModel_(picasso, context).apply {
-                                    id(feed.id)
-                                    title(feed.title)
-                                    feed.thumbnail()?.let { image(it) }
-                                    feed.description?.let { preview(it) }
-                                    feed.sourceDTO?.let { source ->
+                                    id(related.id)
+                                    title(related.title)
+                                    related.thumbnail()?.let { image -> image(image) }
+                                    related.description?.let { desc -> preview(desc) }
+                                    related.source.let { source ->
                                         source(source.name)
                                         source.icon()?.let { icon ->
                                             sourceIcon(icon)
                                         }
                                     }
-                                    date(feed.publishedDate())
+                                    date(related.publishedDate())
                                     clickListener { model, parentView, clickedView, position ->
                                         Timber.d("Feed clicked: %s", model.title())
                                     }
                                 }
-                            )
-                    )
+                            }.toMutableList())
+                        }
+                    }
                 }
             }
         }

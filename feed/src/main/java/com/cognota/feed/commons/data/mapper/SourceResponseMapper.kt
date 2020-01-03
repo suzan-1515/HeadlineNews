@@ -1,12 +1,12 @@
 package com.cognota.feed.commons.data.mapper
 
 import com.cognota.feed.commons.data.local.entity.SourceEntity
-import com.cognota.feed.commons.data.remote.model.Source
+import com.cognota.feed.commons.data.remote.model.SourceResponse
 import javax.inject.Inject
 
 class SourceResponseMapper @Inject constructor() {
 
-    fun toEntity(response: Source): SourceEntity {
+    fun toEntity(response: SourceResponse.Source): SourceEntity {
 
         return SourceEntity(
             id = response.id,
