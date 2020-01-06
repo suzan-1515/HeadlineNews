@@ -16,9 +16,9 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-@EpoxyModelClass(layout = R2.layout.item_card_stack_feed)
-abstract class FeedCardStackModel(private val picasso: Picasso, private val context: Context) :
-    EpoxyModelWithHolder<FeedCardStackModel.Holder>() {
+@EpoxyModelClass(layout = R2.layout.item_multi_card_feed)
+abstract class FeedMultiCardModel(private val picasso: Picasso, private val context: Context) :
+    EpoxyModelWithHolder<FeedMultiCardModel.Holder>() {
 
     @EpoxyAttribute
     lateinit var title: String

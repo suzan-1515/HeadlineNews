@@ -135,7 +135,10 @@ class FeedController @Inject constructor(
                             numViewsToShowOnScreen(1.05f)
                             models(
                                 listOf(
-                                    FeedCardStackModel_(picasso, context).apply {
+                                    FeedMultiCardModel_(
+                                        picasso,
+                                        context
+                                    ).apply {
                                         id(feed.feed.id)
                                         title(feed.feed.title)
                                         feed.feed.thumbnail()?.let { image -> image(image) }
@@ -151,7 +154,10 @@ class FeedController @Inject constructor(
                                             Timber.d("Feed clicked: %s", model.title())
                                         }
                                     }) + feed.feedWithRelatedFeeds.map { related ->
-                                    FeedCardStackModel_(picasso, context).apply {
+                                    FeedMultiCardModel_(
+                                        picasso,
+                                        context
+                                    ).apply {
                                         id(related.id)
                                         title(related.title)
                                         related.thumbnail()?.let { image -> image(image) }

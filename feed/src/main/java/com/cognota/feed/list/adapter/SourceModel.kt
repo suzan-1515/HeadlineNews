@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-@EpoxyModelClass(layout = R2.layout.item_topic)
+@EpoxyModelClass(layout = R2.layout.item_source)
 abstract class SourceModel(private val picasso: Picasso) :
     EpoxyModelWithHolder<SourceModel.Holder>() {
 

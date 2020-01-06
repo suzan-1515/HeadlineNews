@@ -17,7 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 
-@EpoxyModelClass(layout = R2.layout.item_feed)
+@EpoxyModelClass(layout = R2.layout.item_list_feed)
 abstract class FeedListModel(private val picasso: Picasso, private val context: Context) :
     EpoxyModelWithHolder<FeedListModel.Holder>() {
 
