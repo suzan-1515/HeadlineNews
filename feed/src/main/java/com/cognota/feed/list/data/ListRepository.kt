@@ -81,7 +81,7 @@ class ListRepository @Inject constructor(
                                     feedDTOMapper.toDTO(it)
                                 }?.toMutableList()
                                 FeedWithRelatedFeedDTO(
-                                    feeds = feedDTOMapper.toDTO(fwre.feed),
+                                    feed = feedDTOMapper.toDTO(fwre.feed),
                                     feedWithRelatedFeeds = if (relatedFeedDtoList.isNullOrEmpty()) listOf() else relatedFeedDtoList
                                 )
                             }?.toMutableList()

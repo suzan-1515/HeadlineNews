@@ -34,4 +34,6 @@ dependencies {
     kapt deps.airbnb.epoxyProcessor
     implementation deps.airbnb.epoxy
 
+    implementation deps.additional.descreteScrollview
+
 }

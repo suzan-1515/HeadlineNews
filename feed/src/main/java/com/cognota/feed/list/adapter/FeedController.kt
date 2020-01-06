@@ -65,10 +65,10 @@ class FeedController @Inject constructor(
 
                 carousel {
                     id("source_carousel")
-                    paddingDp(4)
+                    paddingDp(0)
                     models(
                         it.map { source ->
-                            TopicModel_(picasso).apply {
+                            SourceModel_(picasso).apply {
                                 id(source.id)
                                 source.icon()?.let { icon -> icon(icon) }
                                 title(source.name)
@@ -76,7 +76,7 @@ class FeedController @Inject constructor(
                                     Timber.d("Source clicked: %s", model.title())
                                 }
                             }
-                        }.toMutableList()
+                        }
                     )
                 }
             }
@@ -92,7 +92,7 @@ class FeedController @Inject constructor(
                     paddingDp(4)
                     models(
                         it.map { category ->
-                            TopicModel_(picasso).apply {
+                            CategoryModel_(picasso).apply {
                                 id(category.id)
                                 category.icon()?.let { icon -> icon(icon) }
                                 title(category.name)
@@ -100,7 +100,7 @@ class FeedController @Inject constructor(
                                     Timber.d("Category clicked: %s", model.title())
                                 }
                             }
-                        }.toMutableList()
+                        }
                     )
                 }
             }
@@ -114,15 +114,15 @@ class FeedController @Inject constructor(
                 for (feed in it) {
                     if (feed.feedWithRelatedFeeds.isNullOrEmpty()) {
                         feedList(picasso, context) {
-                            id(feed.feeds.id)
-                            title(feed.feeds.title)
-                            feed.feeds.thumbnail()?.let { image -> image(image) }
-                            feed.feeds.description?.let { desc -> preview(desc) }
-                            feed.feeds.source.let { source ->
+                            id(feed.feed.id)
+                            title(feed.feed.title)
+                            feed.feed.thumbnail()?.let { image -> image(image) }
+                            feed.feed.description?.let { desc -> preview(desc) }
+                            feed.feed.source.let { source ->
                                 source(source.name)
                                 source.icon()?.let { icon -> sourceIcon(icon) }
                             }
-                            date(feed.feeds.publishedDate())
+                            date(feed.feed.publishedDate())
                             clickListener { model, parentView, clickedView, position ->
                                 Timber.d("Feed clicked: %s", model.title())
                             }
@@ -130,45 +130,52 @@ class FeedController @Inject constructor(
 
                     } else {
                         carousel {
-                            id(feed.feeds.id)
-                            numViewsToShowOnScreen(1.2f)
-                            paddingDp(4)
-                            models(listOf(FeedCardModel_(picasso, context).apply {
-                                id(feed.feeds.id)
-                                title(feed.feeds.title)
-                                feed.feeds.thumbnail()?.let { image -> image(image) }
-                                feed.feeds.description?.let { desc -> preview(desc) }
-                                feed.feeds.source.let { source ->
-                                    source(source.name)
-                                    source.icon()?.let { icon ->
-                                        sourceIcon(icon)
-                                    }
-                                }
-                                date(feed.feeds.publishedDate())
-                                clickListener { model, parentView, clickedView, position ->
-                                    Timber.d("Feed clicked: %s", model.title())
-                                }
-                            }) + feed.feedWithRelatedFeeds.map { related ->
-                                FeedCardModel_(picasso, context).apply {
-                                    id(related.id)
-                                    title(related.title)
-                                    related.thumbnail()?.let { image -> image(image) }
-                                    related.description?.let { desc -> preview(desc) }
-                                    related.source.let { source ->
-                                        source(source.name)
-                                        source.icon()?.let { icon ->
-                                            sourceIcon(icon)
+                            id(feed.feed.id)
+                            paddingDp(0)
+                            numViewsToShowOnScreen(1.05f)
+                            models(
+                                listOf(
+                                    FeedCardStackModel_(picasso, context).apply {
+                                        id(feed.feed.id)
+                                        title(feed.feed.title)
+                                        feed.feed.thumbnail()?.let { image -> image(image) }
+                                        feed.feed.description?.let { desc -> preview(desc) }
+                                        feed.feed.source.let { source ->
+                                            source(source.name)
+                                            source.icon()?.let { icon ->
+                                                sourceIcon(icon)
+                                            }
+                                        }
+                                        date(feed.feed.publishedDate())
+                                        clickListener { model, parentView, clickedView, position ->
+                                            Timber.d("Feed clicked: %s", model.title())
+                                        }
+                                    }) + feed.feedWithRelatedFeeds.map { related ->
+                                    FeedCardStackModel_(picasso, context).apply {
+                                        id(related.id)
+                                        title(related.title)
+                                        related.thumbnail()?.let { image -> image(image) }
+                                        related.description?.let { desc -> preview(desc) }
+                                        related.source.let { source ->
+                                            source(source.name)
+                                            source.icon()?.let { icon ->
+                                                sourceIcon(icon)
+                                            }
+                                        }
+                                        date(related.publishedDate())
+                                        clickListener { model, parentView, clickedView, position ->
+                                            Timber.d("Feed clicked: %s", model.title())
                                         }
                                     }
-                                    date(related.publishedDate())
-                                    clickListener { model, parentView, clickedView, position ->
-                                        Timber.d("Feed clicked: %s", model.title())
-                                    }
                                 }
-                            }.toMutableList())
+                            )
                         }
                     }
                 }
+            }
+        } else {
+            progress {
+                id("progress")
             }
         }
     }

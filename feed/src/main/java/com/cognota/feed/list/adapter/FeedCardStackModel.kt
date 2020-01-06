@@ -14,12 +14,11 @@ import com.cognota.feed.R2
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 
-@EpoxyModelClass(layout = R2.layout.item_feed)
-abstract class FeedListModel(private val picasso: Picasso, private val context: Context) :
-    EpoxyModelWithHolder<FeedListModel.Holder>() {
+@EpoxyModelClass(layout = R2.layout.item_card_stack_feed)
+abstract class FeedCardStackModel(private val picasso: Picasso, private val context: Context) :
+    EpoxyModelWithHolder<FeedCardStackModel.Holder>() {
 
     @EpoxyAttribute
     lateinit var title: String
@@ -40,14 +39,14 @@ abstract class FeedListModel(private val picasso: Picasso, private val context: 
         title.let { holder.title.text = it }
         preview.let { holder.preview.text = it }
         if (::date.isInitialized && ::source.isInitialized)
-            holder.date.text = context.getString(R.string.source_with_time, source, date)
+            date.let {
+                holder.date.text = context.getString(R.string.source_with_time, source, date)
+            }
         if (::image.isInitialized) {
             picasso.load(image)
-                .fit()
-                .transform(RoundedCornersTransformation(16, 0))
                 .into(holder.image)
         } else {
-            holder.image.visibility = View.GONE
+//            holder.image.visibility = View.GONE
         }
         if (::sourceIcon.isInitialized) {
             picasso.load(sourceIcon)
@@ -57,7 +56,6 @@ abstract class FeedListModel(private val picasso: Picasso, private val context: 
                 .into(holder.sourceIcon)
         } else {
             picasso.load(R.drawable.ic_block_black_24dp)
-                .fit()
                 .into(holder.sourceIcon)
         }
         clickListener.let {

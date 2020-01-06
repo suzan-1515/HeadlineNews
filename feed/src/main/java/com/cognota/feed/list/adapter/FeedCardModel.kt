@@ -45,7 +45,8 @@ abstract class FeedCardModel(private val picasso: Picasso, private val context: 
             }
         if (::image.isInitialized) {
             picasso.load(image)
-                .transform(RoundedCornersTransformation(16, 0))
+                .fit()
+                .transform(RoundedCornersTransformation(16, 4))
                 .into(holder.image)
         } else {
             holder.image.visibility = View.GONE

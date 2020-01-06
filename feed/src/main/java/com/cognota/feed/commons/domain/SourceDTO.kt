@@ -13,7 +13,7 @@ data class SourceDTO(
     val priority: Int
 ) : Serializable {
     fun icon(): Uri? {
-        return favicon?.let {
+        return icon?.let {
             return if (Patterns.WEB_URL.matcher(it).matches())
                 Uri.parse(it)
             else null

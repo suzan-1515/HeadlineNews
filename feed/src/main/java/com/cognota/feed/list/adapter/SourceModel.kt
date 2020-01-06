@@ -9,13 +9,14 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
 import com.google.android.material.card.MaterialCardView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 
 @EpoxyModelClass(layout = R2.layout.item_topic)
-abstract class TopicModel(private val picasso: Picasso) :
-    EpoxyModelWithHolder<TopicModel.Holder>() {
+abstract class SourceModel(private val picasso: Picasso) :
+    EpoxyModelWithHolder<SourceModel.Holder>() {
 
     @EpoxyAttribute
     lateinit var title: String
@@ -36,13 +37,14 @@ abstract class TopicModel(private val picasso: Picasso) :
                 .resize(100, 100)
                 .onlyScaleDown()
                 .centerCrop()
-                .into(holder.icon)
+                .into(holder.icon, object : Callback {
+                    override fun onSuccess() {}
+                    override fun onError() {
+                        holder.icon.visibility = View.GONE
+                    }
+                })
         } else {
-            picasso.load(R.drawable.ic_block_black_24dp)
-                .into(holder.icon)
-        }
-        clickListener.let {
-            holder.card.setOnClickListener(it)
+            holder.icon.visibility = View.GONE
         }
     }
 

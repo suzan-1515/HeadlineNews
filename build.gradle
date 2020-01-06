@@ -25,6 +25,7 @@ buildscript {
             'rxAndroid'            : '2.1.1',
             'butterknifePlugin'    : '10.1.0',
             'epoxy'                : '3.9.0',
+            'descreteScrollView'   : '1.4.9',
             'jodaTime'             : "2.10.5",
             'stetho'               : '1.5.1',
             'junit'                : '4.12',
@@ -107,6 +108,7 @@ buildscript {
             additional: [
                     'jodaTime'         : "joda-time:joda-time:${versions.jodaTime}",
                     'circularImageview': "de.hdodenhof:circleimageview:${versions.circularImageview}",
+                    'descreteScrollview': "com.yarolegovich:discrete-scrollview:${versions.descreteScrollView}",
             ],
             test      : [
                     'junit'          : "junit:junit:${versions.junit}",
