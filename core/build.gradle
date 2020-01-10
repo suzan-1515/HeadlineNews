@@ -57,6 +57,7 @@ dependencies {
     api deps.android.lifecycleExt
     api deps.android.lifecycleCommon
     api deps.android.roomRuntime
+    api deps.android.roomKotlin
     api deps.android.roomRx
 
     api deps.kotlin.stdlib7

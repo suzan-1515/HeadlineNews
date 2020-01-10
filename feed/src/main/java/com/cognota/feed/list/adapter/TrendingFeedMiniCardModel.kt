@@ -11,15 +11,13 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
 import com.google.android.material.card.MaterialCardView
-import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 
-@EpoxyModelClass(layout = R2.layout.item_list_feed)
-abstract class FeedListModel(private val picasso: Picasso) :
-    EpoxyModelWithHolder<FeedListModel.Holder>() {
+@EpoxyModelClass(layout = R2.layout.item_mini_card_feed)
+abstract class TrendingFeedMiniCardModel(private val picasso: Picasso) :
+    EpoxyModelWithHolder<TrendingFeedMiniCardModel.Holder>() {
 
     @EpoxyAttribute
     lateinit var title: String
@@ -27,8 +25,6 @@ abstract class FeedListModel(private val picasso: Picasso) :
     lateinit var image: Uri
     @EpoxyAttribute
     lateinit var sourceIcon: Uri
-    @EpoxyAttribute
-    lateinit var preview: String
     @EpoxyAttribute
     lateinit var date: String
     @EpoxyAttribute
@@ -38,26 +34,14 @@ abstract class FeedListModel(private val picasso: Picasso) :
 
     override fun bind(holder: Holder) {
         title.let { holder.title.text = it }
-        preview.let { holder.preview.text = it }
         if (::date.isInitialized && ::source.isInitialized)
-            holder.date.text =
-                holder.date.context.getString(R.string.source_with_time, source, date)
+            date.let {
+                holder.date.text =
+                    holder.date.context.getString(R.string.source_with_time, source, date)
+            }
         if (::image.isInitialized) {
             picasso.load(image)
-                .fit()
-                .transform(RoundedCornersTransformation(16, 0))
-                .into(holder.image, object : Callback {
-                    override fun onSuccess() {
-
-                    }
-
-                    override fun onError() {
-                        holder.image.visibility = View.GONE
-                    }
-
-                })
-        } else {
-            holder.image.visibility = View.GONE
+                .into(holder.image)
         }
         if (::sourceIcon.isInitialized) {
             picasso.load(sourceIcon)
@@ -71,20 +55,17 @@ abstract class FeedListModel(private val picasso: Picasso) :
         }
 
         ViewCompat.setTransitionName(holder.title, "title" + id())
-        ViewCompat.setTransitionName(holder.preview, "preview" + id())
         ViewCompat.setTransitionName(holder.date, "date" + id())
         ViewCompat.setTransitionName(holder.image, "image" + id())
-        ViewCompat.setTransitionName(holder.sourceIcon, "source_icon" + id())
+        ViewCompat.setTransitionName(holder.sourceIcon, "sourceIcon" + id())
     }
 
     override fun unbind(holder: Holder) {
         holder.title.text = null
-        holder.preview.text = null
         holder.date.text = null
         picasso.cancelRequest(holder.image)
         picasso.cancelRequest(holder.sourceIcon)
         ViewCompat.setTransitionName(holder.title, null)
-        ViewCompat.setTransitionName(holder.preview, null)
         ViewCompat.setTransitionName(holder.date, null)
         ViewCompat.setTransitionName(holder.image, null)
         ViewCompat.setTransitionName(holder.sourceIcon, null)
@@ -95,7 +76,6 @@ abstract class FeedListModel(private val picasso: Picasso) :
         val image by bind<AppCompatImageView>(R.id.image)
         val sourceIcon by bind<CircleImageView>(R.id.sourceIcon)
         val title by bind<TextView>(R.id.title)
-        val preview by bind<TextView>(R.id.preview)
         val date by bind<TextView>(R.id.date)
     }
 

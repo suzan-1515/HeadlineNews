@@ -19,4 +19,12 @@ data class SourceDTO(
             else null
         }
     }
+
+    fun favIcon(): Uri? {
+        return favicon?.let {
+            return if (Patterns.WEB_URL.matcher(it).matches())
+                Uri.parse(it)
+            else null
+        }
+    }
 }

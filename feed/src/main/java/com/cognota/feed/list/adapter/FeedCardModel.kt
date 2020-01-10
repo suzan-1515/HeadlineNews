@@ -1,6 +1,5 @@
 package com.cognota.feed.list.adapter
 
-import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.TextView
@@ -18,7 +17,7 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 
 @EpoxyModelClass(layout = R2.layout.item_card_feed)
-abstract class FeedCardModel(private val picasso: Picasso, private val context: Context) :
+abstract class FeedCardModel(private val picasso: Picasso) :
     EpoxyModelWithHolder<FeedCardModel.Holder>() {
 
     @EpoxyAttribute
@@ -41,7 +40,8 @@ abstract class FeedCardModel(private val picasso: Picasso, private val context: 
         preview.let { holder.preview.text = it }
         if (::date.isInitialized && ::source.isInitialized)
             date.let {
-                holder.date.text = context.getString(R.string.source_with_time, source, date)
+                holder.date.text =
+                    holder.date.context.getString(R.string.source_with_time, source, date)
             }
         if (::image.isInitialized) {
             picasso.load(image)

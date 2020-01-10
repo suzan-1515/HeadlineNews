@@ -77,7 +77,6 @@
                 app:layout_constraintBottom_toBottomOf="@id/date"
                 app:layout_constraintDimensionRatio="H,1:.6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/title"
                 app:layout_constraintTop_toTopOf="@id/title"
                 app:layout_constraintWidth_percent=".4"
                 tools:src="@tools:sample/avatars" />

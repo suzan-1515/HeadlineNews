@@ -34,7 +34,9 @@ class FeedListModule {
         sourceResponseMapper: SourceResponseMapper,
         sourceDTOMapper: SourceDTOMapper,
         categoryResponseMapper: CategoryResponseMapper,
-        categoryDTOMapper: CategoryDTOMapper
+        categoryDTOMapper: CategoryDTOMapper,
+        tagResponseMapper: TagResponseMapper,
+        tagDTOMapper: TagDTOMapper
     ): ListDataContract.Repository = ListRepository(
         newsAPIService,
         newsDao,
@@ -44,7 +46,9 @@ class FeedListModule {
         sourceResponseMapper,
         sourceDTOMapper,
         categoryResponseMapper,
-        categoryDTOMapper
+        categoryDTOMapper,
+        tagResponseMapper,
+        tagDTOMapper
     )
 
 

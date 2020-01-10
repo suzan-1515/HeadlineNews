@@ -1,6 +1,8 @@
 package com.cognota.feed.list.di
 
 import com.cognota.core.di.FeatureScope
+import com.cognota.feed.list.ui.CategoryFragment
+import com.cognota.feed.list.ui.FeedCategoryFragment
 import com.cognota.feed.list.ui.PersonalizedFeedFragment
 import dagger.Subcomponent
 
@@ -17,5 +19,7 @@ interface FeedListComponent {
     }
 
     fun inject(fragment: PersonalizedFeedFragment)
+    fun inject(fragment: FeedCategoryFragment)
+    fun inject(fragment: CategoryFragment)
 
 }

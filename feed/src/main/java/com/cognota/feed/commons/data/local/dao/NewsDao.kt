@@ -2,12 +2,10 @@ package com.cognota.feed.commons.data.local.dao
 
 import androidx.room.*
 import com.cognota.core.data.persistence.dao.BaseDao
-import com.cognota.feed.commons.data.local.entity.CategoryEntity
-import com.cognota.feed.commons.data.local.entity.FeedEntity
-import com.cognota.feed.commons.data.local.entity.RelatedFeedEntity
-import com.cognota.feed.commons.data.local.entity.SourceEntity
+import com.cognota.feed.commons.data.local.entity.*
 import com.cognota.feed.commons.data.local.relation.FeedWithRelatedEntity
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class NewsDao : BaseDao<FeedEntity>() {
@@ -21,11 +19,18 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     abstract fun findTopFeeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
+    @Query("SELECT * from feed where type = 'TOP' order by update_date desc limit 10")
+    abstract fun findTop10Feeds(): List<FeedWithSourcesEntity>?
+
+    @Transaction
     @Query("SELECT * from feed where category_code = :category order by update_date desc")
     abstract fun findFeedsByCategory(category: String): List<FeedWithSourcesEntity>?
 
-    @Query("SELECT * from source order by priority asc")
+    @Query("SELECT * from source")
     abstract fun findSources(): List<SourceEntity>?
+
+    @Query("SELECT * from source")
+    abstract fun findSourcesReactive(): Flow<List<SourceEntity>?>
 
     @Query("SELECT * from source where code = :code limit 1")
     abstract fun findSourceByCode(code: String): SourceEntity?
@@ -33,8 +38,14 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Query("SELECT * from category where code = :code limit 1")
     abstract fun findCategoryByCode(code: String): CategoryEntity?
 
-    @Query("SELECT * from category where enable = 'Y' order by priority asc")
+    @Query("SELECT * from category where enable = 'Y'")
     abstract fun findCategories(): List<CategoryEntity>?
+
+    @Query("SELECT * from category where enable = 'Y'")
+    abstract fun findCategoriesReactive(): Flow<List<CategoryEntity>?>
+
+    @Query("SELECT * from tag")
+    abstract fun findTags(): List<TagEntity>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertRelatedFeeds(sources: List<RelatedFeedEntity>): List<Long>
@@ -48,11 +59,17 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertCategories(sources: List<CategoryEntity>): List<Long>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertTags(tags: List<TagEntity>): List<Long>
+
     @Query("DELETE from source")
     abstract fun deleteAllSources()
 
     @Query("DELETE from category")
     abstract fun deleteAllCategories()
+
+    @Query("DELETE from tag")
+    abstract fun deleteAllTags()
 
     @Query("DELETE from feed")
     abstract fun deleteAllFeed()

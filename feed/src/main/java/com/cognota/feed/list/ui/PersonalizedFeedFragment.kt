@@ -12,7 +12,9 @@ import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
-import com.cognota.feed.commons.domain.PersonalisedFeedDTO
+import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.FeedWithRelatedFeedDTO
+import com.cognota.feed.commons.domain.TagDTO
 import com.cognota.feed.list.adapter.FeedController
 import com.cognota.feed.list.viewmodel.ListViewModel
 import com.cognota.feed.list.viewmodel.ListViewModelFactory
@@ -39,11 +41,12 @@ class PersonalizedFeedFragment : BaseFragment() {
     private var snackBar: Snackbar? = null
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
         (activity as FeedActivity).feedComponent
             .feedListComponent()
             .create()
             .inject(this)
+        initiateDataListener()
+        super.onAttach(context)
     }
 
     override fun onCreateView(
@@ -61,25 +64,25 @@ class PersonalizedFeedFragment : BaseFragment() {
         rvFeeds.setControllerAndBuildModels(feedController)
         srlFeeds.setOnRefreshListener { viewModel.getLatestFeed() }
 
-        initiateDataListener()
         viewModel.getLatestFeed()
+        viewModel.getTrendingFeed()
+        viewModel.getTags()
+        viewModel.getSources()
+        viewModel.getCategories()
     }
 
     private fun initiateDataListener() {
         //Observe the outcome and update state of the screen  accordingly
         viewModel.latestFeeds.observe(
             requireActivity(),
-            Observer<StatefulResource<PersonalisedFeedDTO>> { resource ->
+            Observer<StatefulResource<List<FeedWithRelatedFeedDTO>?>> { resource ->
                 snackBar?.dismiss()
 
                 when (resource.state) {
-                    StatefulResource.State.LOADING -> {
-                        srlFeeds.isRefreshing = true
-                    }
                     StatefulResource.State.SUCCESS -> {
                         if (resource.hasData()) {
                             Timber.d("Feed data received ")
-                            feedController.setData(resource.getData())
+                            feedController.setLatestFeeds(resource.getData())
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
@@ -131,6 +134,138 @@ class PersonalizedFeedFragment : BaseFragment() {
                 }
             })
 
+        viewModel.trendingFeeds.observe(
+            requireActivity(),
+            Observer<StatefulResource<List<FeedDTO>?>> { resource ->
+                snackBar?.dismiss()
+
+                when (resource.state) {
+                    StatefulResource.State.SUCCESS -> {
+                        if (resource.hasData()) {
+                            Timber.d("Feed data received ")
+                            feedController.setTrendingFeeds(resource.getData())
+                        } else {
+                            Timber.d("Empty data received")
+                            snackBar = Snackbar.make(
+                                srlFeeds.rootView,
+                                getString(
+                                    resource.message
+                                        ?: R.string.feed_not_available
+                                ),
+                                Snackbar.LENGTH_LONG
+                            )
+                                .setAction(R.string.ok) { snackBar?.dismiss() }
+                        }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    StatefulResource.State.ERROR_NETWORK -> {
+                        Timber.d("Network error")
+                        snackBar = Snackbar.make(
+                            srlFeeds.rootView,
+                            getString(
+                                resource.message
+                                    ?: R.string.no_network_connection
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction(R.string.retry) {
+                                viewModel.getLatestFeed()
+                                snackBar?.dismiss()
+                            }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    StatefulResource.State.ERROR_API -> {
+                        Timber.d("Api error")
+                        snackBar = Snackbar.make(
+                            srlFeeds.rootView,
+                            getString(
+                                resource.message ?: R.string.service_error
+                            ), Snackbar.LENGTH_LONG
+                        )
+                            .setAction(R.string.retry) {
+                                viewModel.getLatestFeed()
+                                snackBar?.dismiss()
+                            }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    else -> Timber.d("Unknown state")
+                }
+            })
+
+        viewModel.tags.observe(
+            requireActivity(),
+            Observer<StatefulResource<List<TagDTO>?>> { resource ->
+                snackBar?.dismiss()
+                when (resource.state) {
+                    StatefulResource.State.SUCCESS -> {
+                        if (resource.hasData()) {
+                            Timber.d("Feed data received ")
+                            feedController.setTags(resource.getData())
+                        } else {
+                            Timber.d("Empty data received")
+                            snackBar = Snackbar.make(
+                                srlFeeds.rootView,
+                                getString(
+                                    resource.message
+                                        ?: R.string.feed_not_available
+                                ),
+                                Snackbar.LENGTH_LONG
+                            )
+                                .setAction(R.string.ok) { snackBar?.dismiss() }
+                        }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    StatefulResource.State.ERROR_NETWORK -> {
+                        Timber.d("Network error")
+                        snackBar = Snackbar.make(
+                            srlFeeds.rootView,
+                            getString(
+                                resource.message
+                                    ?: R.string.no_network_connection
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction(R.string.retry) {
+                                viewModel.getLatestFeed()
+                                snackBar?.dismiss()
+                            }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    StatefulResource.State.ERROR_API -> {
+                        Timber.d("Api error")
+                        snackBar = Snackbar.make(
+                            srlFeeds.rootView,
+                            getString(
+                                resource.message ?: R.string.service_error
+                            ), Snackbar.LENGTH_LONG
+                        )
+                            .setAction(R.string.retry) {
+                                viewModel.getLatestFeed()
+                                snackBar?.dismiss()
+                            }
+                        snackBar?.show()
+                        srlFeeds.isRefreshing = false
+                    }
+                    else -> Timber.d("Unknown state")
+                }
+            })
+
+        viewModel.sources.observe(
+            requireActivity(),
+            Observer { data ->
+                feedController.setSources(data)
+            })
+
+        viewModel.categories.observe(
+            requireActivity(),
+            Observer { data ->
+                feedController.setCategory(data)
+            })
 
     }
 

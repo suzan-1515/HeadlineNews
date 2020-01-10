@@ -10,13 +10,7 @@ import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
 import timber.log.Timber
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-class FeedCategoryFragment : BaseFragment() {
-
-    private var param1: String? = null
-    private var param2: String? = null
+class CategoryFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         (activity as FeedActivity).feedComponent
@@ -25,14 +19,6 @@ class FeedCategoryFragment : BaseFragment() {
             .inject(this)
         initiateDataListener()
         super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -53,6 +39,6 @@ class FeedCategoryFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = FeedCategoryFragment()
+        fun newInstance() = CategoryFragment()
     }
 }

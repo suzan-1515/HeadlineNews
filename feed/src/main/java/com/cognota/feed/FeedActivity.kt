@@ -2,11 +2,13 @@ package com.cognota.feed
 
 import android.os.Bundle
 import com.cognota.core.application.CoreApp
+import com.cognota.core.di.ModuleScope
 import com.cognota.core.ui.BaseActivity
 import com.cognota.feed.commons.di.DaggerFeedComponent
 import com.cognota.feed.commons.di.FeedComponent
 import kotlinx.android.synthetic.main.activity_feed.*
 
+@ModuleScope
 class FeedActivity : BaseActivity() {
 
     lateinit var feedComponent: FeedComponent

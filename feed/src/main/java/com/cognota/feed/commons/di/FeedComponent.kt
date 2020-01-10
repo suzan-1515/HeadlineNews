@@ -4,7 +4,6 @@ import com.cognota.core.di.CoreComponent
 import com.cognota.core.di.ModuleScope
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.list.di.FeedListComponent
-import com.cognota.feed.list.ui.FeedCategoryFragment
 import dagger.Component
 
 @ModuleScope
@@ -23,6 +22,5 @@ interface FeedComponent {
 
     fun inject(activity: FeedActivity)
     fun feedListComponent(): FeedListComponent.Factory
-    fun inject(fragment: FeedCategoryFragment)
 
 }

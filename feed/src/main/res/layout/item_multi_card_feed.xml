@@ -43,7 +43,7 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="12dp"
                 app:layout_constraintBottom_toTopOf="@+id/title"
-                app:layout_constraintStart_toStartOf="@+id/image"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:src="@tools:sample/avatars" />
 
         <TextView
@@ -52,36 +52,52 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:textColor="@color/secondaryTextLightColor"
                 app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
-                app:layout_constraintEnd_toEndOf="@id/image"
+                app:layout_constraintEnd_toStartOf="@id/category"
                 app:layout_constraintStart_toEndOf="@id/sourceIcon"
                 app:layout_constraintTop_toTopOf="@+id/sourceIcon"
                 tools:text="1 hr ago" />
+
+        <com.google.android.material.chip.Chip
+                android:id="@+id/category"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:textColor="@color/secondaryTextLightColor"
+                app:chipBackgroundColor="@color/primaryDarkColor"
+                app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
+                app:layout_constraintEnd_toEndOf="@id/title"
+                app:layout_constraintTop_toTopOf="@+id/sourceIcon"
+                tools:text="1 hr ago" />
+
 
         <TextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:padding="4dp"
                 android:textColor="@color/secondaryTextLightColor"
                 app:layout_constraintBottom_toTopOf="@+id/preview"
-                app:layout_constraintEnd_toEndOf="@+id/date"
-                app:layout_constraintStart_toStartOf="@+id/sourceIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:text="Google’s new free app teaches kids to read by listening to them" />
 
         <TextView
                 android:id="@+id/preview"
-                style="@style/TextAppearance.MaterialComponents.Caption"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:maxLines="3"
+                android:maxLines="2"
                 android:textColor="@color/secondaryTextLightColor"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_space"
                 app:layout_constraintEnd_toEndOf="@+id/title"
@@ -91,10 +107,10 @@
         <Space
                 android:id="@+id/bottom_space"
                 android:layout_width="0dp"
-                android:layout_height="8dp"
+                android:layout_height="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/image"
-                app:layout_constraintStart_toStartOf="@+id/image" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

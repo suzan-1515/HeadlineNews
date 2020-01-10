@@ -1,6 +1,5 @@
 package com.cognota.feed.list.adapter
 
-import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.TextView
@@ -12,12 +11,13 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 
 @EpoxyModelClass(layout = R2.layout.item_multi_card_feed)
-abstract class FeedMultiCardModel(private val picasso: Picasso, private val context: Context) :
+abstract class FeedMultiCardModel(private val picasso: Picasso) :
     EpoxyModelWithHolder<FeedMultiCardModel.Holder>() {
 
     @EpoxyAttribute
@@ -32,6 +32,8 @@ abstract class FeedMultiCardModel(private val picasso: Picasso, private val cont
     lateinit var date: String
     @EpoxyAttribute
     lateinit var source: String
+    @EpoxyAttribute
+    lateinit var category: String
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var clickListener: View.OnClickListener
 
@@ -40,13 +42,12 @@ abstract class FeedMultiCardModel(private val picasso: Picasso, private val cont
         preview.let { holder.preview.text = it }
         if (::date.isInitialized && ::source.isInitialized)
             date.let {
-                holder.date.text = context.getString(R.string.source_with_time, source, date)
+                holder.date.text =
+                    holder.date.context.getString(R.string.source_with_time, source, date)
             }
         if (::image.isInitialized) {
             picasso.load(image)
                 .into(holder.image)
-        } else {
-//            holder.image.visibility = View.GONE
         }
         if (::sourceIcon.isInitialized) {
             picasso.load(sourceIcon)
@@ -54,9 +55,11 @@ abstract class FeedMultiCardModel(private val picasso: Picasso, private val cont
                 .onlyScaleDown()
                 .centerInside()
                 .into(holder.sourceIcon)
+        }
+        if (::category.isInitialized) {
+            holder.category.text = category
         } else {
-            picasso.load(R.drawable.ic_block_black_24dp)
-                .into(holder.sourceIcon)
+            holder.category.text = "N/A"
         }
         clickListener.let {
             holder.card.setOnClickListener(it)
@@ -67,12 +70,14 @@ abstract class FeedMultiCardModel(private val picasso: Picasso, private val cont
         ViewCompat.setTransitionName(holder.date, "date" + id())
         ViewCompat.setTransitionName(holder.image, "image" + id())
         ViewCompat.setTransitionName(holder.sourceIcon, "source_icon" + id())
+        ViewCompat.setTransitionName(holder.category, "category" + id())
     }
 
     override fun unbind(holder: Holder) {
         holder.title.text = null
         holder.preview.text = null
         holder.date.text = null
+        holder.category.text = null
         picasso.cancelRequest(holder.image)
         picasso.cancelRequest(holder.sourceIcon)
         ViewCompat.setTransitionName(holder.title, null)
@@ -80,6 +85,7 @@ abstract class FeedMultiCardModel(private val picasso: Picasso, private val cont
         ViewCompat.setTransitionName(holder.date, null)
         ViewCompat.setTransitionName(holder.image, null)
         ViewCompat.setTransitionName(holder.sourceIcon, null)
+        ViewCompat.setTransitionName(holder.category, null)
     }
 
     inner class Holder : BaseEpoxyHolder() {
@@ -89,6 +95,7 @@ abstract class FeedMultiCardModel(private val picasso: Picasso, private val cont
         val title by bind<TextView>(R.id.title)
         val preview by bind<TextView>(R.id.preview)
         val date by bind<TextView>(R.id.date)
+        val category by bind<Chip>(R.id.category)
     }
 
 }
