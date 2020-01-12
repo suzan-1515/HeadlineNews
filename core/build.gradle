@@ -47,7 +47,6 @@ dependencies {
     api deps.support.appCompat
     api deps.support.recyclerView
     api deps.support.viewpager2
-    api deps.support.cardView
     api deps.support.support
     api deps.support.constraintLayout
     api deps.support.designSupport

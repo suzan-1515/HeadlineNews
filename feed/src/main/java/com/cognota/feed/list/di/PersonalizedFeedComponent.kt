@@ -1,25 +1,21 @@
 package com.cognota.feed.list.di
 
 import com.cognota.core.di.FeatureScope
-import com.cognota.feed.list.ui.CategoryFragment
-import com.cognota.feed.list.ui.FeedCategoryFragment
 import com.cognota.feed.list.ui.PersonalizedFeedFragment
 import dagger.Subcomponent
 
 @FeatureScope
 @Subcomponent(
-    modules = [FeedListModule::class]
+    modules = [PersonalizedFeedModule::class]
 )
-interface FeedListComponent {
+interface PersonalizedFeedComponent {
 
     // Factory that is used to create instances of this subcomponent
     @Subcomponent.Factory
     interface Factory {
-        fun create(): FeedListComponent
+        fun create(): PersonalizedFeedComponent
     }
 
     fun inject(fragment: PersonalizedFeedFragment)
-    fun inject(fragment: FeedCategoryFragment)
-    fun inject(fragment: CategoryFragment)
 
 }

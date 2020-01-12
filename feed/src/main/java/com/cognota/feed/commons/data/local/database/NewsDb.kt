@@ -7,7 +7,7 @@ import com.cognota.feed.commons.data.local.entity.*
 
 @Database(
     entities = [FeedEntity::class, RelatedFeedEntity::class, SourceEntity::class, CategoryEntity::class, TagEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class NewsDb : RoomDatabase() {

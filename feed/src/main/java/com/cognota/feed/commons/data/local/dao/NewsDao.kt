@@ -23,8 +23,8 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     abstract fun findTop10Feeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from feed where category_code = :category order by update_date desc")
-    abstract fun findFeedsByCategory(category: String): List<FeedWithSourcesEntity>?
+    @Query("SELECT * from feed where category_code = :category and page = :page order by update_date desc")
+    abstract fun findFeedsByCategory(page: Int, category: String): List<FeedWithSourcesEntity>?
 
     @Query("SELECT * from source")
     abstract fun findSources(): List<SourceEntity>?

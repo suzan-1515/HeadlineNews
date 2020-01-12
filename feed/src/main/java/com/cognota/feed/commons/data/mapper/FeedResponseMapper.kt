@@ -10,7 +10,8 @@ class FeedResponseMapper @Inject constructor() {
 
     fun toEntity(
         response: NewsFeedResponse.Feed,
-        feedType: FeedType
+        feedType: FeedType,
+        page: Int = 1
     ): FeedEntity {
 
         return FeedEntity(
@@ -29,7 +30,8 @@ class FeedResponseMapper @Inject constructor() {
             title = response.title,
             updateDate = response.updateDate,
             uuid = response.uuid,
-            type = feedType.toString()
+            type = feedType.toString(),
+            page = page
         )
 
 

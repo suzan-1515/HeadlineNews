@@ -15,7 +15,7 @@ interface NewsAPIService {
     @GET("/newsv2/feeds_top.php")
     suspend fun getTopFeeds(): Response<NewsFeedResponse>
 
-    @GET("/newsv3/infinite_feed.php")
+    @GET("/newsv2/infinite_feed.php")
     suspend fun getFeedsByCategory(@Query("page") page: Int, @Query("category") category: String): Response<NewsFeedResponse>
 
     @GET("/newsv2/source.php")

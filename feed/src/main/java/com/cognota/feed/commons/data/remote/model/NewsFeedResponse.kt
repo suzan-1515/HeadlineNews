@@ -12,31 +12,31 @@ data class NewsFeedResponse(
 ) {
     data class Feed(
         @SerializedName("author")
-        val author: String,
+        val author: String?,
         @SerializedName("category")
-        val category: String,
+        val category: String?,
         @SerializedName("content")
-        val content: String,
+        val content: String?,
         @SerializedName("description")
-        val description: String,
+        val description: String?,
         @SerializedName("encloser_type")
-        val encloserType: String,
+        val encloserType: String?,
         @SerializedName("encloser_url")
-        val encloserUrl: String,
+        val encloserUrl: String?,
         @SerializedName("fetch_date")
         val fetchDate: String,
         @SerializedName("id")
         val id: String,
         @SerializedName("image")
-        val image: String,
+        val image: String?,
         @SerializedName("link")
-        val link: String,
+        val link: String?,
         @SerializedName("pub_date")
         val pubDate: String,
         @SerializedName("related")
         val related: List<Related>?,
         @SerializedName("source")
-        val source: String,
+        val source: String?,
         @SerializedName("title")
         val title: String,
         @SerializedName("update_date")
@@ -46,29 +46,29 @@ data class NewsFeedResponse(
     ) : ApiResponseObject {
         data class Related(
             @SerializedName("author")
-            val author: String,
+            val author: String?,
             @SerializedName("category")
-            val category: String,
+            val category: String?,
             @SerializedName("content")
             val content: String,
             @SerializedName("description")
-            val description: String,
+            val description: String?,
             @SerializedName("encloser_type")
-            val encloserType: String,
+            val encloserType: String?,
             @SerializedName("encloser_url")
-            val encloserUrl: String,
+            val encloserUrl: String?,
             @SerializedName("fetch_date")
             val fetchDate: String,
             @SerializedName("id")
             val id: String,
             @SerializedName("image")
-            val image: String,
+            val image: String?,
             @SerializedName("link")
-            val link: String,
+            val link: String?,
             @SerializedName("pub_date")
             val pubDate: String,
             @SerializedName("source")
-            val source: String,
+            val source: String?,
             @SerializedName("title")
             val title: String,
             @SerializedName("update_date")

@@ -25,7 +25,8 @@ class FeedDTOMapper @Inject constructor(
             publishedDate = entity.feed.pubDate,
             source = sourceDTOMapper.toDTO(entity.source),
             updatedDate = entity.feed.updateDate,
-            type = FeedType.valueOf(entity.feed.type)
+            type = FeedType.valueOf(entity.feed.type),
+            page = entity.feed.page
         )
 
     }

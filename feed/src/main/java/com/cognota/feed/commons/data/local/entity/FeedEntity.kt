@@ -18,7 +18,7 @@ data class FeedEntity(
         onDelete = ForeignKey.CASCADE
     )
     @ColumnInfo(name = "category_code")
-    val category: String?,
+    var category: String?,
     @ColumnInfo(name = "content")
     val content: String?,
     @ColumnInfo(name = "description")
@@ -54,5 +54,7 @@ data class FeedEntity(
     @ColumnInfo(name = "uuid")
     val uuid: String?,
     @ColumnInfo(name = "type")
-    val type: String
+    val type: String,
+    @ColumnInfo(name = "page")
+    val page: Int
 )

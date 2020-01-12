@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.cognota.core.di.FeatureScope
 import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.FeedActivity
@@ -16,8 +17,8 @@ import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.commons.domain.FeedWithRelatedFeedDTO
 import com.cognota.feed.commons.domain.TagDTO
 import com.cognota.feed.list.adapter.FeedController
-import com.cognota.feed.list.viewmodel.ListViewModel
-import com.cognota.feed.list.viewmodel.ListViewModelFactory
+import com.cognota.feed.list.viewmodel.PersonalizedFeedViewModel
+import com.cognota.feed.list.viewmodel.PersonalizedFeedViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_personalized_feed.*
 import timber.log.Timber
@@ -26,27 +27,32 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@FeatureScope
 class PersonalizedFeedFragment : BaseFragment() {
 
     @Inject
-    lateinit var viewModelFactory: ListViewModelFactory
+    lateinit var viewModelFactory: PersonalizedFeedViewModelFactory
 
     @Inject
     lateinit var feedController: FeedController
 
-    private val viewModel: ListViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(ListViewModel::class.java)
+    private val viewModel: PersonalizedFeedViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(PersonalizedFeedViewModel::class.java)
     }
 
     private var snackBar: Snackbar? = null
 
     override fun onAttach(context: Context) {
         (activity as FeedActivity).feedComponent
-            .feedListComponent()
+            .personalizedFeedComponent()
             .create()
             .inject(this)
-        initiateDataListener()
         super.onAttach(context)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        initiateDataListener()
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -74,7 +80,7 @@ class PersonalizedFeedFragment : BaseFragment() {
     private fun initiateDataListener() {
         //Observe the outcome and update state of the screen  accordingly
         viewModel.latestFeeds.observe(
-            requireActivity(),
+            viewLifecycleOwner,
             Observer<StatefulResource<List<FeedWithRelatedFeedDTO>?>> { resource ->
                 snackBar?.dismiss()
 
@@ -89,7 +95,7 @@ class PersonalizedFeedFragment : BaseFragment() {
                                 srlFeeds.rootView,
                                 getString(
                                     resource.message
-                                        ?: R.string.feed_not_available
+                                        ?: R.string.unknown_error
                                 ),
                                 Snackbar.LENGTH_LONG
                             )
@@ -150,7 +156,7 @@ class PersonalizedFeedFragment : BaseFragment() {
                                 srlFeeds.rootView,
                                 getString(
                                     resource.message
-                                        ?: R.string.feed_not_available
+                                        ?: R.string.unknown_error
                                 ),
                                 Snackbar.LENGTH_LONG
                             )
@@ -210,7 +216,7 @@ class PersonalizedFeedFragment : BaseFragment() {
                                 srlFeeds.rootView,
                                 getString(
                                     resource.message
-                                        ?: R.string.feed_not_available
+                                        ?: R.string.unknown_error
                                 ),
                                 Snackbar.LENGTH_LONG
                             )

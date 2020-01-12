@@ -38,32 +38,32 @@ class FeedController @Inject constructor(
     private var tags: List<TagDTO> = mutableListOf()
 
     fun setTrendingFeeds(trendingFeeds: List<FeedDTO>?) {
-        trendingFeeds?.let {
-            this.trendingFeeds = it
+        if (!trendingFeeds.isNullOrEmpty()) {
+            this.trendingFeeds = trendingFeeds
             requestModelBuild()
         }
 
     }
 
     fun setLatestFeeds(feeds: List<FeedWithRelatedFeedDTO>?) {
-        feeds?.let {
-            this.latestFeeds = it
+        if (!feeds.isNullOrEmpty()) {
+            this.latestFeeds = feeds
             requestModelBuild()
         }
 
     }
 
-    fun setSources(feeds: List<SourceDTO>?) {
-        feeds?.let {
-            this.sources = it
+    fun setSources(sources: List<SourceDTO>?) {
+        if (!sources.isNullOrEmpty()) {
+            this.sources = sources
             requestModelBuild()
         }
 
     }
 
-    fun setCategory(feeds: List<CategoryDTO>?) {
-        feeds?.let {
-            this.categories = it
+    fun setCategory(categories: List<CategoryDTO>?) {
+        if (!categories.isNullOrEmpty()) {
+            this.categories = categories
             requestModelBuild()
         }
 
@@ -71,8 +71,8 @@ class FeedController @Inject constructor(
 
 
     fun setTags(tags: List<TagDTO>?) {
-        tags?.let {
-            this.tags = it
+        if (!tags.isNullOrEmpty()) {
+            this.tags = tags
             requestModelBuild()
         }
     }
@@ -120,6 +120,7 @@ class FeedController @Inject constructor(
 
             flowCarousel {
                 id("tags_carousel")
+                paddingDp(0)
                 models(
                     tags.map { tag ->
                         TagModel_(picasso).apply {
@@ -152,7 +153,7 @@ class FeedController @Inject constructor(
 
                         flowCarousel {
                             id("categories_carousel")
-                            paddingDp(4)
+                            paddingDp(0)
                             models(
                                 categories.map { category ->
                                     CategoryModel_(picasso).apply {
@@ -202,6 +203,7 @@ class FeedController @Inject constructor(
                                     source(source.name)
                                     source.favIcon()?.let { icon -> sourceIcon(icon) }
                                 }
+                                feed.feed.category.let { category -> category(category.name) }
                                 date(feed.feed.publishedDate())
                                 clickListener { model, parentView, clickedView, position ->
                                     Timber.d("Feed list clicked: %s", model.title())
@@ -217,6 +219,7 @@ class FeedController @Inject constructor(
                                     source(source.name)
                                     source.favIcon()?.let { icon -> sourceIcon(icon) }
                                 }
+                                feed.feed.category.let { category -> category(category.name) }
                                 date(feed.feed.publishedDate())
                                 clickListener { model, parentView, clickedView, position ->
                                     Timber.d("Feed card clicked: %s", model.title())

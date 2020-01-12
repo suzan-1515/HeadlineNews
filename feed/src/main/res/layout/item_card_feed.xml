@@ -19,7 +19,7 @@
 
         <TextView
                 android:id="@+id/title"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -75,5 +75,19 @@
                 app:layout_constraintStart_toEndOf="@id/sourceIcon"
                 app:layout_constraintTop_toTopOf="@+id/sourceIcon"
                 tools:text="1 hr ago" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/category"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/rounded_corner_outline_bg"
+                android:textColor="@color/secondaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="1 hr ago" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

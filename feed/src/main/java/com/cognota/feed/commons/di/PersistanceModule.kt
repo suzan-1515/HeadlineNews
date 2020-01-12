@@ -22,7 +22,9 @@ class PersistanceModule {
             applicationContext.applicationContext,
             NewsDb::class.java,
             NEWS_DATABASE_NAME
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @ModuleScope

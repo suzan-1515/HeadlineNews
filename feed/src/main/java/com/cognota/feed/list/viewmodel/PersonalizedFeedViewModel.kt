@@ -2,17 +2,20 @@ package com.cognota.feed.list.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cognota.core.ui.BaseViewModel
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.*
-import com.cognota.feed.list.data.ListDataContract
+import com.cognota.feed.list.data.PersonalizedFeedDataContract
+import com.cognota.feed.list.data.SourceAndCategoryDataContract
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ListViewModel(
-    private val feedRepository: ListDataContract.Repository
+class PersonalizedFeedViewModel(
+    private val feedRepository: PersonalizedFeedDataContract.Repository,
+    private val sourceAndCategoryRepository: SourceAndCategoryDataContract.Repository
 ) : BaseViewModel() {
 
     private val mutableTrendingFeeds: MutableLiveData<StatefulResource<List<FeedDTO>?>> =
@@ -40,7 +43,7 @@ class ListViewModel(
 
 
     fun getLatestFeed() {
-        launch {
+        viewModelScope.launch {
             Timber.d("Triggered latest feed repo call")
             mutableLatestFeeds.value = StatefulResource.with(StatefulResource.State.LOADING)
             val resource = feedRepository.getLatestFeeds().await()
@@ -66,14 +69,14 @@ class ListViewModel(
                 else -> mutableLatestFeeds.value = StatefulResource<List<FeedWithRelatedFeedDTO>?>()
                     .apply {
                         setState(StatefulResource.State.SUCCESS)
-                        setMessage(R.string.feed_not_available)
+                        setMessage(R.string.unknown_error)
                     }
             }
         }
     }
 
     fun getTrendingFeed() {
-        launch {
+        viewModelScope.launch {
             Timber.d("Triggered trending feed repo call")
             mutableTrendingFeeds.value = StatefulResource.with(StatefulResource.State.LOADING)
             val resource = feedRepository.getTop10Feeds().await()
@@ -98,7 +101,7 @@ class ListViewModel(
                 else -> mutableTrendingFeeds.value = StatefulResource<List<FeedDTO>?>()
                     .apply {
                         setState(StatefulResource.State.SUCCESS)
-                        setMessage(R.string.feed_not_available)
+                        setMessage(R.string.unknown_error)
                     }
             }
         }
@@ -106,25 +109,25 @@ class ListViewModel(
 
 
     fun getSources() {
-        launch {
+        viewModelScope.launch {
             Timber.d("Triggered sources stream call")
-            feedRepository.getFeedSourcesReactive().collect { data ->
+            sourceAndCategoryRepository.getSourcesStream().collect { data ->
                 mutableSources.value = data
             }
         }
     }
 
     fun getCategories() {
-        launch {
+        viewModelScope.launch {
             Timber.d("Triggered categories stream call")
-            feedRepository.getFeedCategoriesReactive().collect { data ->
+            sourceAndCategoryRepository.getCategoriesStream().collect { data ->
                 mutableCategories.value = data
             }
         }
     }
 
     fun getTags() {
-        launch {
+        viewModelScope.launch {
             Timber.d("Triggered tags repo call")
             mutableTags.value = StatefulResource.with(StatefulResource.State.LOADING)
             val resource = feedRepository.getFeedTags().await()

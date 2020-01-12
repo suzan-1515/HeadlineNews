@@ -67,6 +67,20 @@
                 app:layout_constraintTop_toTopOf="@+id/sourceIcon"
                 tools:text="1 hrs ago" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/category"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/rounded_corner_outline_bg"
+                android:textColor="@color/secondaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="1 hr ago" />
+
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image"
                 android:layout_width="0dp"
@@ -74,12 +88,13 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@id/date"
+                app:layout_constraintBottom_toTopOf="@id/category"
                 app:layout_constraintDimensionRatio="H,1:.6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/title"
-                app:layout_constraintWidth_percent=".4"
+                app:layout_constraintWidth_percent=".32"
                 tools:src="@tools:sample/avatars" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -4,9 +4,9 @@
     <string name="no_network_connection">Network connection not available.</string>
     <string name="retry">Retry</string>
     <string name="service_error">There seems to be server error at the moment. Please try again later!</string>
-    <string name="feed_not_available">News feed not available at the moment. Try again later.</string>
+    <string name="unknown_error">Unknown error. Try again later.</string>
     <string name="for_you">For You</string>
-    <string name="saved">Saved</string>
+    <string name="categories">Categories</string>
     <string name="setting">Setting</string>
     <string name="search_hint">Enter news tag</string>
     <string name="top_stories_for_you">Top stories for you right now</string>
@@ -14,5 +14,6 @@
     <string name="source_with_time">%s · %s</string>
     <string name="error_fetching_sources">Failed to fetch news sources</string>
     <string name="sources_not_available">Failed to fetch news sources at a moment. Please try again later</string>
+    <string name="empty_data">Empty data!</string>
 
 </resources>

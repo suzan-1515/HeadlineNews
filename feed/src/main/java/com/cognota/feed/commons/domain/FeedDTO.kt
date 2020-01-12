@@ -18,7 +18,8 @@ data class FeedDTO(
     val updatedDate: String?,
     val type: FeedType,
     var source: SourceDTO,
-    var category: CategoryDTO
+    var category: CategoryDTO,
+    var page: Int
 ) : Serializable {
 
     fun thumbnail(): Uri? {
