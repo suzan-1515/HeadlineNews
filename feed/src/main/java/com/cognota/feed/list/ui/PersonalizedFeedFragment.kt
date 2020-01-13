@@ -68,7 +68,11 @@ class PersonalizedFeedFragment : BaseFragment() {
         Timber.d("personalized fragment")
 
         rvFeeds.setControllerAndBuildModels(feedController)
-        srlFeeds.setOnRefreshListener { viewModel.getLatestFeed() }
+        srlFeeds.setOnRefreshListener {
+            viewModel.getTrendingFeed()
+            viewModel.getTags()
+            viewModel.getLatestFeed()
+        }
 
         viewModel.getLatestFeed()
         viewModel.getTrendingFeed()

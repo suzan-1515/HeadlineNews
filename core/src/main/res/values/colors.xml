@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#FCFCFC</color>
-    <color name="primaryLightColor">#f1f3f4</color>
-    <color name="primaryDarkColor">#2A2E43</color>
-    <color name="secondaryColor">#E01E7A</color>
-    <color name="secondaryLightColor">#62727b</color>
-    <color name="secondaryDarkColor">#102027</color>
-    <color name="primaryTextColor">#000000</color>
-    <color name="primaryTextLightColor">@color/secondaryDarkColor</color>
-    <color name="secondaryTextColor">@color/secondaryLightColor</color>
-    <color name="secondaryTextLightColor">#FCFCFC</color>
-    <color name="error_text">@color/secondaryColor</color>
 
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>

@@ -21,8 +21,8 @@ class FeedActivity : BaseActivity() {
         feedComponent = DaggerFeedComponent.factory().create(appComponent)
         feedComponent.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_feed)
 
+        setContentView(R.layout.activity_feed)
         setupNavigation()
     }
 

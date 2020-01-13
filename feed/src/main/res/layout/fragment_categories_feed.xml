@@ -17,11 +17,11 @@
                 style="@style/Widget.MaterialComponents.TabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tabIndicatorColor="@color/secondaryColor"
-                app:tabMode="scrollable"
-                app:tabSelectedTextColor="@color/primaryTextColor" />
+                app:tabIndicatorColor="?attr/colorSecondary"
+                app:tabMode="scrollable" />
 
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager"

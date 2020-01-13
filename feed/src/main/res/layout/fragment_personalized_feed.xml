@@ -1,66 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/srlFeeds"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/md_blue_grey_700"
-        android:fitsSystemWindows="false"
-        tools:context=".FeedActivity">
+        android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/md_blue_grey_700"
-            android:fitsSystemWindows="false">
-
-        <RelativeLayout
-                android:id="@+id/search_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                app:layout_scrollFlags="scroll">
-
-            <EditText
-                    android:id="@+id/search_edit_text"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/ic_edittext_bg"
-                    android:hint="@string/search_hint"
-                    android:inputType="text"
-                    android:padding="12dp"
-                    android:textAlignment="textStart"
-                    android:textStyle="bold" />
-        </RelativeLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <FrameLayout
+    <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/rvFeeds"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/top_round_corner_bg"
-            android:elevation="4dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:padding="4dp"
+            android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_card_feed" />
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/srlFeeds"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp">
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <com.airbnb.epoxy.EpoxyRecyclerView
-                    android:id="@+id/rvFeeds"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="4dp"
-                    android:scrollbars="none"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_card_feed" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </FrameLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

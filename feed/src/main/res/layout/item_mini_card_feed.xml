@@ -46,23 +46,10 @@
                 android:layout_margin="8dp"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:textColor="@color/secondaryTextLightColor"
+                android:textColor="@color/md_white_1000"
                 app:layout_constraintBottom_toTopOf="@+id/sourceIcon"
                 app:layout_constraintStart_toStartOf="@+id/image"
                 tools:text="Google’s new free app teaches kids to read by listening to them" />
-
-        <!--        <TextView-->
-        <!--                android:id="@+id/preview"-->
-        <!--                style="@style/TextAppearance.MaterialComponents.Subtitle2"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_margin="4dp"-->
-        <!--                android:maxLines="3"-->
-        <!--                android:textColor="@color/secondaryTextLightColor"-->
-        <!--                app:layout_constraintBottom_toTopOf="@+id/sourceIcon"-->
-        <!--                app:layout_constraintEnd_toEndOf="@+id/title"-->
-        <!--                app:layout_constraintStart_toStartOf="@+id/title"-->
-        <!--                tools:text="Google has just ripped the beta label off Rivet, its \nfree mobile app designed to help young children learn to read. " />-->
 
         <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/sourceIcon"
@@ -78,7 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:textColor="@color/secondaryTextLightColor"
+                android:textColor="@color/md_grey_200"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
                 app:layout_constraintEnd_toEndOf="@id/title"

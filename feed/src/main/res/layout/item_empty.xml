@@ -12,7 +12,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="8dp"
-            android:textColor="@color/primaryTextLightColor"
+            android:textColor="@color/md_grey_800"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/empty_data" />
