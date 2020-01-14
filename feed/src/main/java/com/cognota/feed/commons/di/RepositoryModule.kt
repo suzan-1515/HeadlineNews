@@ -2,14 +2,14 @@ package com.cognota.feed.commons.di
 
 import android.content.SharedPreferences
 import com.cognota.core.di.ModuleScope
+import com.cognota.feed.commons.data.SourceAndCategoryDataContract
+import com.cognota.feed.commons.data.SourceAndCategoryRepository
 import com.cognota.feed.commons.data.local.dao.NewsDao
 import com.cognota.feed.commons.data.mapper.CategoryDTOMapper
 import com.cognota.feed.commons.data.mapper.CategoryResponseMapper
 import com.cognota.feed.commons.data.mapper.SourceDTOMapper
 import com.cognota.feed.commons.data.mapper.SourceResponseMapper
 import com.cognota.feed.commons.data.remote.service.NewsAPIService
-import com.cognota.feed.list.data.SourceAndCategoryDataContract
-import com.cognota.feed.list.data.SourceAndCategoryRepository
 import dagger.Module
 import dagger.Provides
 
@@ -27,14 +27,15 @@ class RepositoryModule {
         sourceDTOMapper: SourceDTOMapper,
         categoryResponseMapper: CategoryResponseMapper,
         categoryDTOMapper: CategoryDTOMapper
-    ): SourceAndCategoryDataContract.Repository = SourceAndCategoryRepository(
-        newsAPIService,
-        newsDao,
-        sharedPreferences,
-        sourceResponseMapper,
-        sourceDTOMapper,
-        categoryResponseMapper,
-        categoryDTOMapper
-    )
+    ): SourceAndCategoryDataContract.Repository =
+        SourceAndCategoryRepository(
+            newsAPIService,
+            newsDao,
+            sharedPreferences,
+            sourceResponseMapper,
+            sourceDTOMapper,
+            categoryResponseMapper,
+            categoryDTOMapper
+        )
 
 }

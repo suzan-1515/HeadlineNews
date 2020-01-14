@@ -12,9 +12,9 @@
             android:title="@string/categories" />
 
     <item
-            android:id="@+id/menu_setting"
+            android:id="@+id/menu_bookmarked"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="@string/setting" />
+            android:title="@string/bookmarked" />
 
 
 </menu>

@@ -3,8 +3,8 @@ package com.cognota.feed
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.cognota.feed.list.ui.CategoriesFeedFragment
-import com.cognota.feed.list.ui.PersonalizedFeedFragment
+import com.cognota.feed.category.ui.CategoriesFeedFragment
+import com.cognota.feed.personalised.ui.PersonalizedFeedFragment
 
 class FeedPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
