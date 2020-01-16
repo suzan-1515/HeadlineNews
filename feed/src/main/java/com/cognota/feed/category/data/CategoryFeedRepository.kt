@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import com.cognota.core.networking.DataFetchHelper
 import com.cognota.core.repository.BaseRepository
 import com.cognota.core.repository.Resource
-import com.cognota.feed.commons.data.local.FeedType
 import com.cognota.feed.commons.data.local.dao.NewsDao
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
 import com.cognota.feed.commons.data.mapper.FeedDTOMapper
@@ -12,6 +11,7 @@ import com.cognota.feed.commons.data.mapper.FeedResponseMapper
 import com.cognota.feed.commons.data.remote.model.NewsFeedResponse
 import com.cognota.feed.commons.data.remote.service.NewsAPIService
 import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.FeedType
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import java.util.concurrent.TimeUnit

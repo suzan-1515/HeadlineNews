@@ -17,7 +17,6 @@ class CategoryFeedPagerAdapter(fragmentManager: FragmentManager) :
                 this.categories = category
                 notifyDataSetChanged()
             }
-
         }
     }
 

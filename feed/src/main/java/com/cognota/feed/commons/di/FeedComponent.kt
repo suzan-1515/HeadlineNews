@@ -4,6 +4,7 @@ import com.cognota.core.di.CoreComponent
 import com.cognota.core.di.ModuleScope
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.category.di.CategoryFeedComponent
+import com.cognota.feed.detail.di.DetailFeedComponent
 import com.cognota.feed.personalised.di.PersonalizedFeedComponent
 import com.cognota.feed.saved.di.SavedFeedComponent
 import dagger.Component
@@ -23,8 +24,11 @@ interface FeedComponent {
     }
 
     fun inject(activity: FeedActivity)
+
     fun personalizedFeedComponent(): PersonalizedFeedComponent.Factory
     fun categoryFeedComponent(): CategoryFeedComponent.Factory
     fun savedFeedComponent(): SavedFeedComponent.Factory
+
+    fun detailFeedComponent(): DetailFeedComponent.Factory
 
 }

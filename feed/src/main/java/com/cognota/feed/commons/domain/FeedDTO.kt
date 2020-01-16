@@ -1,13 +1,14 @@
 package com.cognota.feed.commons.domain
 
 import android.net.Uri
+import android.os.Parcelable
 import android.text.format.DateUtils
 import android.util.Patterns
 import com.cognota.core.util.DateTimeUtil
-import com.cognota.feed.commons.data.local.FeedType
-import java.io.Serializable
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 data class FeedDTO(
     val description: String?,
     val id: String,
@@ -20,7 +21,7 @@ data class FeedDTO(
     var source: SourceDTO,
     var category: CategoryDTO,
     var page: Int
-) : Serializable {
+) : Parcelable {
 
     fun thumbnail(): Uri? {
         return image?.let {

@@ -41,4 +41,5 @@ interface CoreComponent : AndroidInjector<CoreApp> {
     fun sharedPreferences(): SharedPreferences
 
     fun scheduler(): Scheduler
+
 }

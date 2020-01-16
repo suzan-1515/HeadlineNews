@@ -2,7 +2,7 @@
         package="com.cognota.feed">
 
     <application android:networkSecurityConfig="@xml/network_security_config">
-
+        <activity android:name=".detail.DetailFeedActivity" />
     </application>
 </manifest>
 

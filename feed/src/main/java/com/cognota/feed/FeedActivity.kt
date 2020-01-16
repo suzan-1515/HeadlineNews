@@ -5,15 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.cognota.core.application.CoreApp
 import com.cognota.core.di.ModuleScope
+import com.cognota.core.extensions.setupWithNavController
 import com.cognota.core.ui.BaseActivity
 import com.cognota.feed.category.di.CategoryFeedComponent
 import com.cognota.feed.commons.di.DaggerFeedComponent
 import com.cognota.feed.commons.di.FeedComponent
-import com.cognota.feed.commons.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @ModuleScope
 class FeedActivity : BaseActivity() {
+
 
     var feedComponent: FeedComponent? = null
     var categoryFeedComponent: CategoryFeedComponent? = null
@@ -23,6 +24,7 @@ class FeedActivity : BaseActivity() {
         val appComponent = (applicationContext as CoreApp).coreComponent
         feedComponent = DaggerFeedComponent.factory().create(appComponent)
         feedComponent?.inject(this)
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_feed)

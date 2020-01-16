@@ -7,7 +7,6 @@ import com.cognota.feed.commons.adapter.feedCard
 import com.cognota.feed.commons.adapter.feedList
 import com.cognota.feed.commons.domain.FeedDTO
 import com.squareup.picasso.Picasso
-import timber.log.Timber
 import javax.inject.Inject
 
 class CategoryFeedController @Inject constructor(
@@ -35,6 +34,7 @@ class CategoryFeedController @Inject constructor(
             if (index % 5 == 0) {
                 feedCard(picasso) {
                     id(feed.id)
+                    uuid(feed.id)
                     title(feed.title)
                     feed.thumbnail()?.let { image -> image(image) }
                     feed.description?.let { desc -> preview(desc) }
@@ -42,15 +42,14 @@ class CategoryFeedController @Inject constructor(
                         source(source.name)
                         source.favIcon()?.let { icon -> sourceIcon(icon) }
                     }
-                    feed.category.let { category -> category(category.name) }
+                    category(feed.category.name)
+                    type(feed.type)
                     date(feed.publishedDate())
-                    clickListener { model, parentView, clickedView, position ->
-                        Timber.d("Feed list clicked: %s", model.title())
-                    }
                 }
             } else {
                 feedList(picasso) {
                     id(feed.id)
+                    uuid(feed.id)
                     title(feed.title)
                     feed.thumbnail()?.let { image -> image(image) }
                     feed.description?.let { desc -> preview(desc) }
@@ -58,11 +57,9 @@ class CategoryFeedController @Inject constructor(
                         source(source.name)
                         source.favIcon()?.let { icon -> sourceIcon(icon) }
                     }
-                    feed.category.let { category -> category(category.name) }
+                    category(feed.category.name)
+                    type(feed.type)
                     date(feed.publishedDate())
-                    clickListener { model, parentView, clickedView, position ->
-                        Timber.d("Feed card clicked: %s", model.title())
-                    }
                 }
             }
 

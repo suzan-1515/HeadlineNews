@@ -1,7 +1,7 @@
 package com.cognota.feed.personalised.di
 
 import com.cognota.core.di.FeatureScope
-import com.cognota.feed.personalised.ui.PersonalizedFeedFragment
+import com.cognota.feed.personalised.ui.PersonalisedFeedFragment
 import dagger.Subcomponent
 
 @FeatureScope
@@ -16,6 +16,6 @@ interface PersonalizedFeedComponent {
         fun create(): PersonalizedFeedComponent
     }
 
-    fun inject(fragment: PersonalizedFeedFragment)
+    fun inject(fragment: PersonalisedFeedFragment)
 
 }

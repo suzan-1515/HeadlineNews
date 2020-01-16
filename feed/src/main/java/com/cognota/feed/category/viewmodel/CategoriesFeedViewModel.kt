@@ -23,6 +23,10 @@ class CategoriesFeedViewModel(
     private val mutableSelectedCategory: MutableLiveData<Int> = MutableLiveData()
     val selectedCategory: LiveData<Int> = mutableSelectedCategory
 
+    init {
+        getCategories()
+    }
+
     fun getCategories() {
         viewModelScope.launch {
             Timber.d("Triggered categories repo call")

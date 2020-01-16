@@ -20,7 +20,7 @@ import com.cognota.feed.personalised.adapter.PersonalisedFeedController
 import com.cognota.feed.personalised.viewmodel.PersonalizedFeedViewModel
 import com.cognota.feed.personalised.viewmodel.PersonalizedFeedViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_personalized_feed.*
+import kotlinx.android.synthetic.main.fragment_personalised_feed.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ import javax.inject.Inject
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 @FeatureScope
-class PersonalizedFeedFragment : BaseFragment() {
+class PersonalisedFeedFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: PersonalizedFeedViewModelFactory
@@ -53,13 +53,6 @@ class PersonalizedFeedFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         initiateDataListener()
-        if (savedInstanceState == null) {
-            viewModel.getLatestFeed()
-            viewModel.getTrendingFeed()
-            viewModel.getTags()
-            viewModel.getSources()
-            viewModel.getCategories()
-        }
         super.onActivityCreated(savedInstanceState)
     }
 
@@ -68,19 +61,20 @@ class PersonalizedFeedFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_personalized_feed, container, false)
+        return inflater.inflate(R.layout.fragment_personalised_feed, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("personalized fragment: onViewCreated")
 
+        Timber.d("personalized fragment: onViewCreated")
         rvFeeds.setControllerAndBuildModels(personalisedFeedController)
         srlFeeds.setOnRefreshListener {
             viewModel.getTrendingFeed()
             viewModel.getTags()
             viewModel.getLatestFeed()
         }
+
     }
 
     private fun initiateDataListener() {
@@ -282,8 +276,8 @@ class PersonalizedFeedFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(): PersonalizedFeedFragment {
-            return PersonalizedFeedFragment()
+        fun newInstance(): PersonalisedFeedFragment {
+            return PersonalisedFeedFragment()
         }
     }
 }

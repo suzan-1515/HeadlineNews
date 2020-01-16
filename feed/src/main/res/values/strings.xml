@@ -15,5 +15,7 @@
     <string name="error_fetching_sources">Failed to fetch news sources</string>
     <string name="sources_not_available">Failed to fetch news sources at a moment. Please try again later</string>
     <string name="empty_data">Empty data!</string>
+    <string name="bookmark_feed">Save this feed</string>
+    <string name="share">Share</string>
 
 </resources>

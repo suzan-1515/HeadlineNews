@@ -95,6 +95,7 @@ class PersonalisedFeedController @Inject constructor(
                     trendingFeeds.map { feed ->
                         TrendingFeedMiniCardModel_(picasso).apply {
                             id(feed.id)
+                            uuid(feed.id)
                             title(feed.title)
                             feed.thumbnail()?.let { image -> image(image) }
                             feed.source.let { source ->
@@ -102,9 +103,8 @@ class PersonalisedFeedController @Inject constructor(
                                 source.favIcon()?.let { icon -> sourceIcon(icon) }
                             }
                             date(feed.publishedDate())
-                            clickListener { model, parentView, clickedView, position ->
-                                Timber.d("Trending Feed clicked: %s", model.title())
-                            }
+                            feed.category.let { category -> category(category.name) }
+                            type(feed.type)
                         }
                     }
 
@@ -197,6 +197,7 @@ class PersonalisedFeedController @Inject constructor(
                         if (index % 4 == 0) {
                             feedList(picasso) {
                                 id(feed.feed.id)
+                                uuid(feed.feed.id)
                                 title(feed.feed.title)
                                 feed.feed.thumbnail()?.let { image -> image(image) }
                                 feed.feed.description?.let { desc -> preview(desc) }
@@ -206,13 +207,12 @@ class PersonalisedFeedController @Inject constructor(
                                 }
                                 feed.feed.category.let { category -> category(category.name) }
                                 date(feed.feed.publishedDate())
-                                clickListener { model, parentView, clickedView, position ->
-                                    Timber.d("Feed list clicked: %s", model.title())
-                                }
+                                type(feed.feed.type)
                             }
                         } else {
                             feedCard(picasso) {
                                 id(feed.feed.id)
+                                uuid(feed.feed.id)
                                 title(feed.feed.title)
                                 feed.feed.thumbnail()?.let { image -> image(image) }
                                 feed.feed.description?.let { desc -> preview(desc) }
@@ -222,9 +222,7 @@ class PersonalisedFeedController @Inject constructor(
                                 }
                                 feed.feed.category.let { category -> category(category.name) }
                                 date(feed.feed.publishedDate())
-                                clickListener { model, parentView, clickedView, position ->
-                                    Timber.d("Feed card clicked: %s", model.title())
-                                }
+                                type(feed.feed.type)
                             }
                         }
 
@@ -238,6 +236,7 @@ class PersonalisedFeedController @Inject constructor(
                                         picasso
                                     ).apply {
                                         id(feed.feed.id)
+                                        uuid(feed.feed.id)
                                         title(feed.feed.title)
                                         feed.feed.thumbnail()?.let { image -> image(image) }
                                         feed.feed.description?.let { desc -> preview(desc) }
@@ -249,14 +248,13 @@ class PersonalisedFeedController @Inject constructor(
                                         }
                                         feed.feed.category.let { category -> category(category.name) }
                                         date(feed.feed.publishedDate())
-                                        clickListener { model, parentView, clickedView, position ->
-                                            Timber.d("Feed multicard clicked: %s", model.title())
-                                        }
+                                        type(feed.feed.type)
                                     }) + feed.feedWithRelatedFeeds.map { related ->
                                     FeedMultiCardModel_(
                                         picasso
                                     ).apply {
                                         id(related.id)
+                                        uuid(related.id)
                                         title(related.title)
                                         related.thumbnail()?.let { image -> image(image) }
                                         related.description?.let { desc -> preview(desc) }
@@ -268,9 +266,7 @@ class PersonalisedFeedController @Inject constructor(
                                         }
                                         feed.feed.category.let { category -> category(category.name) }
                                         date(related.publishedDate())
-                                        clickListener { model, parentView, clickedView, position ->
-                                            Timber.d("Feed multicard clicked: %s", model.title())
-                                        }
+                                        type(related.type)
                                     }
                                 }
                             )

@@ -1,16 +1,19 @@
 package com.cognota.feed.personalised.adapter
 
 import android.net.Uri
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
 import com.cognota.feed.commons.adapter.BaseEpoxyHolder
+import com.cognota.feed.commons.domain.FeedType
+import com.cognota.feed.personalised.ui.PersonalisedFeedFragmentDirections
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -21,7 +24,11 @@ abstract class TrendingFeedMiniCardModel(private val picasso: Picasso) :
     EpoxyModelWithHolder<TrendingFeedMiniCardModel.Holder>() {
 
     @EpoxyAttribute
+    lateinit var uuid: String
+    @EpoxyAttribute
     lateinit var title: String
+    @EpoxyAttribute
+    var preview: String? = null
     @EpoxyAttribute
     lateinit var image: Uri
     @EpoxyAttribute
@@ -30,8 +37,10 @@ abstract class TrendingFeedMiniCardModel(private val picasso: Picasso) :
     lateinit var date: String
     @EpoxyAttribute
     lateinit var source: String
-    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    lateinit var clickListener: View.OnClickListener
+    @EpoxyAttribute
+    lateinit var category: String
+    @EpoxyAttribute
+    lateinit var type: FeedType
 
     override fun bind(holder: Holder) {
         title.let { holder.title.text = it }
@@ -51,14 +60,33 @@ abstract class TrendingFeedMiniCardModel(private val picasso: Picasso) :
                 .centerInside()
                 .into(holder.sourceIcon)
         }
-        clickListener.let {
-            holder.card.setOnClickListener(it)
+        holder.card.setOnClickListener {
+            val extras = FragmentNavigatorExtras(
+                holder.title to holder.title.transitionName,
+                holder.date to holder.date.transitionName,
+                holder.image to holder.image.transitionName,
+                holder.sourceIcon to holder.sourceIcon.transitionName
+            )
+            it.findNavController().navigate(
+                PersonalisedFeedFragmentDirections.detailAction(
+                    id = uuid,
+                    title = title,
+                    image = image.toString(),
+                    description = preview,
+                    publishedDate = date,
+                    sourceTitle = source,
+                    sourceIcon = sourceIcon.toString(),
+                    categoryTitle = category,
+                    type = type
+                ),
+                extras
+            )
         }
 
-        ViewCompat.setTransitionName(holder.title, "title" + id())
-        ViewCompat.setTransitionName(holder.date, "date" + id())
-        ViewCompat.setTransitionName(holder.image, "image" + id())
-        ViewCompat.setTransitionName(holder.sourceIcon, "sourceIcon" + id())
+        ViewCompat.setTransitionName(holder.title, "title$uuid")
+        ViewCompat.setTransitionName(holder.date, "date$uuid")
+        ViewCompat.setTransitionName(holder.image, "image$uuid")
+        ViewCompat.setTransitionName(holder.sourceIcon, "source_icon$uuid")
     }
 
     override fun unbind(holder: Holder) {

@@ -5,7 +5,6 @@ import com.cognota.core.networking.DataFetchHelper
 import com.cognota.core.repository.BaseRepository
 import com.cognota.core.repository.Resource
 import com.cognota.feed.commons.data.SourceAndCategoryDataContract
-import com.cognota.feed.commons.data.local.FeedType
 import com.cognota.feed.commons.data.local.dao.NewsDao
 import com.cognota.feed.commons.data.local.entity.TagEntity
 import com.cognota.feed.commons.data.local.relation.FeedWithRelatedEntity
@@ -18,6 +17,7 @@ import com.cognota.feed.commons.data.remote.model.NewsFeedResponse
 import com.cognota.feed.commons.data.remote.model.TagResponse
 import com.cognota.feed.commons.data.remote.service.NewsAPIService
 import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.FeedType
 import com.cognota.feed.commons.domain.FeedWithRelatedFeedDTO
 import com.cognota.feed.commons.domain.TagDTO
 import kotlinx.coroutines.Deferred
@@ -58,7 +58,9 @@ class PersonalizedFeedRepository @Inject constructor(
 
                 override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean {
                     val newsResponse = response.body() as NewsFeedResponse
-                    if (!newsResponse.feeds.isNullOrEmpty()) newsDao.deleteAllLatestFeed(FeedType.LATEST.toString())
+                    if (!newsResponse.feeds.isNullOrEmpty()) newsDao.deleteAllLatestFeed(
+                        FeedType.LATEST.toString()
+                    )
                     newsResponse.feeds.map { feed ->
                         val parentEntity = feedResponseMapper.toEntity(
                             feed, FeedType.LATEST

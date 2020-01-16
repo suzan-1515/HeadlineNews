@@ -1,9 +1,9 @@
 package com.cognota.feed.commons.data.mapper
 
-import com.cognota.feed.commons.data.local.FeedType
 import com.cognota.feed.commons.data.local.entity.FeedEntity
 import com.cognota.feed.commons.data.local.entity.RelatedFeedEntity
 import com.cognota.feed.commons.data.remote.model.NewsFeedResponse
+import com.cognota.feed.commons.domain.FeedType
 import javax.inject.Inject
 
 class FeedResponseMapper @Inject constructor() {

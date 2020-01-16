@@ -94,4 +94,6 @@ dependencies {
 
     api deps.facebook.stetho
     api deps.facebook.networkInterceptor
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.61"
 }

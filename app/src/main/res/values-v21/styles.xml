@@ -11,5 +11,7 @@
         <item name="android:textColorPrimary">@color/md_black_1000</item>
         <item name="android:textColorSecondary">@color/md_grey_800</item>
         <item name="colorError">@color/md_pink_500</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 </resources>

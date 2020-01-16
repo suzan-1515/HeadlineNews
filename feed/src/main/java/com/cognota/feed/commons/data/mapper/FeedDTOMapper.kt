@@ -1,9 +1,9 @@
 package com.cognota.feed.commons.data.mapper
 
-import com.cognota.feed.commons.data.local.FeedType
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
 import com.cognota.feed.commons.data.local.relation.RelatedFeedWithSourcesEntity
 import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.FeedType
 import com.cognota.feed.commons.domain.RelatedFeedDTO
 import javax.inject.Inject
 

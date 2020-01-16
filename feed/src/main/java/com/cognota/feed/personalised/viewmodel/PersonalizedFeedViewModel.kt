@@ -41,6 +41,14 @@ class PersonalizedFeedViewModel(
     val tags: LiveData<StatefulResource<List<TagDTO>?>> =
         mutableTags
 
+    init {
+        getLatestFeed()
+        getTrendingFeed()
+        getTags()
+        getSources()
+        getCategories()
+    }
+
 
     fun getLatestFeed() {
         viewModelScope.launch {

@@ -1,4 +1,4 @@
-package com.cognota.feed.commons.data.local
+package com.cognota.feed.commons.domain
 
 enum class FeedType(type: String) {
 

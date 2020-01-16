@@ -2,20 +2,20 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/menu_for_you"
-        app:startDestination="@id/personalisedFeed">
+        android:id="@+id/root_nav"
+        app:startDestination="@id/homeFeed">
 
     <fragment
-            android:id="@+id/personalisedFeed"
-            android:name="com.cognota.feed.personalised.ui.PersonalisedFeedFragment"
-            tools:layout="@layout/fragment_personalised_feed">
+            android:id="@+id/homeFeed"
+            android:name="com.cognota.feed.personalised.ui.PersonalisedFeedFragment">
         <action
                 android:id="@+id/detailAction"
                 app:destination="@id/detailFeed" />
     </fragment>
-    <activity
+
+    <fragment
             android:id="@+id/detailFeed"
-            android:name="com.cognota.feed.detail.DetailFeedActivity"
+            android:name="com.cognota.feed.detail.DetailFeedFragment"
             tools:layout="@layout/fragment_feed_detail">
         <argument
                 android:name="id"
@@ -65,7 +65,7 @@
                 android:name="type"
                 android:defaultValue="LATEST"
                 app:argType="com.cognota.feed.commons.domain.FeedType" />
-    </activity>
+    </fragment>
 
 
 </navigation>

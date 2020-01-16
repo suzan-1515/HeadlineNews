@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.cognota.core.extensions.waitForTransition
 import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.FeedActivity
@@ -79,6 +80,7 @@ class CategoryFeedFragment : BaseFragment() {
         Timber.d("category fragment")
 
         rv.setControllerAndBuildModels(feedController)
+        waitForTransition(rv)
         srl.setOnRefreshListener { viewModel.getFeeds(page) }
     }
 

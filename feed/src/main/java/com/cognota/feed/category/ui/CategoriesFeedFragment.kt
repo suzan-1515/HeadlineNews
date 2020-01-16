@@ -47,8 +47,6 @@ class CategoriesFeedFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         initiateDataListener()
-        if (savedInstanceState == null)
-            viewModel.getCategories()
         super.onActivityCreated(savedInstanceState)
     }
 
@@ -85,6 +83,9 @@ class CategoriesFeedFragment : BaseFragment() {
 
         })
         srl.isEnabled = false
+
+//        if (savedInstanceState == null)
+//            viewModel.getCategories()
     }
 
     private fun initiateDataListener() {
@@ -98,6 +99,7 @@ class CategoriesFeedFragment : BaseFragment() {
                         srl.isRefreshing = resource.isLoading()
                     }
                     StatefulResource.State.SUCCESS -> {
+                        srl.isRefreshing = resource.isLoading()
                         if (resource.hasData()) {
                             fragmentAdapterFeed.setData(resource.getData())
                             viewModel.selectedCategory.value?.let { viewpager.currentItem = it }
@@ -113,7 +115,6 @@ class CategoriesFeedFragment : BaseFragment() {
                                 .setAction(R.string.ok) { snackBar?.dismiss() }
                             snackBar?.show()
                         }
-                        srl.isRefreshing = resource.isLoading()
                     }
                     StatefulResource.State.ERROR_NETWORK -> {
                         snackBar = Snackbar.make(
