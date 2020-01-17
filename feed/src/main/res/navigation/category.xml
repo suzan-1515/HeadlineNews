@@ -8,7 +8,64 @@
     <fragment
             android:id="@+id/category_feed"
             android:name="com.cognota.feed.category.ui.CategoriesFeedFragment"
-            tools:layout="@layout/fragment_categories_feed" />
+            tools:layout="@layout/fragment_categories_feed">
+        <action
+                android:id="@+id/detailAction"
+                app:destination="@id/detailFeedActivity" />
+    </fragment>
 
+    <activity
+            android:id="@+id/detailFeedActivity"
+            android:name="com.cognota.feed.detail.DetailFeedActivity"
+            tools:layout="@layout/activity_feed_detail">
+        <argument
+                android:name="id"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="title"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="description"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="image"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="published_date"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="source_title"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="source_icon"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="category_title"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        <argument
+                android:name="bookmarked"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        <argument
+                android:name="type"
+                android:defaultValue="LATEST"
+                app:argType="com.cognota.feed.commons.domain.FeedType" />
+    </activity>
 
 </navigation>

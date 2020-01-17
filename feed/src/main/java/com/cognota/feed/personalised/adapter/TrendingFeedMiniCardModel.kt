@@ -92,8 +92,6 @@ abstract class TrendingFeedMiniCardModel(private val picasso: Picasso) :
     override fun unbind(holder: Holder) {
         holder.title.text = null
         holder.date.text = null
-        picasso.cancelRequest(holder.image)
-        picasso.cancelRequest(holder.sourceIcon)
         ViewCompat.setTransitionName(holder.title, null)
         ViewCompat.setTransitionName(holder.date, null)
         ViewCompat.setTransitionName(holder.image, null)

@@ -1,7 +1,7 @@
 package com.cognota.feed.saved.di
 
 import com.cognota.core.di.FeatureScope
-import com.cognota.feed.saved.SavedFeedFragment
+import com.cognota.feed.saved.ui.SavedFeedFragment
 import dagger.Subcomponent
 
 @FeatureScope

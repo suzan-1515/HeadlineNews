@@ -1,4 +1,4 @@
-package com.cognota.feed.saved
+package com.cognota.feed.saved.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -19,9 +19,9 @@ class SavedFeedFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         (activity as FeedActivity).feedComponent
-            ?.savedFeedComponent()
-            ?.create()
-            ?.inject(this)
+            .savedFeedComponent()
+            .create()
+            .inject(this)
         super.onAttach(context)
     }
 

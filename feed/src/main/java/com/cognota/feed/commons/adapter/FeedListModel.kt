@@ -128,6 +128,10 @@ abstract class FeedListModel(private val picasso: Picasso) :
         ViewCompat.setTransitionName(holder.category, null)
     }
 
+    override fun shouldSaveViewState(): Boolean {
+        return true
+    }
+
     inner class Holder : BaseEpoxyHolder() {
         val card by bind<MaterialCardView>(R.id.card)
         val image by bind<AppCompatImageView>(R.id.image)

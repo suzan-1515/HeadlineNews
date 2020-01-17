@@ -1,6 +1,7 @@
 package com.cognota.feed.detail.di
 
 import com.cognota.core.di.FeatureScope
+import com.cognota.feed.detail.DetailFeedActivity
 import com.cognota.feed.detail.DetailFeedFragment
 import dagger.Subcomponent
 
@@ -16,6 +17,7 @@ interface DetailFeedComponent {
         fun create(): DetailFeedComponent
     }
 
+    fun inject(activity: DetailFeedActivity)
     fun inject(fragment: DetailFeedFragment)
 
 }

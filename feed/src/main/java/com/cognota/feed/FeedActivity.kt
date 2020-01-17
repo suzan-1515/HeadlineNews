@@ -8,23 +8,21 @@ import com.cognota.core.di.ModuleScope
 import com.cognota.core.extensions.setupWithNavController
 import com.cognota.core.ui.BaseActivity
 import com.cognota.feed.category.di.CategoryFeedComponent
-import com.cognota.feed.commons.di.DaggerFeedComponent
 import com.cognota.feed.commons.di.FeedComponent
+import com.cognota.feed.commons.di.SharedComponentProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @ModuleScope
 class FeedActivity : BaseActivity() {
 
-
-    var feedComponent: FeedComponent? = null
+    val feedComponent: FeedComponent by lazy {
+        SharedComponentProvider.feedComponent((applicationContext as CoreApp).coreComponent)
+    }
     var categoryFeedComponent: CategoryFeedComponent? = null
     private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val appComponent = (applicationContext as CoreApp).coreComponent
-        feedComponent = DaggerFeedComponent.factory().create(appComponent)
-        feedComponent?.inject(this)
-
+        feedComponent.inject(this)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_feed)
@@ -45,7 +43,8 @@ class FeedActivity : BaseActivity() {
     private fun setupBottomNavigationBar() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomBar)
 
-        val navGraphIds = listOf(R.navigation.home, R.navigation.category, R.navigation.bookmark)
+        val navGraphIds =
+            listOf(R.navigation.personalised, R.navigation.category, R.navigation.bookmark)
 
         // Setup the bottom navigation view with a list of navigation graphs
         val controller = bottomNavigationView.setupWithNavController(
@@ -55,10 +54,6 @@ class FeedActivity : BaseActivity() {
             intent = intent
         )
 
-//        // Whenever the selected controller changes, setup the action bar.
-//        controller.observe(this, Observer { navController ->
-//            setupActionBarWithNavController(navController)
-//        })
         currentNavController = controller
     }
 
@@ -67,7 +62,8 @@ class FeedActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        feedComponent = null
+        categoryFeedComponent = null
+        SharedComponentProvider.destroyFeedComponent()
         super.onDestroy()
     }
 

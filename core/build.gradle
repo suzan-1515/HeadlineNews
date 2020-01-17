@@ -47,10 +47,12 @@ dependencies {
     api deps.support.appCompat
     api deps.support.recyclerView
     api deps.support.viewpager2
+    api deps.support.fragment
     api deps.support.support
     api deps.support.constraintLayout
     api deps.support.designSupport
     api deps.support.preference
+    api deps.support.coreKTX
     api deps.support.multidex
 
     api deps.android.lifecycleExt
@@ -75,7 +77,6 @@ dependencies {
 
     api deps.navigation.navFrag
     api deps.navigation.navUi
-    api deps.navigation.navDynamic
 
     api deps.square.okhttpDownloader
 

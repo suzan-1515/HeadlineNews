@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.cognota.core.di.FeatureScope
 import com.cognota.core.ui.BaseFragment
-import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -37,10 +36,8 @@ class DetailFeedFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         Timber.d("attaching detail feed fragment")
-        (activity as FeedActivity).feedComponent
-            ?.detailFeedComponent()
-            ?.create()
-            ?.inject(this)
+        (activity as DetailFeedActivity).feedComponent
+            .inject(this)
         super.onAttach(context)
     }
 
@@ -51,7 +48,6 @@ class DetailFeedFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
@@ -83,10 +79,10 @@ class DetailFeedFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("detail fragment: onViewCreated")
 
-//        prepareSharedTransition()
+        prepareSharedTransition()
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp) // need to set the icon here to have a navigation icon. You can simple create an vector image by "Vector Asset" and using here
         toolbar.setNavigationOnClickListener {
-            it.findNavController().popBackStack()
+            it.findNavController().navigateUp()
         }
 
         toolbar.inflateMenu(R.menu.menu_feed_detail)

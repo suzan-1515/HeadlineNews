@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.cognota.core.di.FeatureScope
 import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
@@ -17,6 +17,7 @@ import com.cognota.feed.category.viewmodel.CategoriesFeedViewModel
 import com.cognota.feed.category.viewmodel.CategoriesFeedViewModelFactory
 import com.cognota.feed.commons.domain.SourceAndCategoryDTO
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_categories_feed.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,7 +28,7 @@ class CategoriesFeedFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: CategoriesFeedViewModelFactory
 
-    lateinit var fragmentAdapterFeed: CategoryFeedPagerAdapter
+    private lateinit var fragmentAdapterFeed: CategoryFeedPagerAdapter
 
     private val viewModel: CategoriesFeedViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(CategoriesFeedViewModel::class.java)
@@ -38,9 +39,9 @@ class CategoriesFeedFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         val feedActivity = activity as FeedActivity
         val categoryFeedComponent = feedActivity.feedComponent
-            ?.categoryFeedComponent()
-            ?.create()
-        categoryFeedComponent?.inject(this)
+            .categoryFeedComponent()
+            .create()
+        categoryFeedComponent.inject(this)
         feedActivity.categoryFeedComponent = categoryFeedComponent
         super.onAttach(context)
     }
@@ -62,27 +63,19 @@ class CategoriesFeedFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("feed categories fragment")
 
-        fragmentAdapterFeed = CategoryFeedPagerAdapter(parentFragmentManager)
+        fragmentAdapterFeed = CategoryFeedPagerAdapter(this)
+        viewpager.offscreenPageLimit = 1
         viewpager.adapter = fragmentAdapterFeed
-        viewpager.offscreenPageLimit = 0
-        tabLayout.setupWithViewPager(viewpager, true)
-        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
+        TabLayoutMediator(tabLayout, viewpager) { tab, position ->
+            tab.text = fragmentAdapterFeed.getPageTitle(position)
+        }.attach()
+        srl.isEnabled = false
 
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
+        viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 viewModel.currentCategory(position)
             }
-
         })
-        srl.isEnabled = false
 
 //        if (savedInstanceState == null)
 //            viewModel.getCategories()

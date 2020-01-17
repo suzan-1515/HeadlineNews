@@ -2,16 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/root_nav"
-        app:startDestination="@id/homeFeed">
-
-    <fragment
-            android:id="@+id/homeFeed"
-            android:name="com.cognota.feed.personalised.ui.PersonalisedFeedFragment">
-        <action
-                android:id="@+id/detailAction"
-                app:destination="@id/detailFeed" />
-    </fragment>
+        android:id="@+id/detail_nav"
+        app:startDestination="@id/detailFeed">
 
     <fragment
             android:id="@+id/detailFeed"
@@ -66,6 +58,5 @@
                 android:defaultValue="LATEST"
                 app:argType="com.cognota.feed.commons.domain.FeedType" />
     </fragment>
-
 
 </navigation>

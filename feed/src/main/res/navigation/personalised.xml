@@ -11,12 +11,14 @@
             tools:layout="@layout/fragment_personalised_feed">
         <action
                 android:id="@+id/detailAction"
-                app:destination="@id/detailFeed" />
+                app:destination="@id/detailFeedActivity" />
     </fragment>
+
+
     <activity
-            android:id="@+id/detailFeed"
+            android:id="@+id/detailFeedActivity"
             android:name="com.cognota.feed.detail.DetailFeedActivity"
-            tools:layout="@layout/fragment_feed_detail">
+            tools:layout="@layout/activity_feed_detail">
         <argument
                 android:name="id"
                 android:defaultValue="@null"
