@@ -17,16 +17,29 @@
             android:layout_height="match_parent"
             android:padding="8dp">
 
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/category"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corner_outline_bg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1 hr ago" />
+
         <TextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/category"
                 tools:text="Google’s new free app teaches kids to read by listening to them" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -76,17 +89,16 @@
                 app:layout_constraintTop_toTopOf="@+id/sourceIcon"
                 tools:text="1 hr ago" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/category"
-                style="@style/TextAppearance.MaterialComponents.Caption"
+        <ImageButton
+                android:id="@+id/option"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/rounded_corner_outline_bg"
+                android:background="@drawable/ic_more_horiz_black_24dp"
+                android:backgroundTint="?android:textColorSecondary"
+                android:contentDescription="@string/option"
                 app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="1 hr ago" />
+                app:layout_constraintEnd_toEndOf="@id/title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

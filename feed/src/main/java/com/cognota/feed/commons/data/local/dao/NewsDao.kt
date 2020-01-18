@@ -5,6 +5,7 @@ import com.cognota.core.data.persistence.dao.BaseDao
 import com.cognota.feed.commons.data.local.entity.*
 import com.cognota.feed.commons.data.local.relation.FeedWithRelatedEntity
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
+import com.cognota.feed.commons.data.local.relation.RelatedFeedWithSourcesEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,6 +26,9 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Transaction
     @Query("SELECT * from feed where category_code = :category and page = :page order by update_date desc")
     abstract fun findFeedsByCategory(page: Int, category: String): List<FeedWithSourcesEntity>?
+
+    @Query("SELECT * from related_feed where parent_id = :id order by update_date desc")
+    abstract fun findRelatedFeeds(id: String): List<RelatedFeedWithSourcesEntity>?
 
     @Query("SELECT * from source")
     abstract fun findSources(): List<SourceEntity>?

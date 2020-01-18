@@ -17,5 +17,7 @@
     <string name="empty_data">Empty data!</string>
     <string name="bookmark_feed">Save this feed</string>
     <string name="share">Share</string>
+    <string name="read_whole_news">Read whole news</string>
+    <string name="option">Option</string>
 
 </resources>

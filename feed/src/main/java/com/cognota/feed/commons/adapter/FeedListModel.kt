@@ -1,6 +1,5 @@
 package com.cognota.feed.commons.adapter
 
-import android.net.Uri
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
@@ -13,10 +12,10 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
-import com.cognota.feed.commons.domain.FeedType
+import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.RelatedFeedDTO
 import com.cognota.feed.personalised.ui.PersonalisedFeedFragmentDirections
 import com.google.android.material.card.MaterialCardView
-import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
@@ -27,90 +26,110 @@ abstract class FeedListModel(private val picasso: Picasso) :
     EpoxyModelWithHolder<FeedListModel.Holder>() {
 
     @EpoxyAttribute
-    lateinit var uuid: String
+    lateinit var feed: FeedDTO
     @EpoxyAttribute
-    lateinit var title: String
-    @EpoxyAttribute
-    lateinit var image: Uri
-    @EpoxyAttribute
-    lateinit var sourceIcon: Uri
-    @EpoxyAttribute
-    var preview: String? = null
-    @EpoxyAttribute
-    lateinit var date: String
-    @EpoxyAttribute
-    lateinit var source: String
-    @EpoxyAttribute
-    lateinit var category: String
-    @EpoxyAttribute
-    lateinit var type: FeedType
+    lateinit var relatedFeed: RelatedFeedDTO
 
     override fun bind(holder: Holder) {
-        title.let { holder.title.text = it }
-        preview?.let { holder.preview.text = it }
-        if (::date.isInitialized && ::source.isInitialized)
+        if (::feed.isInitialized) {
+            holder.title.text = feed.title
+            holder.preview.text = feed.description
             holder.date.text =
-                holder.date.context.getString(R.string.source_with_time, source, date)
-        if (::image.isInitialized) {
-            picasso.load(image)
-                .fit()
-                .transform(RoundedCornersTransformation(16, 0))
-                .into(holder.image, object : Callback {
-                    override fun onSuccess() {
+                holder.date.context.getString(
+                    R.string.source_with_time,
+                    feed.source.name,
+                    feed.publishedDate()
+                )
+            feed.image?.let {
+                picasso.load(it)
+                    .fit()
+                    .transform(RoundedCornersTransformation(16, 4))
+                    .into(holder.image)
+            } ?: run {
+                holder.image.visibility = View.GONE
+            }
+            holder.category.text = feed.category.name
+            feed.source.icon().let {
+                picasso.load(it)
+                    .resize(64, 64)
+                    .onlyScaleDown()
+                    .centerInside()
+                    .into(holder.sourceIcon)
+            }
+            holder.card.setOnClickListener {
+                val extras = FragmentNavigatorExtras(
+                    holder.title to holder.title.transitionName,
+                    holder.preview to holder.preview.transitionName,
+                    holder.date to holder.date.transitionName,
+                    holder.image to holder.image.transitionName,
+                    holder.sourceIcon to holder.sourceIcon.transitionName,
+                    holder.category to holder.category.transitionName
+                )
+                it.findNavController().navigate(
+                    PersonalisedFeedFragmentDirections.detailAction(
+                        feed = feed
+                    ),
+                    extras
+                )
+            }
 
-                    }
+            ViewCompat.setTransitionName(holder.title, "title$feed.id")
+            ViewCompat.setTransitionName(holder.preview, "preview$feed.id")
+            ViewCompat.setTransitionName(holder.date, "date$feed.id")
+            ViewCompat.setTransitionName(holder.image, "image$feed.id")
+            ViewCompat.setTransitionName(holder.sourceIcon, "source_icon$feed.id")
+            ViewCompat.setTransitionName(holder.category, "category$feed.id")
+        } else if (::relatedFeed.isInitialized) {
+            relatedFeed.let { feed ->
+                holder.title.text = feed.title
+                holder.preview.text = feed.description
+                holder.date.text =
+                    holder.date.context.getString(
+                        R.string.source_with_time,
+                        feed.source.name,
+                        feed.publishedDate()
+                    )
+                feed.image?.let {
+                    picasso.load(it)
+                        .fit()
+                        .transform(RoundedCornersTransformation(16, 4))
+                        .into(holder.image)
+                } ?: run {
+                    holder.image.visibility = View.GONE
+                }
+                holder.category.text = feed.category.name
+                feed.source.icon().let {
+                    picasso.load(it)
+                        .resize(64, 64)
+                        .onlyScaleDown()
+                        .centerInside()
+                        .into(holder.sourceIcon)
+                }
+                holder.card.setOnClickListener {
+                    val extras = FragmentNavigatorExtras(
+                        holder.title to holder.title.transitionName,
+                        holder.preview to holder.preview.transitionName,
+                        holder.date to holder.date.transitionName,
+                        holder.image to holder.image.transitionName,
+                        holder.sourceIcon to holder.sourceIcon.transitionName,
+                        holder.category to holder.category.transitionName
+                    )
+                    it.findNavController().navigate(
+                        PersonalisedFeedFragmentDirections.detailAction(
+                            relatedFeed = relatedFeed
+                        ),
+                        extras
+                    )
+                }
 
-                    override fun onError() {
-                        holder.image.visibility = View.GONE
-                    }
-
-                })
-        } else {
-            holder.image.visibility = View.GONE
+                ViewCompat.setTransitionName(holder.title, "title$feed.id")
+                ViewCompat.setTransitionName(holder.preview, "preview$feed.id")
+                ViewCompat.setTransitionName(holder.date, "date$feed.id")
+                ViewCompat.setTransitionName(holder.image, "image$feed.id")
+                ViewCompat.setTransitionName(holder.sourceIcon, "source_icon$feed.id")
+                ViewCompat.setTransitionName(holder.category, "category$feed.id")
+            }
         }
-        if (::sourceIcon.isInitialized) {
-            picasso.load(sourceIcon)
-                .resize(64, 64)
-                .onlyScaleDown()
-                .centerInside()
-                .into(holder.sourceIcon)
-        }
-        if (::category.isInitialized) {
-            holder.category.text = category
-        } else {
-            holder.category.text = "N/A"
-        }
-        holder.card.setOnClickListener {
-            val extras = FragmentNavigatorExtras(
-                holder.title to holder.title.transitionName,
-                holder.preview to holder.preview.transitionName,
-                holder.date to holder.date.transitionName,
-                holder.image to holder.image.transitionName,
-                holder.sourceIcon to holder.sourceIcon.transitionName,
-                holder.category to holder.category.transitionName
-            )
-            it.findNavController().navigate(
-                PersonalisedFeedFragmentDirections.detailAction(
-                    id = uuid,
-                    title = title,
-                    image = image.toString(),
-                    description = preview,
-                    publishedDate = date,
-                    sourceTitle = source,
-                    sourceIcon = sourceIcon.toString(),
-                    categoryTitle = category,
-                    type = type
-                ),
-                extras
-            )
-        }
-
-        ViewCompat.setTransitionName(holder.title, "title$uuid")
-        ViewCompat.setTransitionName(holder.preview, "preview$uuid")
-        ViewCompat.setTransitionName(holder.date, "date$uuid")
-        ViewCompat.setTransitionName(holder.image, "image$uuid")
-        ViewCompat.setTransitionName(holder.sourceIcon, "source_icon$uuid")
-        ViewCompat.setTransitionName(holder.category, "category$uuid")
     }
 
     override fun unbind(holder: Holder) {
@@ -120,6 +139,7 @@ abstract class FeedListModel(private val picasso: Picasso) :
         holder.category.text = null
         picasso.cancelRequest(holder.image)
         picasso.cancelRequest(holder.sourceIcon)
+        holder.card.setOnClickListener(null)
         ViewCompat.setTransitionName(holder.title, null)
         ViewCompat.setTransitionName(holder.preview, null)
         ViewCompat.setTransitionName(holder.date, null)

@@ -3,15 +3,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/menu_bookmark"
-            android:icon="@drawable/ic_bookmark_border_black_24dp"
+            android:id="@+id/menu_save"
+            android:icon="@drawable/ic_bookmark_option"
             android:title="@string/bookmark_feed"
-            app:showAsAction="ifRoom" />
-
-    <item
-            android:id="@+id/menu_share"
-            android:icon="@drawable/ic_share_black_24dp"
-            android:title="@string/share"
             app:showAsAction="ifRoom" />
 
 

@@ -34,32 +34,12 @@ class CategoryFeedController @Inject constructor(
             if (index % 5 == 0) {
                 feedCard(picasso) {
                     id(feed.id)
-                    uuid(feed.id)
-                    title(feed.title)
-                    feed.thumbnail()?.let { image -> image(image) }
-                    feed.description?.let { desc -> preview(desc) }
-                    feed.source.let { source ->
-                        source(source.name)
-                        source.favIcon()?.let { icon -> sourceIcon(icon) }
-                    }
-                    category(feed.category.name)
-                    type(feed.type)
-                    date(feed.publishedDate())
+                    feed(feed)
                 }
             } else {
                 feedList(picasso) {
                     id(feed.id)
-                    uuid(feed.id)
-                    title(feed.title)
-                    feed.thumbnail()?.let { image -> image(image) }
-                    feed.description?.let { desc -> preview(desc) }
-                    feed.source.let { source ->
-                        source(source.name)
-                        source.favIcon()?.let { icon -> sourceIcon(icon) }
-                    }
-                    category(feed.category.name)
-                    type(feed.type)
-                    date(feed.publishedDate())
+                    feed(feed)
                 }
             }
 

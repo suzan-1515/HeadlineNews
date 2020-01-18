@@ -1,4 +1,4 @@
-package com.cognota.feed.detail
+package com.cognota.feed.detail.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -20,8 +20,7 @@ class DetailFeedActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_feed_detail)
 
-        findNavController(R.id.nav_host_fragment)
-            .setGraph(R.navigation.detail, intent.extras)
+        findNavController(R.id.nav_host_fragment).setGraph(R.navigation.detail, intent.extras)
 
     }
 

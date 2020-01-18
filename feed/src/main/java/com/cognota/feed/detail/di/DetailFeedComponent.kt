@@ -1,8 +1,8 @@
 package com.cognota.feed.detail.di
 
 import com.cognota.core.di.FeatureScope
-import com.cognota.feed.detail.DetailFeedActivity
-import com.cognota.feed.detail.DetailFeedFragment
+import com.cognota.feed.detail.ui.DetailFeedActivity
+import com.cognota.feed.detail.ui.DetailFeedFragment
 import dagger.Subcomponent
 
 @FeatureScope
