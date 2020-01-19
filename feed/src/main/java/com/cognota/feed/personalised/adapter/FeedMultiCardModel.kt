@@ -106,7 +106,7 @@ abstract class FeedMultiCardModel(private val picasso: Picasso) :
                 )
                 it.findNavController().navigate(
                     PersonalisedFeedFragmentDirections.detailAction(
-                        relatedFeed = relatedFeed
+                        feed = feed
                     ),
                     extras
                 )

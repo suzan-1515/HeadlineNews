@@ -2,6 +2,8 @@ package com.cognota.feed.personalised.adapter
 
 import android.content.Context
 import android.view.Gravity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.SnapHelper
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.Carousel.SnapHelperFactory
@@ -9,9 +11,14 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.cognota.core.di.FeatureScope
 import com.cognota.feed.commons.adapter.*
-import com.cognota.feed.commons.domain.*
+import com.cognota.feed.commons.domain.CategoryDTO
+import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.SourceDTO
+import com.cognota.feed.commons.domain.TagDTO
+import com.cognota.feed.personalised.ui.PersonalisedFeedFragmentDirections
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_card_feed.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,7 +39,7 @@ class PersonalisedFeedController @Inject constructor(
 
     }
 
-    private var latestFeeds: List<FeedWithRelatedFeedDTO> = mutableListOf()
+    private var latestFeeds: List<FeedDTO> = mutableListOf()
     private var trendingFeeds: List<FeedDTO> = mutableListOf()
     private var sources: List<SourceDTO> = mutableListOf()
     private var categories: List<CategoryDTO> = mutableListOf()
@@ -46,7 +53,7 @@ class PersonalisedFeedController @Inject constructor(
 
     }
 
-    fun setLatestFeeds(feeds: List<FeedWithRelatedFeedDTO>?) {
+    fun setLatestFeeds(feeds: List<FeedDTO>?) {
         if (!feeds.isNullOrEmpty()) {
             this.latestFeeds = feeds
             requestModelBuild()
@@ -98,6 +105,20 @@ class PersonalisedFeedController @Inject constructor(
                         ).apply {
                             id(feed.id)
                             feed(feed)
+                            clickListener { model, parentView, clickedView, position ->
+                                val extras = FragmentNavigatorExtras(
+                                    clickedView.title to clickedView.title.transitionName,
+                                    clickedView.date to clickedView.date.transitionName,
+                                    clickedView.image to clickedView.image.transitionName,
+                                    clickedView.sourceIcon to clickedView.sourceIcon.transitionName
+                                )
+                                clickedView.findNavController().navigate(
+                                    PersonalisedFeedFragmentDirections.detailAction(
+                                        feed = model.feed
+                                    ),
+                                    extras
+                                )
+                            }
                         }
                     }
 
@@ -186,40 +207,49 @@ class PersonalisedFeedController @Inject constructor(
                         }
                     }
                 } else {
-                    if (feed.feedWithRelatedFeeds.isNullOrEmpty()) {
-                        if (index % 4 == 0) {
-                            feedList(picasso) {
-                                id(feed.feed.id)
-                                feed(feed.feed)
-                            }
-                        } else {
-                            feedCard(picasso) {
-                                id(feed.feed.id)
-                                feed(feed.feed)
+                    if ((index % 6) in listOf(1, 2, 3)) {
+                        feedList(picasso) {
+                            id(feed.id)
+                            feed(feed)
+                            clickListener { model, parentView, clickedView, position ->
+                                Timber.d("Feed list clicked")
+                                val extras = FragmentNavigatorExtras(
+                                    parentView.title to parentView.title.transitionName,
+                                    parentView.preview to parentView.preview.transitionName,
+                                    parentView.date to parentView.date.transitionName,
+                                    parentView.image to parentView.image.transitionName,
+                                    parentView.sourceIcon to parentView.sourceIcon.transitionName,
+                                    parentView.category to parentView.category.transitionName
+                                )
+                                clickedView.findNavController().navigate(
+                                    PersonalisedFeedFragmentDirections.detailAction(
+                                        feed = model.feed
+                                    ),
+                                    extras
+                                )
                             }
                         }
-
                     } else {
-                        IndicatorCarousel().apply {
-                            id(feed.feed.id)
-                            paddingDp(0)
-                            models(
-                                listOf(
-                                    FeedMultiCardModel_(
-                                        picasso
-                                    ).apply {
-                                        id(feed.feed.id)
-                                        feed(feed.feed)
-                                    }) + feed.feedWithRelatedFeeds.map { related ->
-                                    FeedMultiCardModel_(
-                                        picasso
-                                    ).apply {
-                                        id(related.id)
-                                        relatedFeed(related)
-                                    }
-                                }
-                            )
-                        }.addTo(this)
+                        feedCard(picasso) {
+                            id(feed.id)
+                            feed(feed)
+                            clickListener { model, parentView, clickedView, position ->
+                                val extras = FragmentNavigatorExtras(
+                                    parentView.title to parentView.title.transitionName,
+                                    parentView.preview to parentView.preview.transitionName,
+                                    parentView.date to parentView.date.transitionName,
+                                    parentView.image to parentView.image.transitionName,
+                                    parentView.sourceIcon to parentView.sourceIcon.transitionName,
+                                    parentView.category to parentView.category.transitionName
+                                )
+                                clickedView.findNavController().navigate(
+                                    PersonalisedFeedFragmentDirections.detailAction(
+                                        feed = model.feed
+                                    ),
+                                    extras
+                                )
+                            }
+                        }
                     }
                 }
             }

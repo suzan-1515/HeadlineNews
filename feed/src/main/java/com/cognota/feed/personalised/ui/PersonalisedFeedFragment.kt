@@ -14,7 +14,6 @@ import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.FeedDTO
-import com.cognota.feed.commons.domain.FeedWithRelatedFeedDTO
 import com.cognota.feed.commons.domain.TagDTO
 import com.cognota.feed.personalised.adapter.PersonalisedFeedController
 import com.cognota.feed.personalised.viewmodel.PersonalizedFeedViewModel
@@ -47,7 +46,7 @@ class PersonalisedFeedFragment : BaseFragment() {
         (activity as FeedActivity).feedComponent
             ?.personalizedFeedComponent()
             ?.create()
-            ?.inject(this)
+            .inject(this)
         super.onAttach(context)
     }
 
@@ -81,7 +80,7 @@ class PersonalisedFeedFragment : BaseFragment() {
         //Observe the outcome and update state of the screen  accordingly
         viewModel.latestFeeds.observe(
             viewLifecycleOwner,
-            Observer<StatefulResource<List<FeedWithRelatedFeedDTO>?>> { resource ->
+            Observer<StatefulResource<List<FeedDTO>?>> { resource ->
                 snackBar?.dismiss()
 
                 when (resource.state) {

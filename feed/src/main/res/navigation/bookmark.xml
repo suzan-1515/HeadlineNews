@@ -23,11 +23,6 @@
                 android:defaultValue="@null"
                 app:argType="com.cognota.feed.commons.domain.FeedDTO"
                 app:nullable="true" />
-        <argument
-                android:name="relatedFeed"
-                android:defaultValue="@null"
-                app:argType="com.cognota.feed.commons.domain.RelatedFeedDTO"
-                app:nullable="true" />
     </activity>
 
 </navigation>

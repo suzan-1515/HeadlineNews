@@ -1,4 +1,4 @@
-package com.cognota.feed.commons.adapter
+package com.cognota.feed.detail.adapter
 
 import android.view.View
 import android.widget.TextView
@@ -10,7 +10,8 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
-import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.adapter.BaseEpoxyHolder
+import com.cognota.feed.commons.domain.RelatedFeedDTO
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -18,11 +19,11 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 
 @EpoxyModelClass(layout = R2.layout.item_list_feed)
-abstract class FeedListModel(private val picasso: Picasso) :
-    EpoxyModelWithHolder<FeedListModel.Holder>() {
+abstract class RelatedFeedListModel(private val picasso: Picasso) :
+    EpoxyModelWithHolder<RelatedFeedListModel.Holder>() {
 
     @EpoxyAttribute
-    lateinit var feed: FeedDTO
+    lateinit var feed: RelatedFeedDTO
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var clickListener: View.OnClickListener
 

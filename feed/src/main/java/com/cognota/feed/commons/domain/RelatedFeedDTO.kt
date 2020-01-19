@@ -67,4 +67,20 @@ data class RelatedFeedDTO(
         }
     }
 
+    fun toFeedDto(): FeedDTO {
+        return FeedDTO(
+            description = description,
+            id = parentFeed.id,
+            image = image,
+            link = link,
+            publishedDate = publishedDate,
+            title = title,
+            updatedDate = updatedDate,
+            type = type,
+            source = source,
+            category = category,
+            page = parentFeed.page
+        )
+    }
+
 }

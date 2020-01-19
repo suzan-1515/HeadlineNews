@@ -5,15 +5,12 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
 import com.cognota.feed.commons.domain.FeedDTO
-import com.cognota.feed.personalised.ui.PersonalisedFeedFragmentDirections
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -26,6 +23,8 @@ abstract class FeedCardModel(private val picasso: Picasso) :
 
     @EpoxyAttribute
     lateinit var feed: FeedDTO
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    lateinit var clickListener: View.OnClickListener
 
     override fun bind(holder: Holder) {
         if (::feed.isInitialized) {
@@ -53,21 +52,8 @@ abstract class FeedCardModel(private val picasso: Picasso) :
                     .centerInside()
                     .into(holder.sourceIcon)
             }
-            holder.card.setOnClickListener {
-                val extras = FragmentNavigatorExtras(
-                    holder.title to holder.title.transitionName,
-                    holder.preview to holder.preview.transitionName,
-                    holder.date to holder.date.transitionName,
-                    holder.image to holder.image.transitionName,
-                    holder.sourceIcon to holder.sourceIcon.transitionName,
-                    holder.category to holder.category.transitionName
-                )
-                it.findNavController().navigate(
-                    PersonalisedFeedFragmentDirections.detailAction(
-                        feed = feed
-                    ),
-                    extras
-                )
+            if (::clickListener.isInitialized) {
+                holder.card.setOnClickListener(clickListener)
             }
 
             ViewCompat.setTransitionName(holder.title, "title$feed.id")

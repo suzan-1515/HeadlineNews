@@ -7,7 +7,6 @@ import com.cognota.core.repository.Resource
 import com.cognota.feed.commons.data.SourceAndCategoryDataContract
 import com.cognota.feed.commons.data.local.dao.NewsDao
 import com.cognota.feed.commons.data.local.entity.TagEntity
-import com.cognota.feed.commons.data.local.relation.FeedWithRelatedEntity
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
 import com.cognota.feed.commons.data.mapper.FeedDTOMapper
 import com.cognota.feed.commons.data.mapper.FeedResponseMapper
@@ -18,7 +17,6 @@ import com.cognota.feed.commons.data.remote.model.TagResponse
 import com.cognota.feed.commons.data.remote.service.NewsAPIService
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.commons.domain.FeedType
-import com.cognota.feed.commons.domain.FeedWithRelatedFeedDTO
 import com.cognota.feed.commons.domain.TagDTO
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
@@ -36,11 +34,11 @@ class PersonalizedFeedRepository @Inject constructor(
     private val tagDTOMapper: TagDTOMapper
 ) : BaseRepository(), PersonalizedFeedDataContract.Repository {
 
-    override suspend fun getLatestFeeds(): Deferred<Resource<List<FeedWithRelatedFeedDTO>?>> {
+    override suspend fun getLatestFeeds(): Deferred<Resource<List<FeedDTO>?>> {
         val sourceResource = sourceAndCategoryRepository.getSourcesAndCategories().await()
         val dataFetchHelper =
             object :
-                DataFetchHelper.LocalFirstUntilStale<List<FeedWithRelatedEntity>?, List<FeedWithRelatedFeedDTO>?>(
+                DataFetchHelper.LocalFirstUntilStale<List<FeedWithSourcesEntity>?, List<FeedDTO>?>(
                     "latest_feed",
                     sharedPreferences,
                     "latest_feed",
@@ -52,7 +50,7 @@ class PersonalizedFeedRepository @Inject constructor(
                     return newsApiAPIService.getLatestFeeds()
                 }
 
-                override suspend fun getDataFromLocal(): List<FeedWithRelatedEntity>? {
+                override suspend fun getDataFromLocal(): List<FeedWithSourcesEntity>? {
                     return newsDao.findLatestFeeds()
                 }
 
@@ -82,24 +80,17 @@ class PersonalizedFeedRepository @Inject constructor(
                     return true
                 }
 
-                override suspend fun convertDataToDto(data: List<FeedWithRelatedEntity>?): List<FeedWithRelatedFeedDTO>? {
+                override suspend fun convertDataToDto(data: List<FeedWithSourcesEntity>?): List<FeedDTO>? {
                     if (sourceResource.hasData()) {
-                        return data?.map { fwre ->
-                            val relatedFeedDtoList = fwre.relatedFeeds?.map {
-                                feedDTOMapper.toDTO(it)
-                            }
-                            FeedWithRelatedFeedDTO(
-                                feed = feedDTOMapper.toDTO(fwre.feed),
-                                feedWithRelatedFeeds = if (relatedFeedDtoList.isNullOrEmpty()) listOf() else relatedFeedDtoList
-                            )
+                        return data?.map { feed ->
+                            feedDTOMapper.toDTO(feed)
                         }
 
                     }
-
                     return listOf()
                 }
 
-                override suspend fun operateOnDataPostFetch(data: List<FeedWithRelatedFeedDTO>?) {
+                override suspend fun operateOnDataPostFetch(data: List<FeedDTO>?) {
                     super.operateOnDataPostFetch(data)
                 }
             }

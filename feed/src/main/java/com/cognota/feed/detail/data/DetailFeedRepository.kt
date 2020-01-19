@@ -18,7 +18,9 @@ class DetailFeedRepository @Inject constructor(
     private val feedDTOMapper: FeedDTOMapper
 ) : BaseRepository(), DetailFeedDataContract.Repository {
 
-    override suspend fun getRelatedFeeds(parentId: String): Flow<StatefulResource<List<RelatedFeedDTO>?>> {
+    override suspend fun getRelatedFeeds(
+        parentId: String
+    ): Flow<StatefulResource<List<RelatedFeedDTO>?>> {
         return flow {
             emit(StatefulResource.with(StatefulResource.State.LOADING))
             val data = newsDao.findRelatedFeeds(parentId)?.map { data ->

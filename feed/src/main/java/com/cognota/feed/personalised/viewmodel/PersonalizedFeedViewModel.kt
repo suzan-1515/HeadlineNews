@@ -7,7 +7,10 @@ import com.cognota.core.ui.BaseViewModel
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.R
 import com.cognota.feed.commons.data.SourceAndCategoryDataContract
-import com.cognota.feed.commons.domain.*
+import com.cognota.feed.commons.domain.CategoryDTO
+import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.commons.domain.SourceDTO
+import com.cognota.feed.commons.domain.TagDTO
 import com.cognota.feed.personalised.data.PersonalizedFeedDataContract
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -23,9 +26,9 @@ class PersonalizedFeedViewModel(
     val trendingFeeds: LiveData<StatefulResource<List<FeedDTO>?>> =
         mutableTrendingFeeds
 
-    private val mutableLatestFeeds: MutableLiveData<StatefulResource<List<FeedWithRelatedFeedDTO>?>> =
+    private val mutableLatestFeeds: MutableLiveData<StatefulResource<List<FeedDTO>?>> =
         MutableLiveData()
-    val latestFeeds: LiveData<StatefulResource<List<FeedWithRelatedFeedDTO>?>> =
+    val latestFeeds: LiveData<StatefulResource<List<FeedDTO>?>> =
         mutableLatestFeeds
 
     private val mutableSources: MutableLiveData<List<SourceDTO>?> =
@@ -62,19 +65,19 @@ class PersonalizedFeedViewModel(
                     mutableLatestFeeds.value = StatefulResource.success(resource)
                 }
                 resource.isNetworkIssue() -> {
-                    mutableLatestFeeds.value = StatefulResource<List<FeedWithRelatedFeedDTO>?>()
+                    mutableLatestFeeds.value = StatefulResource<List<FeedDTO>?>()
                         .apply {
                             setMessage(R.string.no_network_connection)
                             setState(StatefulResource.State.ERROR_NETWORK)
                         }
                 }
                 resource.isApiIssue() -> //TODO 4xx isn't necessarily a service error, expand this to sniff http code before saying service error
-                    mutableLatestFeeds.value = StatefulResource<List<FeedWithRelatedFeedDTO>?>()
+                    mutableLatestFeeds.value = StatefulResource<List<FeedDTO>?>()
                         .apply {
                             setState(StatefulResource.State.ERROR_API)
                             setMessage(R.string.service_error)
                         }
-                else -> mutableLatestFeeds.value = StatefulResource<List<FeedWithRelatedFeedDTO>?>()
+                else -> mutableLatestFeeds.value = StatefulResource<List<FeedDTO>?>()
                     .apply {
                         setState(StatefulResource.State.SUCCESS)
                         setMessage(R.string.unknown_error)

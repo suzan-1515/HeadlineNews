@@ -86,14 +86,6 @@ class DetailFeedFragment : BaseFragment() {
             ViewCompat.setTransitionName(date, "date${feed.publishedDate()}")
             ViewCompat.setTransitionName(category, "category$feed.id")
         }
-        args.relatedFeed?.let { feed ->
-            ViewCompat.setTransitionName(title, "title$feed.id")
-            ViewCompat.setTransitionName(description, "preview$feed.id")
-            ViewCompat.setTransitionName(image, "image$feed.id")
-            ViewCompat.setTransitionName(sourceIcon, "source_icon$feed.id")
-            ViewCompat.setTransitionName(date, "date${feed.publishedDate()}")
-            ViewCompat.setTransitionName(category, "category$feed.id")
-        }
 
     }
 
@@ -128,22 +120,10 @@ class DetailFeedFragment : BaseFragment() {
                         .startChooser()
                 }
             }
-            args.relatedFeed?.let {
-                it.link()?.let { link ->
-                    ShareCompat.IntentBuilder.from(activity)
-                        .setType("text/plain")
-                        .setChooserTitle("Share this news")
-                        .setText(link.toString())
-                        .startChooser()
-                }
-            }
         }
         feedData()
         args.feed?.let {
             viewModel.getRelatedFeed(it.id)
-        }
-        args.relatedFeed?.let {
-            viewModel.getRelatedFeed(it.parentFeed.id)
         }
     }
 
@@ -174,34 +154,6 @@ class DetailFeedFragment : BaseFragment() {
                     Toast.makeText(context, link.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-        args.relatedFeed?.let { feed ->
-            feed.image?.let {
-                picasso.load(it).into(image)
-            }
-            title.text = feed.title
-            description.text = feed.description
-            feed.source.icon()?.let {
-                picasso.load(it)
-                    .resize(64, 64)
-                    .onlyScaleDown()
-                    .centerInside()
-                    .into(sourceIcon)
-            }
-            date.text =
-                context?.getString(
-                    R.string.source_with_time,
-                    feed.source.name,
-                    feed.publishedDateRaw()
-                )
-            category.text = feed.category.name
-
-            feed.link()?.let { link ->
-                readMore.setOnClickListener {
-                    Toast.makeText(context, link.toString(), Toast.LENGTH_SHORT).show()
-                }
-            }
-
         }
     }
 
@@ -249,9 +201,6 @@ class DetailFeedFragment : BaseFragment() {
                                 args.feed?.let {
                                     viewModel.getRelatedFeed(it.id)
                                 }
-                                args.relatedFeed?.let {
-                                    viewModel.getRelatedFeed(it.parentFeed.id)
-                                }
                                 snackBar?.dismiss()
                             }
                         snackBar?.show()
@@ -268,9 +217,6 @@ class DetailFeedFragment : BaseFragment() {
                             .setAction(R.string.retry) {
                                 args.feed?.let {
                                     viewModel.getRelatedFeed(it.id)
-                                }
-                                args.relatedFeed?.let {
-                                    viewModel.getRelatedFeed(it.parentFeed.id)
                                 }
                                 snackBar?.dismiss()
                             }
