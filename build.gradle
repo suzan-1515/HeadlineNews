@@ -105,8 +105,8 @@ buildscript {
                     'epoxyProcessor': "com.airbnb.android:epoxy-processor:${versions.epoxy}"
 
             ],
-            dropbox :   [
-                    'store'         : 'com.dropbox.mobile.store:store4:4.0.0-alpha01'
+            webview :   [
+                    'webview'         : 'com.just.agentweb:agentweb:4.1.2'
             ],
             image     : [
                     'picassoTransformation': "jp.wasabeef:picasso-transformations:${versions.picassoTransformation}",

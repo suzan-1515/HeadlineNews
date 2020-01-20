@@ -1,6 +1,7 @@
 package com.cognota.feed.commons.adapter
 
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -54,6 +55,7 @@ abstract class FeedCardModel(private val picasso: Picasso) :
             }
             if (::clickListener.isInitialized) {
                 holder.card.setOnClickListener(clickListener)
+                holder.option.setOnClickListener(clickListener)
             }
 
             ViewCompat.setTransitionName(holder.title, "title$feed.id")
@@ -73,6 +75,7 @@ abstract class FeedCardModel(private val picasso: Picasso) :
         picasso.cancelRequest(holder.image)
         picasso.cancelRequest(holder.sourceIcon)
         holder.card.setOnClickListener(null)
+        holder.option.setOnClickListener(null)
         ViewCompat.setTransitionName(holder.title, null)
         ViewCompat.setTransitionName(holder.preview, null)
         ViewCompat.setTransitionName(holder.date, null)
@@ -89,6 +92,7 @@ abstract class FeedCardModel(private val picasso: Picasso) :
         val preview by bind<TextView>(R.id.preview)
         val date by bind<TextView>(R.id.date)
         val category by bind<AppCompatTextView>(R.id.category)
+        val option by bind<ImageButton>(R.id.option)
     }
 
 }

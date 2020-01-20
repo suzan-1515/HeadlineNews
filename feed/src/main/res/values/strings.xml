@@ -19,5 +19,14 @@
     <string name="share">Share</string>
     <string name="read_whole_news">Read whole news</string>
     <string name="option">Option</string>
+    <string name="save_this_news">Save this news</string>
+    <string name="hide_news_from_source">Hide news from %s</string>
+    <string name="more_news_like">More news like this</string>
+    <string name="less_news_like">Less news like this</string>
+    <string name="refresh">Refresh</string>
+    <string name="copy_link">Copy link</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="loading">Loading…</string>
+    <string name="news_share_format">#Headline News \n\n %s \n\n %s</string>
 
 </resources>

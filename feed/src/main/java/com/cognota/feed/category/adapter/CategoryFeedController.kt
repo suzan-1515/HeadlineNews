@@ -3,6 +3,7 @@ package com.cognota.feed.category.adapter
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.airbnb.epoxy.EpoxyController
+import com.cognota.feed.R
 import com.cognota.feed.commons.adapter.EmptyModel_
 import com.cognota.feed.commons.adapter.ProgressModel_
 import com.cognota.feed.commons.adapter.feedCard
@@ -47,12 +48,23 @@ class CategoryFeedController @Inject constructor(
                             parentView.sourceIcon to parentView.sourceIcon.transitionName,
                             parentView.category to parentView.category.transitionName
                         )
-                        clickedView.findNavController().navigate(
-                            PersonalisedFeedFragmentDirections.detailAction(
-                                feed = model.feed
-                            ),
-                            extras
-                        )
+                        if (clickedView.id == R.id.option) {
+                            clickedView.findNavController().navigate(
+                                PersonalisedFeedFragmentDirections.menuAction(
+                                    feed = model.feed
+                                ),
+                                extras
+                            )
+
+                        } else {
+                            clickedView.findNavController().navigate(
+                                PersonalisedFeedFragmentDirections.detailAction(
+                                    feed = model.feed
+                                ),
+                                extras
+                            )
+
+                        }
                     }
                 }
             } else {
@@ -68,12 +80,23 @@ class CategoryFeedController @Inject constructor(
                             parentView.sourceIcon to parentView.sourceIcon.transitionName,
                             parentView.category to parentView.category.transitionName
                         )
-                        clickedView.findNavController().navigate(
-                            PersonalisedFeedFragmentDirections.detailAction(
-                                feed = model.feed
-                            ),
-                            extras
-                        )
+                        if (clickedView.id == R.id.option) {
+                            clickedView.findNavController().navigate(
+                                PersonalisedFeedFragmentDirections.menuAction(
+                                    feed = model.feed
+                                ),
+                                extras
+                            )
+
+                        } else {
+                            clickedView.findNavController().navigate(
+                                PersonalisedFeedFragmentDirections.detailAction(
+                                    feed = model.feed
+                                ),
+                                extras
+                            )
+
+                        }
                     }
                 }
             }

@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.cognota.core.di.FeatureScope
@@ -26,6 +27,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_feed_detail.*
 import timber.log.Timber
 import javax.inject.Inject
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -116,7 +118,14 @@ class DetailFeedFragment : BaseFragment() {
                     ShareCompat.IntentBuilder.from(activity)
                         .setType("text/plain")
                         .setChooserTitle("Share this news")
-                        .setText(link.toString())
+                        .setSubject(it.title)
+                        .setText(
+                            requireContext().getString(
+                                R.string.news_share_format,
+                                it.title,
+                                link.toString()
+                            )
+                        )
                         .startChooser()
                 }
             }
@@ -151,7 +160,11 @@ class DetailFeedFragment : BaseFragment() {
 
             feed.link()?.let { link ->
                 readMore.setOnClickListener {
-                    Toast.makeText(context, link.toString(), Toast.LENGTH_SHORT).show()
+                    it?.findNavController()?.navigate(
+                        DetailFeedFragmentDirections.webviewAction(
+                            feed = args.feed
+                        )
+                    )
                 }
             }
         }

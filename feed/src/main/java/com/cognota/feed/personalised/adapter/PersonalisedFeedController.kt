@@ -10,6 +10,7 @@ import com.airbnb.epoxy.Carousel.SnapHelperFactory
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.cognota.core.di.FeatureScope
+import com.cognota.feed.R
 import com.cognota.feed.commons.adapter.*
 import com.cognota.feed.commons.domain.CategoryDTO
 import com.cognota.feed.commons.domain.FeedDTO
@@ -221,12 +222,23 @@ class PersonalisedFeedController @Inject constructor(
                                     parentView.sourceIcon to parentView.sourceIcon.transitionName,
                                     parentView.category to parentView.category.transitionName
                                 )
-                                clickedView.findNavController().navigate(
-                                    PersonalisedFeedFragmentDirections.detailAction(
-                                        feed = model.feed
-                                    ),
-                                    extras
-                                )
+                                if (clickedView.id == R.id.option) {
+                                    clickedView.findNavController().navigate(
+                                        PersonalisedFeedFragmentDirections.menuAction(
+                                            feed = model.feed
+                                        ),
+                                        extras
+                                    )
+
+                                } else {
+                                    clickedView.findNavController().navigate(
+                                        PersonalisedFeedFragmentDirections.detailAction(
+                                            feed = model.feed
+                                        ),
+                                        extras
+                                    )
+
+                                }
                             }
                         }
                     } else {
@@ -242,12 +254,23 @@ class PersonalisedFeedController @Inject constructor(
                                     parentView.sourceIcon to parentView.sourceIcon.transitionName,
                                     parentView.category to parentView.category.transitionName
                                 )
-                                clickedView.findNavController().navigate(
-                                    PersonalisedFeedFragmentDirections.detailAction(
-                                        feed = model.feed
-                                    ),
-                                    extras
-                                )
+                                if (clickedView.id == R.id.option) {
+                                    clickedView.findNavController().navigate(
+                                        PersonalisedFeedFragmentDirections.menuAction(
+                                            feed = model.feed
+                                        ),
+                                        extras
+                                    )
+
+                                } else {
+                                    clickedView.findNavController().navigate(
+                                        PersonalisedFeedFragmentDirections.detailAction(
+                                            feed = model.feed
+                                        ),
+                                        extras
+                                    )
+
+                                }
                             }
                         }
                     }
