@@ -12,7 +12,7 @@ import dagger.Component
 @ModuleScope
 @Component(
     dependencies = [CoreComponent::class],
-    modules = [NetworkModule::class, PersistanceModule::class, RepositoryModule::class]
+    modules = [NetworkModule::class, PersistanceModule::class, RepositoryModule::class, ViewModelModule::class]
 )
 interface FeedComponent {
 

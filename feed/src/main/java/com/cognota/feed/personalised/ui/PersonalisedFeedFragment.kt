@@ -44,8 +44,8 @@ class PersonalisedFeedFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         Timber.d("attaching personalised fragment")
         (activity as FeedActivity).feedComponent
-            ?.personalizedFeedComponent()
-            ?.create()
+            .personalizedFeedComponent()
+            .create()
             .inject(this)
         super.onAttach(context)
     }

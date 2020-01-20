@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -19,6 +18,8 @@ import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.RelatedFeedDTO
+import com.cognota.feed.commons.viewmodel.BookmarkFeedViewModel
+import com.cognota.feed.commons.viewmodel.BookmarkFeedViewModelFactory
 import com.cognota.feed.detail.adapter.RelatedFeedController
 import com.cognota.feed.detail.viewmodel.DetailFeedViewModel
 import com.cognota.feed.detail.viewmodel.DetailFeedViewModelFactory
@@ -46,6 +47,14 @@ class DetailFeedFragment : BaseFragment() {
 
     private val viewModel: DetailFeedViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(DetailFeedViewModel::class.java)
+    }
+
+    @Inject
+    lateinit var bookmarkViewModelFactory: BookmarkFeedViewModelFactory
+
+    private val bookmarkViewModel: BookmarkFeedViewModel by lazy {
+        ViewModelProviders.of(requireActivity(), bookmarkViewModelFactory)
+            .get(BookmarkFeedViewModel::class.java)
     }
 
     @Inject
@@ -100,14 +109,24 @@ class DetailFeedFragment : BaseFragment() {
             activity?.onBackPressed()
         }
         toolbar.inflateMenu(R.menu.menu_feed_detail)
-        toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.menu_save -> {
-                    Toast.makeText(context, "Bookmark menu clicked", Toast.LENGTH_SHORT).show()
+                    args.feed?.let {
+                        bookmarkViewModel.bookmarkFeed(it)
+                        snackBar = Snackbar.make(
+                            view,
+                            getString(
+                                R.string.feed_bookmarked
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar?.show()
+                    }
                     true
                 }
                 else -> {
-                    super.onOptionsItemSelected(it)
+                    super.onOptionsItemSelected(menuItem)
                 }
             }
         }

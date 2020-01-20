@@ -28,5 +28,7 @@
     <string name="open_in_browser">Open in browser</string>
     <string name="loading">Loading…</string>
     <string name="news_share_format">#Headline News \n\n %s \n\n %s</string>
+    <string name="clear_all_bookmarked_feed">Clear all bookmarked feed</string>
+    <string name="feed_bookmarked">News bookmarked.</string>
 
 </resources>

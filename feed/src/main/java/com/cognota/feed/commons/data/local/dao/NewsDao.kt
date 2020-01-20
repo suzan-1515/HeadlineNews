@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class NewsDao : BaseDao<FeedEntity>() {
 
+    @Transaction
     @Query("SELECT * from feed where type = 'LATEST' order by update_date desc")
     abstract fun findLatestFeeds(): List<FeedWithSourcesEntity>?
 
@@ -25,10 +26,14 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Query("SELECT * from feed where category_code = :category and page = :page order by update_date desc")
     abstract fun findFeedsByCategory(page: Int, category: String): List<FeedWithSourcesEntity>?
 
+    @Transaction
     @Query("SELECT * from related_feed where parent_id = :parentId order by update_date desc")
     abstract fun findRelatedFeeds(
         parentId: String
     ): List<RelatedFeedWithSourcesEntity>?
+
+    @Query("SELECT * from bookmark")
+    abstract fun findBookmarkedFeeds(): Flow<List<BookmarkEntity>?>
 
     @Query("SELECT * from source")
     abstract fun findSources(): List<SourceEntity>?
@@ -66,6 +71,9 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertTags(tags: List<TagEntity>): List<Long>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertBookmarkFeed(bookmarkEntity: BookmarkEntity): Long
+
     @Query("DELETE from source")
     abstract fun deleteAllSources()
 
@@ -86,4 +94,10 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
 
     @Query("DELETE from feed where category_code = :category")
     abstract fun deleteAllFeedByCategory(category: String)
+
+    @Query("DELETE from bookmark where id = :id ")
+    abstract fun deleteBookmarkFeed(id: String)
+
+    @Query("DELETE from bookmark")
+    abstract fun deleteAllBookmarkFeed()
 }

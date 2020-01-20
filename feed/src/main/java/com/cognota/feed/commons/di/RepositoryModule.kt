@@ -2,13 +2,12 @@ package com.cognota.feed.commons.di
 
 import android.content.SharedPreferences
 import com.cognota.core.di.ModuleScope
+import com.cognota.feed.commons.data.BookmarkDataContract
+import com.cognota.feed.commons.data.BookmarkRepository
 import com.cognota.feed.commons.data.SourceAndCategoryDataContract
 import com.cognota.feed.commons.data.SourceAndCategoryRepository
 import com.cognota.feed.commons.data.local.dao.NewsDao
-import com.cognota.feed.commons.data.mapper.CategoryDTOMapper
-import com.cognota.feed.commons.data.mapper.CategoryResponseMapper
-import com.cognota.feed.commons.data.mapper.SourceDTOMapper
-import com.cognota.feed.commons.data.mapper.SourceResponseMapper
+import com.cognota.feed.commons.data.mapper.*
 import com.cognota.feed.commons.data.remote.service.NewsAPIService
 import dagger.Module
 import dagger.Provides
@@ -36,6 +35,18 @@ class RepositoryModule {
             sourceDTOMapper,
             categoryResponseMapper,
             categoryDTOMapper
+        )
+
+    /*Repository*/
+    @Provides
+    @ModuleScope
+    fun bookmarkFeedRepo(
+        newsDao: NewsDao,
+        bookmarkDTOMapper: BookmarkDTOMapper
+    ): BookmarkDataContract.Repository =
+        BookmarkRepository(
+            newsDao,
+            bookmarkDTOMapper
         )
 
 }

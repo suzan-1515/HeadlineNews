@@ -89,16 +89,19 @@
                 app:layout_constraintTop_toTopOf="@+id/sourceIcon"
                 tools:text="1 hr ago" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/option"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:background="@drawable/ic_more_horiz_black_24dp"
-                android:backgroundTint="?android:textColorSecondary"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
                 android:contentDescription="@string/option"
+                android:focusable="true"
+                android:tint="?android:textColorSecondary"
                 app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
-                app:layout_constraintEnd_toEndOf="@id/title" />
+                app:layout_constraintEnd_toEndOf="@id/title"
+                app:srcCompat="@drawable/ic_more_horiz_black_24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

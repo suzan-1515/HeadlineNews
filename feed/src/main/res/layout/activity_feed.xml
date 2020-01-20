@@ -23,15 +23,13 @@
                 android:padding="8dp"
                 app:layout_scrollFlags="scroll">
 
-            <EditText
-                    android:id="@+id/search_edit_text"
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/searchEditText"
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/ic_edittext_bg"
-                    android:hint="@string/search_hint"
-                    android:inputType="text"
                     android:padding="12dp"
                     android:textAlignment="textStart"
                     android:textStyle="bold" />

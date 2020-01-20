@@ -4,12 +4,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.airbnb.epoxy.EpoxyController
 import com.cognota.feed.R
+import com.cognota.feed.category.ui.CategoriesFeedFragmentDirections
 import com.cognota.feed.commons.adapter.EmptyModel_
 import com.cognota.feed.commons.adapter.ProgressModel_
 import com.cognota.feed.commons.adapter.feedCard
 import com.cognota.feed.commons.adapter.feedList
 import com.cognota.feed.commons.domain.FeedDTO
-import com.cognota.feed.personalised.ui.PersonalisedFeedFragmentDirections
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -50,7 +50,7 @@ class CategoryFeedController @Inject constructor(
                         )
                         if (clickedView.id == R.id.option) {
                             clickedView.findNavController().navigate(
-                                PersonalisedFeedFragmentDirections.menuAction(
+                                CategoriesFeedFragmentDirections.menuAction(
                                     feed = model.feed
                                 ),
                                 extras
@@ -58,7 +58,7 @@ class CategoryFeedController @Inject constructor(
 
                         } else {
                             clickedView.findNavController().navigate(
-                                PersonalisedFeedFragmentDirections.detailAction(
+                                CategoriesFeedFragmentDirections.detailAction(
                                     feed = model.feed
                                 ),
                                 extras
@@ -82,7 +82,7 @@ class CategoryFeedController @Inject constructor(
                         )
                         if (clickedView.id == R.id.option) {
                             clickedView.findNavController().navigate(
-                                PersonalisedFeedFragmentDirections.menuAction(
+                                CategoriesFeedFragmentDirections.menuAction(
                                     feed = model.feed
                                 ),
                                 extras
@@ -90,7 +90,7 @@ class CategoryFeedController @Inject constructor(
 
                         } else {
                             clickedView.findNavController().navigate(
-                                PersonalisedFeedFragmentDirections.detailAction(
+                                CategoriesFeedFragmentDirections.detailAction(
                                     feed = model.feed
                                 ),
                                 extras

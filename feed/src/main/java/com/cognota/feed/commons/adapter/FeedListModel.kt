@@ -1,7 +1,7 @@
 package com.cognota.feed.commons.adapter
 
 import android.view.View
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -93,7 +93,7 @@ abstract class FeedListModel(private val picasso: Picasso) :
         val preview by bind<TextView>(R.id.preview)
         val date by bind<TextView>(R.id.date)
         val category by bind<AppCompatTextView>(R.id.category)
-        val option by bind<ImageButton>(R.id.option)
+        val option by bind<ImageView>(R.id.option)
     }
 
 }

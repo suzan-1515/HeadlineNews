@@ -93,17 +93,20 @@
                 app:layout_constraintWidth_percent=".32"
                 tools:src="@tools:sample/avatars" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/option"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/ic_more_horiz_black_24dp"
-                android:backgroundTint="?android:textColorSecondary"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:tint="?android:textColorSecondary"
                 android:contentDescription="@string/option"
                 app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_more_horiz_black_24dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
