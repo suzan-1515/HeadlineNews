@@ -9,6 +9,8 @@ interface BookmarkDataContract {
 
         suspend fun getBookmarkedFeeds(): Flow<List<BookmarkDTO>?>
 
+        suspend fun getBookmarkedFeed(id: String): Flow<BookmarkDTO?>
+
         suspend fun removeFromBookmark(id: String): Boolean
 
         suspend fun clearBookmark(): Boolean

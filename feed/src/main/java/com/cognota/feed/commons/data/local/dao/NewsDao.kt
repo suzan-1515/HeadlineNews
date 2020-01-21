@@ -35,6 +35,9 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Query("SELECT * from bookmark")
     abstract fun findBookmarkedFeeds(): Flow<List<BookmarkEntity>?>
 
+    @Query("SELECT * from bookmark where id= :id limit 1")
+    abstract fun findBookmarkedFeed(id: String): Flow<BookmarkEntity?>
+
     @Query("SELECT * from source")
     abstract fun findSources(): List<SourceEntity>?
 

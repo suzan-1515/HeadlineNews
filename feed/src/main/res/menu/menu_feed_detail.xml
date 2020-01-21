@@ -3,9 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/menu_save"
-            android:icon="@drawable/ic_bookmark_border_black_24dp"
-            android:title="@string/bookmark_feed"
+            android:id="@+id/option"
+            android:icon="@drawable/ic_more_vert_black_24dp"
+            android:title="@string/option"
             app:showAsAction="ifRoom" />
-
 </menu>

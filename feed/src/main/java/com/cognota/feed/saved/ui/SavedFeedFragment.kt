@@ -64,6 +64,10 @@ class SavedFeedFragment : BaseFragment() {
             viewModel.clearBookmarkFeeds()
         }
 
+        if (savedInstanceState == null) {
+            viewModel.getBookmarkFeeds()
+        }
+
     }
 
     private fun initiateDataListener() {

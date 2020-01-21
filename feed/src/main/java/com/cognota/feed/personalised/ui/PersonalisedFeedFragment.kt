@@ -274,6 +274,7 @@ class PersonalisedFeedFragment : BaseFragment() {
 
     }
 
+
     companion object {
         fun newInstance(): PersonalisedFeedFragment {
             return PersonalisedFeedFragment()

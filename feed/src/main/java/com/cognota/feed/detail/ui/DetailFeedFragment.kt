@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -37,7 +38,7 @@ import javax.inject.Inject
 @FeatureScope
 class DetailFeedFragment : BaseFragment() {
 
-    val args: DetailFeedFragmentArgs by navArgs()
+    private val args: DetailFeedFragmentArgs by navArgs()
 
     @Inject
     lateinit var viewModelFactory: DetailFeedViewModelFactory
@@ -111,17 +112,13 @@ class DetailFeedFragment : BaseFragment() {
         toolbar.inflateMenu(R.menu.menu_feed_detail)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.menu_save -> {
+                R.id.option -> {
                     args.feed?.let {
-                        bookmarkViewModel.bookmarkFeed(it)
-                        snackBar = Snackbar.make(
-                            view,
-                            getString(
-                                R.string.feed_bookmarked
-                            ),
-                            Snackbar.LENGTH_LONG
+                        view.findNavController().navigate(
+                            DetailFeedFragmentDirections.menuAction(
+                                feed = it
+                            )
                         )
-                        snackBar?.show()
                     }
                     true
                 }
@@ -131,7 +128,7 @@ class DetailFeedFragment : BaseFragment() {
             }
         }
         rv.setControllerAndBuildModels(feedController)
-        share.setOnClickListener {
+        shareIcon.setOnClickListener {
             args.feed?.let {
                 it.link()?.let { link ->
                     ShareCompat.IntentBuilder.from(activity)
@@ -149,9 +146,23 @@ class DetailFeedFragment : BaseFragment() {
                 }
             }
         }
+        bookmarkIcon.setOnClickListener {
+            args.feed?.let {
+                bookmarkViewModel.bookmarkFeed(it)
+                snackBar = Snackbar.make(
+                    view,
+                    getString(
+                        R.string.feed_bookmarked
+                    ),
+                    Snackbar.LENGTH_LONG
+                )
+                snackBar?.show()
+            }
+        }
         feedData()
         args.feed?.let {
             viewModel.getRelatedFeed(it.id)
+            bookmarkViewModel.getBookmarkedStatus(it.id)
         }
     }
 
@@ -207,7 +218,7 @@ class DetailFeedFragment : BaseFragment() {
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
-                                coordinator_layout.rootView,
+                                root,
                                 getString(
                                     resource.message
                                         ?: R.string.unknown_error
@@ -222,7 +233,7 @@ class DetailFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
                         snackBar = Snackbar.make(
-                            coordinator_layout.rootView,
+                            root,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -241,7 +252,7 @@ class DetailFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            coordinator_layout.rootView,
+                            root,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG
@@ -258,6 +269,21 @@ class DetailFeedFragment : BaseFragment() {
                     else -> Timber.d("Unknown state")
                 }
             })
+
+        bookmarkViewModel.bookmarkStatus.observe(
+            viewLifecycleOwner,
+            Observer {
+                it?.let {
+                    Timber.d("Bookmarked status: %s", it)
+                    bookmarkIcon.setColorFilter(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            if (it) R.color.md_orange_500 else R.color.md_grey_600
+                        )
+                    )
+                }
+            }
+        )
 
     }
 

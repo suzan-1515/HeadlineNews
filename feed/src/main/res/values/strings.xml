@@ -30,5 +30,9 @@
     <string name="news_share_format">#Headline News \n\n %s \n\n %s</string>
     <string name="clear_all_bookmarked_feed">Clear all bookmarked feed</string>
     <string name="feed_bookmarked">News bookmarked.</string>
+    <string name="comment">Comment</string>
+    <string name="source_hidden">You won`t see any more news from %s. Go to setting to unhide.</string>
+    <string name="more_news_message">You will see more news like this.</string>
+    <string name="less_news_message">You will see less news like this.</string>
 
 </resources>

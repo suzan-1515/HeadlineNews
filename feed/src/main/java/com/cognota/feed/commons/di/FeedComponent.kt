@@ -4,6 +4,7 @@ import com.cognota.core.di.CoreComponent
 import com.cognota.core.di.ModuleScope
 import com.cognota.feed.FeedActivity
 import com.cognota.feed.category.di.CategoryFeedComponent
+import com.cognota.feed.commons.ui.FeedMenuDialogFragment
 import com.cognota.feed.detail.di.DetailFeedComponent
 import com.cognota.feed.personalised.di.PersonalizedFeedComponent
 import com.cognota.feed.saved.di.SavedFeedComponent
@@ -30,5 +31,7 @@ interface FeedComponent {
     fun savedFeedComponent(): SavedFeedComponent.Factory
 
     fun detailFeedComponent(): DetailFeedComponent.Factory
+
+    fun inject(fragment: FeedMenuDialogFragment)
 
 }

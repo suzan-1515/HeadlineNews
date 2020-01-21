@@ -73,7 +73,7 @@ class PersonalisedFeedController @Inject constructor(
     fun setCategory(categories: List<CategoryDTO>?) {
         if (!categories.isNullOrEmpty()) {
             this.categories = categories
-            requestModelBuild()
+//            requestModelBuild()
         }
 
     }
@@ -160,31 +160,32 @@ class PersonalisedFeedController @Inject constructor(
             }
 
             latestFeeds.forEachIndexed { index, feed ->
+                //                if (index == 5) {
+//                    if (!categories.isNullOrEmpty()) {
+//                        header {
+//                            id("categories_header")
+//                            title("News categories")
+//                        }
+//
+//                        flowCarousel {
+//                            id("categories_carousel")
+//                            paddingDp(0)
+//                            models(
+//                                categories.map { category ->
+//                                    CategoryModel_(picasso).apply {
+//                                        id(category.id)
+//                                        category(category)
+//                                        clickListener { model, parentView, clickedView, position ->
+//                                            Timber.d("Category clicked: %s", model.category().name)
+//                                            categoryInteraction(clickedView, model.category())
+//                                        }
+//                                    }
+//                                }
+//                            )
+//                        }
+//                    }
+//                } else
                 if (index == 5) {
-                    if (!categories.isNullOrEmpty()) {
-                        header {
-                            id("categories_header")
-                            title("News categories")
-                        }
-
-                        flowCarousel {
-                            id("categories_carousel")
-                            paddingDp(0)
-                            models(
-                                categories.map { category ->
-                                    CategoryModel_(picasso).apply {
-                                        id(category.id)
-                                        category.icon()?.let { icon -> icon(icon) }
-                                        title(category.name)
-                                        clickListener { model, parentView, clickedView, position ->
-                                            Timber.d("Category clicked: %s", model.title())
-                                        }
-                                    }
-                                }
-                            )
-                        }
-                    }
-                } else if (index == 10) {
                     if (!sources.isNullOrEmpty()) {
                         header {
                             id("sources_header")

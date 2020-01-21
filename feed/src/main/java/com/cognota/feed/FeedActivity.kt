@@ -10,7 +10,7 @@ import com.cognota.core.ui.BaseActivity
 import com.cognota.feed.category.di.CategoryFeedComponent
 import com.cognota.feed.commons.di.FeedComponent
 import com.cognota.feed.commons.di.SharedComponentProvider
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_feed.*
 
 @ModuleScope
 class FeedActivity : BaseActivity() {
@@ -21,6 +21,7 @@ class FeedActivity : BaseActivity() {
     var categoryFeedComponent: CategoryFeedComponent? = null
     private var currentNavController: LiveData<NavController>? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         feedComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class FeedActivity : BaseActivity() {
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }
+
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -41,13 +43,12 @@ class FeedActivity : BaseActivity() {
      * Called on first creation and when restoring state.
      */
     private fun setupBottomNavigationBar() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomBar)
 
         val navGraphIds =
             listOf(R.navigation.personalised, R.navigation.category, R.navigation.bookmark)
 
         // Setup the bottom navigation view with a list of navigation graphs
-        val controller = bottomNavigationView.setupWithNavController(
+        val controller = bottomBar.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,
             containerId = R.id.nav_host_container,
@@ -68,3 +69,5 @@ class FeedActivity : BaseActivity() {
     }
 
 }
+
+

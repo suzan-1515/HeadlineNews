@@ -20,15 +20,28 @@ class BookmarkFeedViewModel(
     val bookmarkFeeds: LiveData<List<BookmarkDTO>?> =
         mutableBookmarkFeeds
 
-    init {
-        getBookmarkFeeds()
-    }
+    private val mutableBookmarkStatus: MutableLiveData<Boolean> = MutableLiveData()
+    val bookmarkStatus: LiveData<Boolean> = mutableBookmarkStatus
 
     fun getBookmarkFeeds() {
+        if (bookmarkFeeds.value.isNullOrEmpty()) {
+            viewModelScope.launch {
+                Timber.d("Triggered bookmarked stream call")
+                feedRepository.getBookmarkedFeeds().collect { data ->
+                    mutableBookmarkFeeds.value = data
+                }
+            }
+        }
+    }
+
+    fun getBookmarkedStatus(id: String) {
         viewModelScope.launch {
-            Timber.d("Triggered bookmarked stream call")
-            feedRepository.getBookmarkedFeeds().collect { data ->
-                mutableBookmarkFeeds.value = data
+            feedRepository.getBookmarkedFeed(id).collect {
+                it?.let {
+                    mutableBookmarkStatus.value = true
+                } ?: run {
+                    mutableBookmarkStatus.value = false
+                }
             }
         }
     }

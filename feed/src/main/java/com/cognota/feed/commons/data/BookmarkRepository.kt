@@ -24,6 +24,14 @@ class BookmarkRepository @Inject constructor(
         }
     }
 
+    override suspend fun getBookmarkedFeed(id: String): Flow<BookmarkDTO?> {
+        return newsDao.findBookmarkedFeed(id).map {
+            it?.let {
+                bookmarkDTOMapper.toDTO(it)
+            }
+        }
+    }
+
     override suspend fun removeFromBookmark(id: String): Boolean {
         withContext(Dispatchers.IO) {
             newsDao.deleteBookmarkFeed(id)

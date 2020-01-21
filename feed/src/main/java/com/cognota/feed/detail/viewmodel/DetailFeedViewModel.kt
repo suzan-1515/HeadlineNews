@@ -23,20 +23,15 @@ class DetailFeedViewModel(
 
     private val mutableArgs: MutableLiveData<DetailFeedFragmentArgs> =
         MutableLiveData()
-    val args: LiveData<DetailFeedFragmentArgs> =
-        mutableArgs
 
     fun getRelatedFeed(parentId: String) {
         viewModelScope.launch {
-            Timber.d("Triggered related feed repo call")
+            Timber.d("Triggered related feed repo call: %s", parentId)
             feedRepository.getRelatedFeeds(parentId).collect {
                 mutableRelatedFeeds.value = it
             }
         }
     }
 
-    fun setArgs(args: DetailFeedFragmentArgs) {
-        mutableArgs.value = args
-    }
 
 }

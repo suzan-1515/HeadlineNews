@@ -23,6 +23,9 @@
                 android:id="@+id/webviewAction"
                 app:destination="@id/detailFeedWebview"
                 app:launchSingleTop="true" />
+        <action
+                android:id="@+id/menuAction"
+                app:destination="@id/feedMenuDialogFragment" />
     </fragment>
     <fragment
             android:id="@+id/detailFeedWebview"
@@ -34,5 +37,16 @@
                 app:argType="com.cognota.feed.commons.domain.FeedDTO"
                 app:nullable="true" />
     </fragment>
+
+    <dialog
+            android:id="@+id/feedMenuDialogFragment"
+            android:name="com.cognota.feed.commons.ui.FeedMenuDialogFragment"
+            tools:layout="@layout/fragment_feed_menu_dialog">
+        <argument
+                android:name="feed"
+                android:defaultValue="@null"
+                app:argType="com.cognota.feed.commons.domain.FeedDTO"
+                app:nullable="true" />
+    </dialog>
 
 </navigation>
