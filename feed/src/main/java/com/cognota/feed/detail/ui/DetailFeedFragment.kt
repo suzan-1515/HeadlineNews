@@ -19,11 +19,12 @@ import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.RelatedFeedDTO
-import com.cognota.feed.commons.viewmodel.BookmarkFeedViewModel
-import com.cognota.feed.commons.viewmodel.BookmarkFeedViewModelFactory
 import com.cognota.feed.detail.adapter.RelatedFeedController
 import com.cognota.feed.detail.viewmodel.DetailFeedViewModel
 import com.cognota.feed.detail.viewmodel.DetailFeedViewModelFactory
+import com.cognota.feed.option.data.OptionEvent
+import com.cognota.feed.option.viewmodel.FeedOptionViewModel
+import com.cognota.feed.option.viewmodel.FeedOptionViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_feed_detail.*
@@ -51,11 +52,11 @@ class DetailFeedFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var bookmarkViewModelFactory: BookmarkFeedViewModelFactory
+    lateinit var feedOptionViewModelFactory: FeedOptionViewModelFactory
 
-    private val bookmarkViewModel: BookmarkFeedViewModel by lazy {
-        ViewModelProviders.of(requireActivity(), bookmarkViewModelFactory)
-            .get(BookmarkFeedViewModel::class.java)
+    private val feedOptionViewModel: FeedOptionViewModel by lazy {
+        ViewModelProviders.of(requireActivity(), feedOptionViewModelFactory)
+            .get(FeedOptionViewModel::class.java)
     }
 
     @Inject
@@ -146,23 +147,12 @@ class DetailFeedFragment : BaseFragment() {
                 }
             }
         }
-        bookmarkIcon.setOnClickListener {
-            args.feed?.let {
-                bookmarkViewModel.bookmarkFeed(it)
-                snackBar = Snackbar.make(
-                    view,
-                    getString(
-                        R.string.feed_bookmarked
-                    ),
-                    Snackbar.LENGTH_LONG
-                )
-                snackBar?.show()
-            }
-        }
+
         feedData()
         args.feed?.let {
             viewModel.getRelatedFeed(it.id)
-            bookmarkViewModel.getBookmarkedStatus(it.id)
+            feedOptionViewModel.getBookmarkedStatus(it.id)
+            feedOptionViewModel.getLikeStatus(it.id)
         }
     }
 
@@ -270,21 +260,146 @@ class DetailFeedFragment : BaseFragment() {
                 }
             })
 
-        bookmarkViewModel.bookmarkStatus.observe(
+        feedOptionViewModel.optionEventLiveData.observe(
             viewLifecycleOwner,
-            Observer {
-                it?.let {
-                    Timber.d("Bookmarked status: %s", it)
-                    bookmarkIcon.setColorFilter(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            if (it) R.color.md_orange_500 else R.color.md_grey_600
+            Observer { data ->
+                when (data) {
+                    OptionEvent.BOOKMARKED -> {
+                        snackBar = Snackbar.make(
+                            root,
+                            getString(
+                                R.string.feed_bookmarked
+                            ),
+                            Snackbar.LENGTH_LONG
                         )
-                    )
+                        snackBar?.show()
+                    }
+                    OptionEvent.UNBOOKMARKED -> {
+                        snackBar = Snackbar.make(
+                            root,
+                            getString(
+                                R.string.feed_bookmarked_removed
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar?.show()
+                    }
+                    OptionEvent.HIDDEN -> {
+                        snackBar = Snackbar.make(
+                            root,
+                            getString(
+                                R.string.news_hidden_message
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar?.show()
+                    }
+                    OptionEvent.LIKED -> {
+                        Timber.d("News liked")
+                    }
+                    OptionEvent.DISLIKED -> {
+                        Timber.d("News disliked")
+                    }
+                    else -> {
+                        Timber.d("Unknown bookmark state")
+                    }
                 }
             }
         )
+        feedOptionViewModel.bookmarkStatusLiveData.observe(
+            viewLifecycleOwner,
+            Observer { data ->
+                when (data) {
+                    OptionEvent.BOOKMARKED -> {
+                        bookmarkIcon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.md_orange_500
+                            )
+                        )
+                    }
+                    OptionEvent.UNBOOKMARKED -> {
+                        bookmarkIcon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.md_grey_600
+                            )
+                        )
+                    }
+                    else -> {
+                        Timber.d("Unknown bookmark status")
+                    }
+                }
+                setBookmarkActionListener(data)
+            }
+        )
 
+        feedOptionViewModel.likeStatusLiveData.observe(
+            viewLifecycleOwner,
+            Observer { data ->
+                when (data) {
+                    OptionEvent.LIKED -> {
+                        likeIcon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.md_orange_500
+                            )
+                        )
+                    }
+                    OptionEvent.DISLIKED -> {
+                        bookmarkIcon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.md_grey_600
+                            )
+                        )
+                    }
+                    else -> {
+                        Timber.d("Unknown bookmark status")
+                    }
+                }
+                setLikeActionListener(data)
+            }
+        )
+
+    }
+
+    private fun setBookmarkActionListener(event: OptionEvent) {
+        args.feed?.let { feed ->
+            when (event) {
+                OptionEvent.BOOKMARKED -> {
+                    bookmarkIcon.setOnClickListener {
+                        feedOptionViewModel.unBookmarkFeed(feed)
+                    }
+                }
+                OptionEvent.UNBOOKMARKED -> {
+                    bookmarkIcon.setOnClickListener {
+                        feedOptionViewModel.bookmarkFeed(feed)
+                    }
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    private fun setLikeActionListener(event: OptionEvent) {
+        args.feed?.let { feed ->
+            when (event) {
+                OptionEvent.LIKED -> {
+                    likeIcon.setOnClickListener {
+                        feedOptionViewModel.dislikeFeed(feed)
+                    }
+                }
+                OptionEvent.DISLIKED -> {
+                    likeIcon.setOnClickListener {
+                        feedOptionViewModel.likeFeed(feed)
+                    }
+                }
+                else -> {
+                }
+            }
+        }
     }
 
     companion object {

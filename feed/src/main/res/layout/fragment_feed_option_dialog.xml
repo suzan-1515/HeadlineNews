@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_round_corner_bg"
+        android:padding="16dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/saveNewsIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_bookmark_border_black_24dp"
+            app:tint="?android:textColorSecondary" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/optionSaveNews"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/bookmark_this_news"
+            android:textColor="?android:textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/saveNewsIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/saveNewsIcon"
+            app:layout_constraintTop_toTopOf="@+id/saveNewsIcon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/optionHideNewsIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saveNewsIcon"
+            app:srcCompat="@drawable/ic_block_black_24dp"
+            app:tint="?android:textColorSecondary" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/optionHideNews"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/hide_news_from_source"
+            android:textColor="?android:textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/optionHideNewsIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/optionHideNewsIcon"
+            app:layout_constraintTop_toTopOf="@+id/optionHideNewsIcon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/optionMoreNewsLikeIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/optionHideNewsIcon"
+            app:srcCompat="@drawable/ic_thumb_up_black_24dp"
+            app:tint="?android:textColorSecondary" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/optionMoreNewsLike"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/more_news_like"
+            android:textColor="?android:textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/optionMoreNewsLikeIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/optionMoreNewsLikeIcon"
+            app:layout_constraintTop_toTopOf="@+id/optionMoreNewsLikeIcon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/optionLessNewsLikeIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/optionMoreNewsLikeIcon"
+            app:srcCompat="@drawable/ic_thumb_down_black_24dp"
+            app:tint="?android:textColorSecondary" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/optionLessNewsLike"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/less_news_like"
+            android:textColor="?android:textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/optionLessNewsLikeIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/optionLessNewsLikeIcon"
+            app:layout_constraintTop_toTopOf="@+id/optionLessNewsLikeIcon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

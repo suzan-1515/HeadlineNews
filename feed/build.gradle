@@ -35,9 +35,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':core')
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     kapt deps.android.roomCompiler
     kapt deps.google.daggerProcessor
     kapt deps.google.daggerAndroidProcessor

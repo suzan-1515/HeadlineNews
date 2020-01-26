@@ -17,6 +17,9 @@ import com.cognota.feed.category.adapter.CategoryFeedController
 import com.cognota.feed.category.viewmodel.CategoryFeedViewModel
 import com.cognota.feed.category.viewmodel.CategoryFeedViewModelFactory
 import com.cognota.feed.commons.domain.FeedDTO
+import com.cognota.feed.option.data.OptionEvent
+import com.cognota.feed.option.viewmodel.FeedOptionViewModel
+import com.cognota.feed.option.viewmodel.FeedOptionViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_category_feed.*
@@ -35,6 +38,14 @@ class CategoryFeedFragment : BaseFragment() {
 
     private val viewModel: CategoryFeedViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(CategoryFeedViewModel::class.java)
+    }
+
+    @Inject
+    lateinit var feedOptionViewModelFactory: FeedOptionViewModelFactory
+
+    private val feedOptionViewModel: FeedOptionViewModel by lazy {
+        ViewModelProviders.of(requireActivity(), feedOptionViewModelFactory)
+            .get(FeedOptionViewModel::class.java)
     }
 
     @Inject
@@ -101,7 +112,7 @@ class CategoryFeedFragment : BaseFragment() {
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
-                                srl,
+                                srl.rootView,
                                 getString(
                                     resource.message
                                         ?: R.string.unknown_error
@@ -117,7 +128,7 @@ class CategoryFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
                         snackBar = Snackbar.make(
-                            srl,
+                            srl.rootView,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -135,7 +146,7 @@ class CategoryFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            srl,
+                            srl.rootView,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG
@@ -155,6 +166,37 @@ class CategoryFeedFragment : BaseFragment() {
         viewModel.categoryCode.observe(viewLifecycleOwner, Observer<String> {
             viewModel.getFeeds(page)
         })
+
+        feedOptionViewModel.optionEventLiveData.observe(
+            viewLifecycleOwner,
+            Observer { data ->
+                when (data) {
+                    OptionEvent.BOOKMARKED -> {
+                        snackBar = Snackbar.make(
+                            srl.rootView,
+                            getString(
+                                R.string.feed_bookmarked
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar?.show()
+                    }
+                    OptionEvent.UNBOOKMARKED -> {
+                        snackBar = Snackbar.make(
+                            srl.rootView,
+                            getString(
+                                R.string.feed_bookmarked_removed
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar?.show()
+                    }
+                    else -> {
+                        Timber.d("Unknown bookmark state")
+                    }
+                }
+            }
+        )
 
     }
 

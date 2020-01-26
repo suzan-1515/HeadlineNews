@@ -3,7 +3,6 @@ package com.cognota.core.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.cognota.core.application.CoreApp
-import com.cognota.core.util.Scheduler
 import com.squareup.picasso.Picasso
 import dagger.BindsInstance
 import dagger.Component
@@ -39,7 +38,5 @@ interface CoreComponent : AndroidInjector<CoreApp> {
     fun picasso(): Picasso
 
     fun sharedPreferences(): SharedPreferences
-
-    fun scheduler(): Scheduler
 
 }

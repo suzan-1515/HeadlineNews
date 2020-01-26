@@ -11,23 +11,23 @@ import kotlinx.coroutines.flow.Flow
 abstract class NewsDao : BaseDao<FeedEntity>() {
 
     @Transaction
-    @Query("SELECT * from feed where type = 'LATEST' order by update_date desc")
+    @Query("SELECT * from feed where type = 'LATEST' and enabled = 1 order by update_date desc")
     abstract fun findLatestFeeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from feed where type = 'TOP' order by update_date desc")
+    @Query("SELECT * from feed where type = 'TOP' and enabled = 1 order by update_date desc")
     abstract fun findTopFeeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from feed where type = 'TOP' order by update_date desc limit 10")
+    @Query("SELECT * from feed where type = 'TOP' and enabled = 1 order by update_date desc limit 10")
     abstract fun findTop10Feeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from feed where category_code = :category and page = :page order by update_date desc")
+    @Query("SELECT * from feed where category_code = :category and page = :page and enabled = 1 order by update_date desc")
     abstract fun findFeedsByCategory(page: Int, category: String): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from related_feed where parent_id = :parentId order by update_date desc")
+    @Query("SELECT * from related_feed where parent_id = :parentId and enabled = 1 order by update_date desc")
     abstract fun findRelatedFeeds(
         parentId: String
     ): List<RelatedFeedWithSourcesEntity>?

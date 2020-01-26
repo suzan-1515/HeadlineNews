@@ -3,11 +3,12 @@ package com.cognota.feed.commons.di
 import com.cognota.core.di.CoreComponent
 import com.cognota.core.di.ModuleScope
 import com.cognota.feed.FeedActivity
+import com.cognota.feed.bookmark.di.BookmarkFeedComponent
+import com.cognota.feed.bookmark.ui.BookmarkFeedOptionDialogFragment
 import com.cognota.feed.category.di.CategoryFeedComponent
-import com.cognota.feed.commons.ui.FeedMenuDialogFragment
 import com.cognota.feed.detail.di.DetailFeedComponent
+import com.cognota.feed.option.ui.FeedOptionDialogFragment
 import com.cognota.feed.personalised.di.PersonalizedFeedComponent
-import com.cognota.feed.saved.di.SavedFeedComponent
 import dagger.Component
 
 @ModuleScope
@@ -28,10 +29,11 @@ interface FeedComponent {
 
     fun personalizedFeedComponent(): PersonalizedFeedComponent.Factory
     fun categoryFeedComponent(): CategoryFeedComponent.Factory
-    fun savedFeedComponent(): SavedFeedComponent.Factory
+    fun savedFeedComponent(): BookmarkFeedComponent.Factory
 
     fun detailFeedComponent(): DetailFeedComponent.Factory
 
-    fun inject(fragment: FeedMenuDialogFragment)
+    fun inject(fragment: FeedOptionDialogFragment)
+    fun inject(fragment: BookmarkFeedOptionDialogFragment)
 
 }

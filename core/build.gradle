@@ -65,9 +65,6 @@ dependencies {
     api deps.kotlin.coroutineCore
     api deps.kotlin.coroutineAndroid
 
-    api deps.reactivex.rxJava
-    api deps.reactivex.rxAndroid
-
     api deps.google.dagger
     api deps.google.daggerAndroid
     api deps.google.daggerSupport

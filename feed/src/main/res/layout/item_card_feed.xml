@@ -98,7 +98,7 @@
                 android:clickable="true"
                 android:contentDescription="@string/option"
                 android:focusable="true"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/md_grey_700"
                 app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
                 app:layout_constraintEnd_toEndOf="@id/title"
                 app:srcCompat="@drawable/ic_more_horiz_black_24dp" />

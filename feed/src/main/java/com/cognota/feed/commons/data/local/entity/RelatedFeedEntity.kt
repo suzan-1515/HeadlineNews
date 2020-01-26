@@ -64,5 +64,7 @@ data class RelatedFeedEntity(
         onDelete = CASCADE
     )
     @ColumnInfo(name = "parent_id")
-    val parentId: String
+    val parentId: String,
+    @ColumnInfo(name = "enabled")
+    val enabled: Boolean
 )

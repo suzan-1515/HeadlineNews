@@ -1,4 +1,4 @@
-package com.cognota.feed.commons.viewmodel
+package com.cognota.feed.bookmark.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +11,8 @@ class BookmarkFeedViewModelFactory @Inject constructor(
 ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return BookmarkFeedViewModel(repository) as T
+        return BookmarkFeedViewModel(
+            repository
+        ) as T
     }
 }

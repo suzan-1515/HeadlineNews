@@ -19,7 +19,7 @@
     <string name="share">Share</string>
     <string name="read_whole_news">Read whole news</string>
     <string name="option">Option</string>
-    <string name="save_this_news">Save this news</string>
+    <string name="bookmark_this_news">Save this news</string>
     <string name="hide_news_from_source">Hide news from %s</string>
     <string name="more_news_like">More news like this</string>
     <string name="less_news_like">Less news like this</string>
@@ -34,5 +34,10 @@
     <string name="source_hidden">You won`t see any more news from %s. Go to setting to unhide.</string>
     <string name="more_news_message">You will see more news like this.</string>
     <string name="less_news_message">You will see less news like this.</string>
+    <string name="feed_bookmarked_removed">News removed from bookmarked.</string>
+    <string name="remove_from_bookmark">Remove from bookmark.</string>
+    <string name="bookmarked_cleared">All bookmarked feeds removed.</string>
+    <string name="hide_news">Hide this news</string>
+    <string name="news_hidden_message">News hidden from feed.</string>
 
 </resources>

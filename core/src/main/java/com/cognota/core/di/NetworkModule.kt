@@ -4,7 +4,6 @@ import android.content.Context
 import com.cognota.core.BuildConfig
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -21,12 +20,10 @@ class NetworkModule {
     @Singleton
     fun providesRetrofit(
         gsonConverterFactory: GsonConverterFactory,
-        rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
         okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(gsonConverterFactory)
-            .addCallAdapterFactory(rxJava2CallAdapterFactory)
             .client(okHttpClient)
             .build()
     }
@@ -65,10 +62,10 @@ class NetworkModule {
         return GsonConverterFactory.create()
     }
 
-    @Provides
-    @Singleton
-    fun providesRxJavaCallAdapterFactory(): RxJava2CallAdapterFactory {
-        return RxJava2CallAdapterFactory.create()
-    }
+//    @Provides
+//    @Singleton
+//    fun providesRxJavaCallAdapterFactory(): RxJava2CallAdapterFactory {
+//        return RxJava2CallAdapterFactory.create()
+//    }
 
 }

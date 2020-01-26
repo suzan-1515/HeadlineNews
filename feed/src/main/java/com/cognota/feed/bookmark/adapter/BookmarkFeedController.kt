@@ -1,14 +1,15 @@
-package com.cognota.feed.saved.adapter
+package com.cognota.feed.bookmark.adapter
 
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.airbnb.epoxy.EpoxyController
 import com.cognota.feed.R
+import com.cognota.feed.bookmark.ui.BookmarkFeedFragmentDirections
+import com.cognota.feed.commons.adapter.empty
 import com.cognota.feed.commons.adapter.feedList
 import com.cognota.feed.commons.adapter.header
 import com.cognota.feed.commons.domain.BookmarkDTO
-import com.cognota.feed.saved.ui.SavedFeedFragmentDirections
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -54,7 +55,7 @@ class BookmarkFeedController @Inject constructor(
                         )
                         if (clickedView.id == R.id.option) {
                             clickedView.findNavController().navigate(
-                                SavedFeedFragmentDirections.menuAction(
+                                BookmarkFeedFragmentDirections.menuAction(
                                     feed = model.feed
                                 ),
                                 extras
@@ -62,7 +63,7 @@ class BookmarkFeedController @Inject constructor(
 
                         } else {
                             clickedView.findNavController().navigate(
-                                SavedFeedFragmentDirections.detailAction(
+                                BookmarkFeedFragmentDirections.detailAction(
                                     feed = model.feed
                                 ),
                                 extras
@@ -72,13 +73,12 @@ class BookmarkFeedController @Inject constructor(
                     }
                 }
             }
+        } else {
+            empty {
+                id("bookmark_empty")
+                title("You have not bookmarked any feed yet.")
+            }
         }
 
     }
-
-    interface Interaction {
-        fun onClearBookmark(view: View)
-    }
-
-
 }

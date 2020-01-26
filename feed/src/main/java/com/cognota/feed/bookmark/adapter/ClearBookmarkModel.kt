@@ -1,4 +1,4 @@
-package com.cognota.feed.saved.adapter
+package com.cognota.feed.bookmark.adapter
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView

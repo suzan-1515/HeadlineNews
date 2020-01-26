@@ -1,12 +1,12 @@
-package com.cognota.feed.commons.viewmodel
+package com.cognota.feed.bookmark.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cognota.core.ui.BaseViewModel
+import com.cognota.core.util.SingleLiveEvent
 import com.cognota.feed.commons.data.BookmarkDataContract
 import com.cognota.feed.commons.domain.BookmarkDTO
-import com.cognota.feed.commons.domain.FeedDTO
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -17,14 +17,14 @@ class BookmarkFeedViewModel(
 
     private val mutableBookmarkFeeds: MutableLiveData<List<BookmarkDTO>?> =
         MutableLiveData()
-    val bookmarkFeeds: LiveData<List<BookmarkDTO>?> =
+    val bookmarkedFeedsLiveData: LiveData<List<BookmarkDTO>?> =
         mutableBookmarkFeeds
 
-    private val mutableBookmarkStatus: MutableLiveData<Boolean> = MutableLiveData()
-    val bookmarkStatus: LiveData<Boolean> = mutableBookmarkStatus
+    private val mutableBookmarksClearedEvent: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val bookmarksClearedEventLiveData: LiveData<Unit> = mutableBookmarksClearedEvent
 
     fun getBookmarkFeeds() {
-        if (bookmarkFeeds.value.isNullOrEmpty()) {
+        if (bookmarkedFeedsLiveData.value.isNullOrEmpty()) {
             viewModelScope.launch {
                 Timber.d("Triggered bookmarked stream call")
                 feedRepository.getBookmarkedFeeds().collect { data ->
@@ -34,29 +34,11 @@ class BookmarkFeedViewModel(
         }
     }
 
-    fun getBookmarkedStatus(id: String) {
-        viewModelScope.launch {
-            feedRepository.getBookmarkedFeed(id).collect {
-                it?.let {
-                    mutableBookmarkStatus.value = true
-                } ?: run {
-                    mutableBookmarkStatus.value = false
-                }
-            }
-        }
-    }
-
     fun clearBookmarkFeeds() {
         viewModelScope.launch {
             feedRepository.clearBookmark()
+            mutableBookmarksClearedEvent.value = Unit
         }
     }
-
-    fun bookmarkFeed(it: FeedDTO) {
-        viewModelScope.launch {
-            feedRepository.bookmarkFeed(it)
-        }
-    }
-
 
 }

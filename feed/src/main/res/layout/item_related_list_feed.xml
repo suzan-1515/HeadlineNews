@@ -86,27 +86,11 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@id/option"
                 app:layout_constraintDimensionRatio="H,1:.6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/category"
                 app:layout_constraintWidth_percent=".32"
                 tools:src="@tools:sample/avatars" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/option"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:tint="@color/md_grey_700"
-                android:contentDescription="@string/option"
-                app:layout_constraintBottom_toBottomOf="@id/sourceIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_more_horiz_black_24dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

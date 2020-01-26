@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:background="?attr/selectableItemBackground"
-            android:text="@string/save_this_news"
+            android:text="@string/bookmark_this_news"
             android:textColor="?android:textColorSecondary"
             app:layout_constraintBottom_toBottomOf="@+id/saveNewsIcon"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,54 +54,5 @@
             app:layout_constraintStart_toEndOf="@+id/optionHideNewsIcon"
             app:layout_constraintTop_toTopOf="@+id/optionHideNewsIcon" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/optionMoreNewsLikeIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/optionHideNewsIcon"
-            app:srcCompat="@drawable/ic_thumb_up_black_24dp"
-            app:tint="?android:textColorSecondary" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/optionMoreNewsLike"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/more_news_like"
-            android:textColor="?android:textColorSecondary"
-            app:layout_constraintBottom_toBottomOf="@+id/optionMoreNewsLikeIcon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/optionMoreNewsLikeIcon"
-            app:layout_constraintTop_toTopOf="@+id/optionMoreNewsLikeIcon" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/optionLessNewsLikeIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/optionMoreNewsLikeIcon"
-            app:srcCompat="@drawable/ic_thumb_down_black_24dp"
-            app:tint="?android:textColorSecondary" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/optionLessNewsLike"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/less_news_like"
-            android:textColor="?android:textColorSecondary"
-            app:layout_constraintBottom_toBottomOf="@+id/optionLessNewsLikeIcon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/optionLessNewsLikeIcon"
-            app:layout_constraintTop_toTopOf="@+id/optionLessNewsLikeIcon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

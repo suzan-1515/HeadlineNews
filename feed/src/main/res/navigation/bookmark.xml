@@ -7,8 +7,8 @@
 
     <fragment
             android:id="@+id/bookmarked_feed"
-            android:name="com.cognota.feed.saved.ui.SavedFeedFragment"
-            tools:layout="@layout/fragment_saved_feed">
+            android:name="com.cognota.feed.bookmark.ui.BookmarkFeedFragment"
+            tools:layout="@layout/fragment_bookmark_feed">
         <action
                 android:id="@+id/detailAction"
                 app:destination="@id/detailFeedActivity" />
@@ -30,8 +30,8 @@
 
     <dialog
             android:id="@+id/feedMenuDialogFragment"
-            android:name="com.cognota.feed.commons.ui.FeedMenuDialogFragment"
-            tools:layout="@layout/fragment_feed_menu_dialog">
+            android:name="com.cognota.feed.bookmark.ui.BookmarkFeedOptionDialogFragment"
+            tools:layout="@layout/fragment_feed_option_dialog">
         <argument
                 android:name="feed"
                 android:defaultValue="@null"

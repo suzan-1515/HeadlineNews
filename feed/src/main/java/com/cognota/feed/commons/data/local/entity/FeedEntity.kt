@@ -55,6 +55,8 @@ data class FeedEntity(
     val uuid: String?,
     @ColumnInfo(name = "type")
     val type: String,
+    @ColumnInfo(name = "enabled")
+    val enabled: Boolean,
     @ColumnInfo(name = "page")
     val page: Int
 )

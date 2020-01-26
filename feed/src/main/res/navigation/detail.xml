@@ -40,8 +40,8 @@
 
     <dialog
             android:id="@+id/feedMenuDialogFragment"
-            android:name="com.cognota.feed.commons.ui.FeedMenuDialogFragment"
-            tools:layout="@layout/fragment_feed_menu_dialog">
+            android:name="com.cognota.feed.option.ui.FeedOptionDialogFragment"
+            tools:layout="@layout/fragment_feed_option_dialog">
         <argument
                 android:name="feed"
                 android:defaultValue="@null"

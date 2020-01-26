@@ -23,8 +23,6 @@ buildscript {
             'picassoTransformation': '2.2.1',
             'circularImageview'    : '3.0.0',
             'flowlayoutManager'    : '1.2.3.2',
-            'rxJava'               : '2.2.14',
-            'rxAndroid'            : '2.1.1',
             'butterknifePlugin'    : '10.1.0',
             'epoxy'                : '3.9.0',
             'jodaTime'             : "2.10.5",
@@ -73,10 +71,10 @@ buildscript {
                     'coroutineCore'   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutine}",
                     'coroutineAndroid': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutine}"
             ],
-            reactivex : [
-                    'rxJava'   : "io.reactivex.rxjava2:rxjava:${versions.rxJava}",
-                    'rxAndroid': "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
-            ],
+//            reactivex : [
+//                    'rxJava'   : "io.reactivex.rxjava2:rxjava:${versions.rxJava}",
+//                    'rxAndroid': "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
+//            ],
             google    : [
                     'gmsPlugin'             : "com.google.gms:google-services:${versions.gms}",
                     'dagger'                : "com.google.dagger:dagger:${versions.dagger}",

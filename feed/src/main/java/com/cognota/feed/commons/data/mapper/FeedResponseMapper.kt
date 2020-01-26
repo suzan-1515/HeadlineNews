@@ -31,6 +31,7 @@ class FeedResponseMapper @Inject constructor() {
             updateDate = response.updateDate,
             uuid = response.uuid,
             type = feedType.toString(),
+            enabled = true,
             page = page
         )
 
@@ -59,6 +60,7 @@ class FeedResponseMapper @Inject constructor() {
             updateDate = response.updateDate,
             uuid = response.uuid,
             type = parentEntity.type,
+            enabled = true,
             parentId = parentEntity.id
         )
 
