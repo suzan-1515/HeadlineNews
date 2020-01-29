@@ -1,7 +1,7 @@
 package com.cognota.core.di
 
 import android.content.Context
-import com.cognota.core.application.CoreApp
+import com.cognota.core.App
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -11,7 +11,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesContext(app: CoreApp): Context {
+    fun providesContext(app: App): Context {
         return app.applicationContext
     }
 

@@ -11,7 +11,7 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
 import com.cognota.feed.commons.adapter.BaseEpoxyHolder
-import com.cognota.feed.commons.domain.RelatedFeedDTO
+import com.cognota.feed.commons.domain.FeedDTO
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -23,7 +23,7 @@ abstract class RelatedFeedListModel(private val picasso: Picasso) :
     EpoxyModelWithHolder<RelatedFeedListModel.Holder>() {
 
     @EpoxyAttribute
-    lateinit var feed: RelatedFeedDTO
+    lateinit var feed: FeedDTO
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var clickListener: View.OnClickListener
 

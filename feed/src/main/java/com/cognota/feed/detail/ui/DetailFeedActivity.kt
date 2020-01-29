@@ -3,7 +3,7 @@ package com.cognota.feed.detail.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import com.cognota.core.application.CoreApp
+import com.cognota.core.App
 import com.cognota.feed.R
 import com.cognota.feed.commons.di.SharedComponentProvider
 import com.cognota.feed.detail.di.DetailFeedComponent
@@ -11,7 +11,7 @@ import com.cognota.feed.detail.di.DetailFeedComponent
 class DetailFeedActivity : AppCompatActivity() {
 
     val feedComponent: DetailFeedComponent by lazy {
-        SharedComponentProvider.detailsComponent((applicationContext as CoreApp).coreComponent)
+        SharedComponentProvider.detailsComponent((applicationContext as App).coreComponent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

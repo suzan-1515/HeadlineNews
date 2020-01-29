@@ -14,7 +14,8 @@ class SourceResponseMapper @Inject constructor() {
             favicon = response.favicon,
             icon = response.icon,
             name = response.name,
-            priority = response.priority
+            priority = response.priority,
+            enabled = true
         )
 
     }

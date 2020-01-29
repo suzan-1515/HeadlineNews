@@ -2,7 +2,7 @@ package com.cognota.feed.option.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.cognota.feed.commons.data.BookmarkDataContract
+import com.cognota.feed.bookmark.data.BookmarkDataContract
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")

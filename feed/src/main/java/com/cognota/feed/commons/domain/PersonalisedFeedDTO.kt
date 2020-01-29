@@ -1,9 +1,10 @@
 package com.cognota.feed.commons.domain
 
-import java.io.Serializable
-
 data class PersonalisedFeedDTO(
-    val feeds: List<FeedWithRelatedFeedDTO>?,
-    val sources: List<SourceDTO>?,
-    val categories: List<CategoryDTO>?
-) : Serializable
+    var trendingFeeds: List<FeedDTO>? = null,
+    var tags: List<TagDTO>? = null,
+    var sources: List<SourceDTO>? = null,
+    var categories: List<CategoryDTO>? = null,
+    var latestFeeds: List<FeedDTO>? = null,
+    var dataType: PersonalisedFeedDataType
+)

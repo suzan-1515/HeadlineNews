@@ -2,7 +2,7 @@ package com.cognota.core.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.cognota.core.application.CoreApp
+import com.cognota.core.App
 import com.squareup.picasso.Picasso
 import dagger.BindsInstance
 import dagger.Component
@@ -20,13 +20,13 @@ import javax.inject.Singleton
         ImageModule::class,
         AndroidSupportInjectionModule::class]
 )
-interface CoreComponent : AndroidInjector<CoreApp> {
+interface CoreComponent : AndroidInjector<App> {
 
     @Component.Builder
     interface Builder {
 
         @BindsInstance
-        fun application(application: CoreApp): CoreComponent.Builder
+        fun application(application: App): CoreComponent.Builder
 
         fun build(): CoreComponent
     }

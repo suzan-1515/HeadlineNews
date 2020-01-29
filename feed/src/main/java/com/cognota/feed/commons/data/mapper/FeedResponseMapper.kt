@@ -1,7 +1,6 @@
 package com.cognota.feed.commons.data.mapper
 
 import com.cognota.feed.commons.data.local.entity.FeedEntity
-import com.cognota.feed.commons.data.local.entity.RelatedFeedEntity
 import com.cognota.feed.commons.data.remote.model.NewsFeedResponse
 import com.cognota.feed.commons.domain.FeedType
 import javax.inject.Inject
@@ -32,6 +31,7 @@ class FeedResponseMapper @Inject constructor() {
             uuid = response.uuid,
             type = feedType.toString(),
             enabled = true,
+            parentId = null,
             page = page
         )
 
@@ -41,9 +41,9 @@ class FeedResponseMapper @Inject constructor() {
     fun toEntity(
         response: NewsFeedResponse.Feed.Related,
         parentEntity: FeedEntity
-    ): RelatedFeedEntity {
+    ): FeedEntity {
 
-        return RelatedFeedEntity(
+        return FeedEntity(
             author = response.author,
             category = response.category,
             content = response.content,
@@ -61,10 +61,10 @@ class FeedResponseMapper @Inject constructor() {
             uuid = response.uuid,
             type = parentEntity.type,
             enabled = true,
-            parentId = parentEntity.id
+            parentId = parentEntity.id,
+            page = parentEntity.page
         )
 
     }
-
 
 }

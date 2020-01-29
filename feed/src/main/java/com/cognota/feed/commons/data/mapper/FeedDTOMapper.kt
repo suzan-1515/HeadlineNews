@@ -1,10 +1,8 @@
 package com.cognota.feed.commons.data.mapper
 
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
-import com.cognota.feed.commons.data.local.relation.RelatedFeedWithSourcesEntity
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.commons.domain.FeedType
-import com.cognota.feed.commons.domain.RelatedFeedDTO
 import javax.inject.Inject
 
 class FeedDTOMapper @Inject constructor(
@@ -26,28 +24,10 @@ class FeedDTOMapper @Inject constructor(
             source = sourceDTOMapper.toDTO(entity.source),
             updatedDate = entity.feed.updateDate,
             type = FeedType.valueOf(entity.feed.type),
-            page = entity.feed.page
+            page = entity.feed.page,
+            parentId = entity.feed.parentId
         )
 
-    }
-
-
-    fun toDTO(
-        entity: RelatedFeedWithSourcesEntity
-    ): RelatedFeedDTO {
-        return RelatedFeedDTO(
-            category = categoryDTOMapper.toDTO(entity.category),
-            description = entity.feed.description,
-            id = entity.feed.id,
-            link = entity.feed.link,
-            image = entity.feed.image,
-            publishedDate = entity.feed.pubDate,
-            source = sourceDTOMapper.toDTO(entity.source),
-            title = entity.feed.title,
-            updatedDate = entity.feed.updateDate,
-            type = FeedType.valueOf(entity.feed.type),
-            parentFeed = this.toDTO(entity.parentFeed)
-        )
     }
 
 }

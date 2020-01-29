@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
-import com.cognota.core.application.CoreApp
+import com.cognota.core.App
 import com.cognota.feed.R
 import com.cognota.feed.commons.di.SharedComponentProvider
 import com.cognota.feed.option.viewmodel.FeedOptionViewModel
@@ -32,7 +32,7 @@ class BookmarkFeedOptionDialogFragment : BottomSheetDialogFragment() {
     override fun onAttach(context: Context) {
         Timber.d("attaching bookmark feed option dialog fragment")
         SharedComponentProvider.feedComponent(
-            ((requireActivity().applicationContext) as CoreApp)
+            ((requireActivity().applicationContext) as App)
                 .coreComponent
         )
             .inject(this)

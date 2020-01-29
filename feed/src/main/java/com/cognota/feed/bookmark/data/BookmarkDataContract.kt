@@ -1,4 +1,4 @@
-package com.cognota.feed.commons.data
+package com.cognota.feed.bookmark.data
 
 import com.cognota.feed.commons.domain.BookmarkDTO
 import com.cognota.feed.commons.domain.FeedDTO

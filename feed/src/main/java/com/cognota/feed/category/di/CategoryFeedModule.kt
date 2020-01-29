@@ -43,6 +43,7 @@ class CategoryFeedModule {
         newsAPIService: NewsAPIService,
         newsDao: NewsDao,
         sharedPreferences: SharedPreferences,
+        sourceAndCategoryRepo: SourceAndCategoryDataContract.Repository,
         feedResponseMapper: FeedResponseMapper,
         feedDTOMapper: FeedDTOMapper
     ): CategoryFeedDataContract.Repository =
@@ -50,6 +51,7 @@ class CategoryFeedModule {
             newsAPIService,
             newsDao,
             sharedPreferences,
+            sourceAndCategoryRepo,
             feedResponseMapper,
             feedDTOMapper
         )

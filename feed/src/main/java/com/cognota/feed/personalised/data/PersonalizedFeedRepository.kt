@@ -1,13 +1,13 @@
 package com.cognota.feed.personalised.data
 
 import android.content.SharedPreferences
-import com.cognota.core.networking.DataFetchHelper
+import com.cognota.core.networking.NetworkBoundResource
 import com.cognota.core.repository.BaseRepository
-import com.cognota.core.repository.Resource
+import com.cognota.core.util.RepositoryUtil
+import com.cognota.core.vo.Resource
+import com.cognota.core.vo.Status
 import com.cognota.feed.commons.data.SourceAndCategoryDataContract
 import com.cognota.feed.commons.data.local.dao.NewsDao
-import com.cognota.feed.commons.data.local.entity.TagEntity
-import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
 import com.cognota.feed.commons.data.mapper.FeedDTOMapper
 import com.cognota.feed.commons.data.mapper.FeedResponseMapper
 import com.cognota.feed.commons.data.mapper.TagDTOMapper
@@ -18,8 +18,11 @@ import com.cognota.feed.commons.data.remote.service.NewsAPIService
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.commons.domain.FeedType
 import com.cognota.feed.commons.domain.TagDTO
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import retrofit2.Response
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -34,32 +37,20 @@ class PersonalizedFeedRepository @Inject constructor(
     private val tagDTOMapper: TagDTOMapper
 ) : BaseRepository(), PersonalizedFeedDataContract.Repository {
 
-    override suspend fun getLatestFeeds(): Deferred<Resource<List<FeedDTO>?>> {
-        val sourceResource = sourceAndCategoryRepository.getSourcesAndCategories().await()
-        val dataFetchHelper =
-            object :
-                DataFetchHelper.LocalFirstUntilStale<List<FeedWithSourcesEntity>?, List<FeedDTO>?>(
-                    "latest_feed",
-                    sharedPreferences,
-                    "latest_feed",
-                    "latest_feed",
-                    TimeUnit.MINUTES.toMinutes(1)
-                ) {
-
-                override suspend fun getDataFromNetwork(): Response<out Any?> {
-                    return newsApiAPIService.getLatestFeeds()
-                }
-
-                override suspend fun getDataFromLocal(): List<FeedWithSourcesEntity>? {
-                    return newsDao.findLatestFeeds()
-                }
-
-                override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean {
-                    val newsResponse = response.body() as NewsFeedResponse
-                    if (!newsResponse.feeds.isNullOrEmpty()) newsDao.deleteAllLatestFeed(
-                        FeedType.LATEST.toString()
-                    )
-                    newsResponse.feeds.map { feed ->
+    @ExperimentalCoroutinesApi
+    @FlowPreview
+    override suspend fun getLatestFeeds(): Flow<Resource<List<FeedDTO>?>> {
+        return sourceAndCategoryRepository.getSourcesAndCategories().filter {
+            Timber.d("getSourcesAndCategories filter")
+            it.status == Status.SUCCESS
+        }.flatMapLatest {
+            Timber.d("getLatestFeeds")
+            object : NetworkBoundResource<List<FeedDTO>?, NewsFeedResponse>() {
+                override suspend fun saveNetworkResult(item: NewsFeedResponse) {
+                    Timber.d("saveNetworkResult")
+                    if (!item.feeds.isNullOrEmpty())
+                        newsDao.deleteAllLatestFeed(FeedType.LATEST.toString())
+                    item.feeds.map { feed ->
                         val parentEntity = feedResponseMapper.toEntity(
                             feed, FeedType.LATEST
                         )
@@ -73,64 +64,61 @@ class PersonalizedFeedRepository @Inject constructor(
 
                         newsDao.insert(parentEntity)
                         relatedEntities?.let {
-                            newsDao.insertRelatedFeeds(it)
+                            newsDao.insert(it)
                         }
                     }
-
-                    return true
                 }
 
-                override suspend fun convertDataToDto(data: List<FeedWithSourcesEntity>?): List<FeedDTO>? {
-                    if (sourceResource.hasData()) {
-                        return data?.map { feed ->
-                            feedDTOMapper.toDTO(feed)
-                        }
+                override fun shouldFetch(data: List<FeedDTO>?): Boolean {
+                    return data.isNullOrEmpty() ||
+                            RepositoryUtil.shouldFetch(
+                                sharedPreferences,
+                                "latest_feed",
+                                "latest_feed",
+                                TimeUnit.SECONDS.toSeconds(120)
+                            )
+                }
 
+                override fun loadFromDb(): Flow<List<FeedDTO>?> {
+                    Timber.d("loadFromDb")
+                    return flow {
+                        emit(
+                            newsDao.findLatestFeeds()?.map { feed ->
+                                feedDTOMapper.toDTO(feed)
+                            }
+                        )
                     }
-                    return listOf()
                 }
 
-                override suspend fun operateOnDataPostFetch(data: List<FeedDTO>?) {
-                    super.operateOnDataPostFetch(data)
+                override suspend fun fetchFromNetwork(): Response<NewsFeedResponse> {
+                    Timber.d("fetchFromNetwork")
+                    return newsApiAPIService.getLatestFeeds()
                 }
-            }
 
-        return dataFetchHelper.fetchDataIOAsync()
+                override fun onFetchFailed() {
+                    RepositoryUtil.resetCache(
+                        sharedPreferences,
+                        "latest_feed",
+                        "latest_feed"
+                    )
+                }
+
+            }.asFlow().flowOn(ioDispatcher)
+        }
     }
 
-    override suspend fun getTop10Feeds(): Deferred<Resource<List<FeedDTO>?>> {
-        val sourceResource = sourceAndCategoryRepository.getSourcesAndCategories().await()
-        val dataFetchHelper =
-            object :
-                DataFetchHelper.LocalFirstUntilStale<List<FeedWithSourcesEntity>?, List<FeedDTO>?>(
-                    "top5_feed",
-                    sharedPreferences,
-                    "top5_feed",
-                    "top5_feed",
-                    TimeUnit.SECONDS.toSeconds(15) //storing news information for 15ø sec only.
-                ) {
-
-                override suspend fun getDataFromNetwork(): Response<out Any?> {
-                    return newsApiAPIService.getTopFeeds()
-                }
-
-                override suspend fun getDataFromLocal(): List<FeedWithSourcesEntity>? {
-                    return newsDao.findTop10Feeds()
-                }
-
-                override suspend fun convertDataToDto(data: List<FeedWithSourcesEntity>?): List<FeedDTO>? {
-                    if (sourceResource.hasData()) {
-                        return data?.map {
-                            feedDTOMapper.toDTO(it)
-                        }
-                    }
-
-                    return listOf()
-                }
-
-                override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean {
-                    val newsResponse = response.body() as NewsFeedResponse
-                    val obj = newsResponse.feeds.map { feed ->
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    override suspend fun getTop10Feeds(): Flow<Resource<List<FeedDTO>?>> {
+        return sourceAndCategoryRepository.getSourcesAndCategories().filter {
+            Timber.d("getSourcesAndCategories filter")
+            it.status == Status.SUCCESS
+        }.flatMapLatest {
+            Timber.d("getTop10Feeds")
+            object : NetworkBoundResource<List<FeedDTO>?, NewsFeedResponse>() {
+                override suspend fun saveNetworkResult(item: NewsFeedResponse) {
+                    Timber.d("saveNetworkResult")
+                    val obj = item.feeds.map { feed ->
                         feedResponseMapper.toEntity(
                             feed, FeedType.TOP
                         )
@@ -139,64 +127,98 @@ class PersonalizedFeedRepository @Inject constructor(
                     if (!obj.isNullOrEmpty()) {
                         newsDao.deleteAllTopFeed(FeedType.TOP.toString())
                     }
-
                     newsDao.insert(obj)
-
-                    return true
                 }
 
-                override suspend fun operateOnDataPostFetch(data: List<FeedDTO>?) {
-                    super.operateOnDataPostFetch(data)
+                override fun shouldFetch(data: List<FeedDTO>?): Boolean {
+                    return data.isNullOrEmpty() ||
+                            RepositoryUtil.shouldFetch(
+                                sharedPreferences,
+                                "top5_feed",
+                                "top5_feed",
+                                TimeUnit.SECONDS.toSeconds(120)
+                            )
                 }
-            }
 
-        return dataFetchHelper.fetchDataIOAsync()
+                override fun loadFromDb(): Flow<List<FeedDTO>?> {
+                    Timber.d("loadFromDb")
+                    return flow {
+                        emit(
+                            newsDao.findTop10Feeds()?.map { data ->
+                                feedDTOMapper.toDTO(data)
+                            }
+                        )
+                    }
+                }
+
+                override suspend fun fetchFromNetwork(): Response<NewsFeedResponse> {
+                    Timber.d("fetchFromNetwork")
+                    return newsApiAPIService.getTopFeeds()
+                }
+
+                override fun onFetchFailed() {
+                    RepositoryUtil.resetCache(
+                        sharedPreferences,
+                        "top5_feed",
+                        "top5_feed"
+                    )
+                }
+
+            }.asFlow().flowOn(ioDispatcher)
+        }
     }
 
-    override suspend fun getFeedTags(): Deferred<Resource<List<TagDTO>?>> {
-        val dataFetchHelper =
-            object :
-                DataFetchHelper.LocalFirstUntilStale<List<TagEntity>?, List<TagDTO>?>(
-                    "feed_tags",
-                    sharedPreferences,
-                    "feed_tags",
-                    "feed_tags",
-                    TimeUnit.MINUTES.toMinutes(5) //storing news information for 5ø min only.
-                ) {
-
-                override suspend fun getDataFromNetwork(): Response<out Any?> {
-                    return newsApiAPIService.getTags()
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    override suspend fun getFeedTags(): Flow<Resource<List<TagDTO>?>> {
+        return object : NetworkBoundResource<List<TagDTO>?, TagResponse>() {
+            override suspend fun saveNetworkResult(item: TagResponse) {
+                Timber.d("saveNetworkResult")
+                val tagEntities = item.tags.map {
+                    tagResponseMapper.toEntity(it)
                 }
+                if (!tagEntities.isNullOrEmpty())
+                    newsDao.deleteAllTags()
+                newsDao.insertTags(tagEntities)
 
-                override suspend fun getDataFromLocal(): List<TagEntity>? {
-                    return newsDao.findTags()
-                }
+            }
 
-                override suspend fun convertDataToDto(data: List<TagEntity>?): List<TagDTO>? {
-                    return data?.map {
-                        tagDTOMapper.toDTO(it)
-                    }
+            override fun shouldFetch(data: List<TagDTO>?): Boolean {
+                return data.isNullOrEmpty() ||
+                        RepositoryUtil.shouldFetch(
+                            sharedPreferences,
+                            "feed_tags",
+                            "feed_tags",
+                            TimeUnit.SECONDS.toSeconds(120)
+                        )
+            }
 
-                }
-
-                override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean {
-                    val tagResponse = response.body() as TagResponse
-                    val tagEntities = tagResponse.tags.map {
-                        tagResponseMapper.toEntity(it)
-                    }
-                    if (!tagEntities.isNullOrEmpty())
-                        newsDao.deleteAllTags()
-                    newsDao.insertTags(tagEntities)
-
-                    return true
-                }
-
-                override suspend fun operateOnDataPostFetch(data: List<TagDTO>?) {
-                    super.operateOnDataPostFetch(data)
+            override fun loadFromDb(): Flow<List<TagDTO>?> {
+                Timber.d("loadFromDb")
+                return flow {
+                    emit(
+                        newsDao.findTags()?.map {
+                            tagDTOMapper.toDTO(it)
+                        }
+                    )
                 }
             }
 
-        return dataFetchHelper.fetchDataIOAsync()
+            override suspend fun fetchFromNetwork(): Response<TagResponse> {
+                Timber.d("fetchFromNetwork")
+                return newsApiAPIService.getTags()
+            }
+
+            override fun onFetchFailed() {
+                RepositoryUtil.resetCache(
+                    sharedPreferences,
+                    "feed_tags",
+                    "feed_tags"
+                )
+            }
+
+        }.asFlow().flowOn(ioDispatcher)
+
     }
 
 }

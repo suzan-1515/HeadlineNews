@@ -1,9 +1,11 @@
 package com.cognota.feed.commons.domain
 
 import android.net.Uri
+import android.os.Parcelable
 import android.util.Patterns
-import java.io.Serializable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CategoryDTO(
     val code: String,
     val enable: String,
@@ -12,8 +14,7 @@ data class CategoryDTO(
     val name: String,
     val nameNp: String,
     val priority: Int
-) : Serializable {
-
+) : Parcelable {
     fun icon(): Uri? {
         return if (Patterns.WEB_URL.matcher(icon).matches())
             Uri.parse(icon)

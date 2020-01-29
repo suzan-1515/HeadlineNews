@@ -55,6 +55,15 @@ data class FeedEntity(
     val uuid: String?,
     @ColumnInfo(name = "type")
     val type: String,
+    @ForeignKey
+        (
+        entity = FeedEntity::class,
+        parentColumns = ["id"],
+        childColumns = ["parent_id"],
+        onDelete = ForeignKey.CASCADE
+    )
+    @ColumnInfo(name = "parent_id")
+    val parentId: String?,
     @ColumnInfo(name = "enabled")
     val enabled: Boolean,
     @ColumnInfo(name = "page")

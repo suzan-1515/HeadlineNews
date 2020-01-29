@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
-import com.cognota.core.application.CoreApp
+import com.cognota.core.App
 import com.cognota.feed.R
 import com.cognota.feed.commons.di.SharedComponentProvider
 import com.cognota.feed.option.data.OptionEvent
@@ -34,7 +34,7 @@ class FeedOptionDialogFragment : BottomSheetDialogFragment() {
     override fun onAttach(context: Context) {
         Timber.d("attaching menu dialog fragment")
         SharedComponentProvider.feedComponent(
-            ((requireActivity().applicationContext) as CoreApp)
+            ((requireActivity().applicationContext) as App)
                 .coreComponent
         )
             .inject(this)

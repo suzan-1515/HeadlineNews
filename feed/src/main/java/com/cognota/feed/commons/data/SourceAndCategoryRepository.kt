@@ -1,11 +1,11 @@
 package com.cognota.feed.commons.data
 
 import android.content.SharedPreferences
-import com.cognota.core.networking.DataFetchHelper
+import com.cognota.core.networking.NetworkBoundResource
 import com.cognota.core.repository.BaseRepository
-import com.cognota.core.repository.Resource
+import com.cognota.core.util.RepositoryUtil
+import com.cognota.core.vo.Resource
 import com.cognota.feed.commons.data.local.dao.NewsDao
-import com.cognota.feed.commons.data.local.relation.SourceWithCategoryEntity
 import com.cognota.feed.commons.data.mapper.CategoryDTOMapper
 import com.cognota.feed.commons.data.mapper.CategoryResponseMapper
 import com.cognota.feed.commons.data.mapper.SourceDTOMapper
@@ -15,10 +15,11 @@ import com.cognota.feed.commons.data.remote.service.NewsAPIService
 import com.cognota.feed.commons.domain.CategoryDTO
 import com.cognota.feed.commons.domain.SourceAndCategoryDTO
 import com.cognota.feed.commons.domain.SourceDTO
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import retrofit2.Response
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -32,82 +33,91 @@ class SourceAndCategoryRepository @Inject constructor(
     private val categoryDTOMapper: CategoryDTOMapper
 ) : BaseRepository(), SourceAndCategoryDataContract.Repository {
 
-    override suspend fun getSourcesAndCategories(): Deferred<Resource<SourceAndCategoryDTO?>> {
-        val dataFetchHelper =
-            object :
-                DataFetchHelper.LocalFirstUntilStale<SourceWithCategoryEntity?, SourceAndCategoryDTO?>(
-                    "feed_sources",
-                    sharedPreferences,
-                    "feed_sources",
-                    "feed_sources",
-                    TimeUnit.MINUTES.toMinutes(5) //storing news information for 15ø min only.
-                ) {
-
-                override suspend fun getDataFromNetwork(): Response<out Any?> {
-                    return newsApiAPIService.getSources()
+    @ExperimentalCoroutinesApi
+    @FlowPreview
+    override suspend fun getSourcesAndCategories(): Flow<Resource<SourceAndCategoryDTO?>> {
+        return object : NetworkBoundResource<SourceAndCategoryDTO?, SourceResponse>() {
+            override suspend fun saveNetworkResult(item: SourceResponse) {
+                Timber.d("saveNetworkResult")
+                val sourcesEntity = item.sources.map {
+                    sourceResponseMapper.toEntity(it)
                 }
-
-                override suspend fun getDataFromLocal(): SourceWithCategoryEntity? {
-                    return SourceWithCategoryEntity(
-                        source = newsDao.findSources(),
-                        category = newsDao.findCategories()
-                    )
+                val categoryEntity = item.categories.map {
+                    categoryResponseMapper.toEntity(it)
                 }
+                if (!sourcesEntity.isNullOrEmpty())
+                    newsDao.deleteAllSources()
+                if (!categoryEntity.isNullOrEmpty())
+                    newsDao.deleteAllCategories()
+                newsDao.insertSources(sourcesEntity)
+                newsDao.insertCategories(categoryEntity)
 
-                override suspend fun convertDataToDto(data: SourceWithCategoryEntity?): SourceAndCategoryDTO? {
-                    return data?.let {
-                        SourceAndCategoryDTO(
-                            source = it.source?.map { source -> sourceDTOMapper.toDTO(source) },
-                            category = it.category?.map { category ->
+            }
+
+            override fun shouldFetch(data: SourceAndCategoryDTO?): Boolean {
+                return data == null ||
+                        RepositoryUtil.shouldFetch(
+                            sharedPreferences,
+                            "feed_sources",
+                            "feed_sources",
+                            TimeUnit.SECONDS.toSeconds(120)
+                        )
+            }
+
+            override fun loadFromDb(): Flow<SourceAndCategoryDTO?> {
+                Timber.d("loadFromDb")
+                return flow {
+                    val findSources = newsDao.findSources()
+                    val findCategories = newsDao.findCategories()
+                    if (!findSources.isNullOrEmpty() && !findCategories.isNullOrEmpty()) {
+                        Timber.d("source and category cache available")
+                        emit(SourceAndCategoryDTO(
+                            source = findSources.map { source -> sourceDTOMapper.toDTO(source) },
+                            category = findCategories.map { category ->
                                 categoryDTOMapper.toDTO(
                                     category
                                 )
                             }
-                        )
+                        ))
+                    } else {
+                        Timber.d("source and category cache unavailable")
+                        emit(null)
                     }
-
-
-                }
-
-                override suspend fun storeFreshRawDataToLocal(response: Response<out Any?>): Boolean {
-                    val sourceResponse = response.body() as SourceResponse
-                    val sourcesEntity = sourceResponse.sources.map {
-                        sourceResponseMapper.toEntity(it)
-                    }
-                    val categoryEntity = sourceResponse.categories.map {
-                        categoryResponseMapper.toEntity(it)
-                    }
-                    if (!sourcesEntity.isNullOrEmpty())
-                        newsDao.deleteAllSources()
-                    if (!categoryEntity.isNullOrEmpty())
-                        newsDao.deleteAllCategories()
-                    newsDao.insertSources(sourcesEntity)
-                    newsDao.insertCategories(categoryEntity)
-
-                    return true
-                }
-
-                override suspend fun operateOnDataPostFetch(data: SourceAndCategoryDTO?) {
-                    super.operateOnDataPostFetch(data)
                 }
             }
 
-        return dataFetchHelper.fetchDataIOAsync()
+            override suspend fun fetchFromNetwork(): Response<SourceResponse> {
+                Timber.d("fetchFromNetwork")
+                return newsApiAPIService.getSources()
+            }
+
+            override fun onFetchFailed() {
+                RepositoryUtil.resetCache(
+                    sharedPreferences,
+                    "feed_sources",
+                    "feed_sources"
+                )
+            }
+
+        }.asFlow().flowOn(ioDispatcher)
+
     }
 
-    override suspend fun getSourcesStream(): Flow<List<SourceDTO>?> {
-        return newsDao.findSourcesReactive().map { data ->
-            data?.map {
+    @ExperimentalCoroutinesApi
+    override suspend fun getSources(): Flow<List<SourceDTO>?> {
+        return newsDao.findSourcesReactive().filterNotNull().distinctUntilChanged().map { data ->
+            data.map {
                 sourceDTOMapper.toDTO(it)
             }
-        }
+        }.flowOn(ioDispatcher)
     }
 
-    override suspend fun getCategoriesStream(): Flow<List<CategoryDTO>?> {
-        return newsDao.findCategoriesReactive().map { data ->
-            data?.map {
+    @ExperimentalCoroutinesApi
+    override suspend fun getCategories(): Flow<List<CategoryDTO>?> {
+        return newsDao.findCategoriesReactive().filterNotNull().distinctUntilChanged().map { data ->
+            data.map {
                 categoryDTOMapper.toDTO(it)
             }
-        }
+        }.flowOn(ioDispatcher)
     }
 }

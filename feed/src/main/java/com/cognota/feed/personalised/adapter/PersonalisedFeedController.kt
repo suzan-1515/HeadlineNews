@@ -11,7 +11,10 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.cognota.core.di.FeatureScope
 import com.cognota.feed.R
-import com.cognota.feed.commons.adapter.*
+import com.cognota.feed.commons.adapter.feedCard
+import com.cognota.feed.commons.adapter.feedList
+import com.cognota.feed.commons.adapter.flowCarousel
+import com.cognota.feed.commons.adapter.header
 import com.cognota.feed.commons.domain.CategoryDTO
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.commons.domain.SourceDTO
@@ -73,11 +76,10 @@ class PersonalisedFeedController @Inject constructor(
     fun setCategory(categories: List<CategoryDTO>?) {
         if (!categories.isNullOrEmpty()) {
             this.categories = categories
-//            requestModelBuild()
+            requestModelBuild()
         }
 
     }
-
 
     fun setTags(tags: List<TagDTO>?) {
         if (!tags.isNullOrEmpty()) {
@@ -87,6 +89,32 @@ class PersonalisedFeedController @Inject constructor(
     }
 
     override fun buildModels() {
+
+        if (!tags.isNullOrEmpty()) {
+            Timber.d("building tags models")
+            header {
+                id("tags_header")
+                title("Trending topics")
+            }
+
+            flowCarousel {
+                id("tags_carousel")
+                paddingDp(0)
+                models(
+                    tags.map { tag ->
+                        TagModel_(picasso).apply {
+                            id(tag.title)
+                            title(tag.title)
+                            tag.icon()?.let { icon -> icon(icon) }
+                            clickListener { model, parentView, clickedView, position ->
+                                Timber.d("Tag clicked: %s", model.title())
+                            }
+                        }
+                    }
+                )
+            }
+
+        }
 
         if (!trendingFeeds.isNullOrEmpty()) {
             Timber.d("building trending feeds models")
@@ -125,32 +153,6 @@ class PersonalisedFeedController @Inject constructor(
 
                 )
             }
-        }
-
-        if (!tags.isNullOrEmpty()) {
-            Timber.d("building tags models")
-            header {
-                id("tags_header")
-                title("Trending topics")
-            }
-
-            flowCarousel {
-                id("tags_carousel")
-                paddingDp(0)
-                models(
-                    tags.map { tag ->
-                        TagModel_(picasso).apply {
-                            id(tag.title)
-                            title(tag.title)
-                            tag.icon()?.let { icon -> icon(icon) }
-                            clickListener { model, parentView, clickedView, position ->
-                                Timber.d("Tag clicked: %s", model.title())
-                            }
-                        }
-                    }
-                )
-            }
-
         }
 
         if (!latestFeeds.isNullOrEmpty()) {
@@ -251,9 +253,7 @@ class PersonalisedFeedController @Inject constructor(
                                     parentView.title to parentView.title.transitionName,
                                     parentView.preview to parentView.preview.transitionName,
                                     parentView.date to parentView.date.transitionName,
-                                    parentView.image to parentView.image.transitionName,
-                                    parentView.sourceIcon to parentView.sourceIcon.transitionName,
-                                    parentView.category to parentView.category.transitionName
+                                    parentView.image to parentView.image.transitionName
                                 )
                                 if (clickedView.id == R.id.option) {
                                     clickedView.findNavController().navigate(
@@ -278,17 +278,6 @@ class PersonalisedFeedController @Inject constructor(
                 }
             }
         }
-
-        ProgressModel_().apply {
-            id("progress")
-        }.addIf(
-            latestFeeds.isNullOrEmpty()
-                    || trendingFeeds.isNullOrEmpty()
-                    || tags.isNullOrEmpty()
-                    || sources.isNullOrEmpty()
-                    || categories.isNullOrEmpty()
-            , this
-        )
 
     }
 

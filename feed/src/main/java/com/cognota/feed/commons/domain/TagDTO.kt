@@ -1,13 +1,15 @@
 package com.cognota.feed.commons.domain
 
 import android.net.Uri
+import android.os.Parcelable
 import android.util.Patterns
-import java.io.Serializable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class TagDTO(
     val title: String,
     val icon: String? = null
-) : Serializable {
+) : Parcelable {
 
     fun icon(): Uri? {
         return icon?.let {

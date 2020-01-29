@@ -20,19 +20,19 @@ class CategoryDTOMapper @Inject constructor() {
 
     }
 
-    fun toEntity(entity: CategoryDTO): CategoryEntity {
-
-        return CategoryEntity(
-            id = entity.id,
-            code = entity.code,
-            enable = entity.enable,
-            icon = entity.icon,
-            name = entity.name,
-            nameNp = entity.nameNp,
-            priority = entity.priority
-        )
-
-    }
+//    fun toEntity(entity: CategoryDTO): CategoryEntity {
+//
+//        return CategoryEntity(
+//            id = entity.id,
+//            code = entity.code,
+//            enable = entity.enable,
+//            icon = entity.icon,
+//            name = entity.name,
+//            nameNp = entity.nameNp,
+//            priority = entity.priority
+//        )
+//
+//    }
 
 
 }

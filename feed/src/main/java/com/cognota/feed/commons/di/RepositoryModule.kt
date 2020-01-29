@@ -2,8 +2,8 @@ package com.cognota.feed.commons.di
 
 import android.content.SharedPreferences
 import com.cognota.core.di.ModuleScope
-import com.cognota.feed.commons.data.BookmarkDataContract
-import com.cognota.feed.commons.data.BookmarkRepository
+import com.cognota.feed.bookmark.data.BookmarkDataContract
+import com.cognota.feed.bookmark.data.BookmarkRepository
 import com.cognota.feed.commons.data.SourceAndCategoryDataContract
 import com.cognota.feed.commons.data.SourceAndCategoryRepository
 import com.cognota.feed.commons.data.local.dao.NewsDao

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cognota.core.ui.BaseViewModel
 import com.cognota.core.util.SingleLiveEvent
-import com.cognota.feed.commons.data.BookmarkDataContract
+import com.cognota.feed.bookmark.data.BookmarkDataContract
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.option.data.OptionEvent
 import kotlinx.coroutines.flow.collect
@@ -84,7 +84,7 @@ class FeedOptionViewModel(
         if (mutableBookmarkStatus.value == null) {
             viewModelScope.launch {
                 // TODO Like status implementation
-                mutableLikeStatus.value = OptionEvent.LIKED
+                mutableLikeStatus.value = OptionEvent.DISLIKED
 //                feedRepository.getBookmarkedFeed(id).collect {
 //                    it?.let {
 //                        mutableBookmarkStatus.value = OptionEvent.BOOKMARKED

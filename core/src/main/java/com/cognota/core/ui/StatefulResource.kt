@@ -1,11 +1,11 @@
 package com.cognota.core.ui
 
 import androidx.annotation.StringRes
-import com.cognota.core.repository.Resource
+import com.cognota.core.vo.Resource
 
 /**
  * Wrapper class for easily emitting state information surrounding a resource
- * e.g. LiveData<StatefulResource<Artist>>
+ * e.g. LiveData<StatefulResource<Feed>>
  */
 class StatefulResource<T> {
     /**
@@ -41,7 +41,7 @@ class StatefulResource<T> {
 
     fun getData(): T? = resource?.data
 
-    fun hasData(): Boolean = resource?.hasData() ?: false
+    fun hasData(): Boolean = resource?.data != null ?: false
 
     /**
      * Custom message resource

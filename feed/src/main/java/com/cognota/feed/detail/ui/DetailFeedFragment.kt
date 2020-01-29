@@ -18,7 +18,7 @@ import com.cognota.core.di.FeatureScope
 import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.R
-import com.cognota.feed.commons.domain.RelatedFeedDTO
+import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.detail.adapter.RelatedFeedController
 import com.cognota.feed.detail.viewmodel.DetailFeedViewModel
 import com.cognota.feed.detail.viewmodel.DetailFeedViewModelFactory
@@ -150,7 +150,7 @@ class DetailFeedFragment : BaseFragment() {
 
         feedData()
         args.feed?.let {
-            viewModel.getRelatedFeed(it.id)
+            viewModel.getRelatedFeed(it.parentId?.let { it } ?: it.id)
             feedOptionViewModel.getBookmarkedStatus(it.id)
             feedOptionViewModel.getLikeStatus(it.id)
         }
@@ -194,7 +194,7 @@ class DetailFeedFragment : BaseFragment() {
 //        Observe the outcome and update state of the screen accordingly
         viewModel.relatedFeeds.observe(
             viewLifecycleOwner,
-            Observer<StatefulResource<List<RelatedFeedDTO>?>> { resource ->
+            Observer<StatefulResource<List<FeedDTO>?>> { resource ->
                 snackBar?.dismiss()
 
                 when (resource.state) {
@@ -203,7 +203,6 @@ class DetailFeedFragment : BaseFragment() {
                     }
                     StatefulResource.State.SUCCESS -> {
                         if (resource.hasData()) {
-                            Timber.d("Feed data received ")
                             feedController.setFeeds(resource.getData())
                         } else {
                             Timber.d("Empty data received")

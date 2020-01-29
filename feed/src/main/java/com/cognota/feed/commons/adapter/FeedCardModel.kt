@@ -39,8 +39,7 @@ abstract class FeedCardModel(private val picasso: Picasso) :
                 )
             feed.image?.let {
                 picasso.load(it)
-                    .fit()
-                    .transform(RoundedCornersTransformation(16, 4))
+                    .transform(RoundedCornersTransformation(12, 0))
                     .into(holder.image)
             } ?: run {
                 holder.image.visibility = View.GONE

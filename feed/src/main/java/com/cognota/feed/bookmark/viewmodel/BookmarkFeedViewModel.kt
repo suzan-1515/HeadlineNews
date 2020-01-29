@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cognota.core.ui.BaseViewModel
 import com.cognota.core.util.SingleLiveEvent
-import com.cognota.feed.commons.data.BookmarkDataContract
+import com.cognota.feed.bookmark.data.BookmarkDataContract
 import com.cognota.feed.commons.domain.BookmarkDTO
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

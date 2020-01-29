@@ -19,5 +19,7 @@ data class SourceEntity(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "priority")
-    val priority: Int
+    val priority: Int,
+    @ColumnInfo(name = "enabled")
+    val enabled: Boolean
 )

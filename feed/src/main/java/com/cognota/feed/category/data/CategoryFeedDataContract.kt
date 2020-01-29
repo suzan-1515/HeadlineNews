@@ -1,8 +1,8 @@
 package com.cognota.feed.category.data
 
-import com.cognota.core.repository.Resource
+import com.cognota.core.vo.Resource
 import com.cognota.feed.commons.domain.FeedDTO
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.flow.Flow
 
 interface CategoryFeedDataContract {
     interface Repository {
@@ -10,6 +10,6 @@ interface CategoryFeedDataContract {
         suspend fun getFeedsByCategory(
             category: String,
             page: Int
-        ): Deferred<Resource<List<FeedDTO>?>>
+        ): Flow<Resource<List<FeedDTO>?>>
     }
 }

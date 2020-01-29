@@ -4,33 +4,41 @@ import androidx.room.*
 import com.cognota.core.data.persistence.dao.BaseDao
 import com.cognota.feed.commons.data.local.entity.*
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
-import com.cognota.feed.commons.data.local.relation.RelatedFeedWithSourcesEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class NewsDao : BaseDao<FeedEntity>() {
 
     @Transaction
-    @Query("SELECT * from feed where type = 'LATEST' and enabled = 1 order by update_date desc")
+    @Query("SELECT * from feed where type = 'LATEST' and parent_id is null and enabled = 1")
     abstract fun findLatestFeeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from feed where type = 'TOP' and enabled = 1 order by update_date desc")
+    @Query("SELECT * from feed where type = 'TOP' and enabled = 1")
     abstract fun findTopFeeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from feed where type = 'TOP' and enabled = 1 order by update_date desc limit 10")
+    @Query("SELECT * from feed where type = 'TOP' and enabled = 1 limit 10")
     abstract fun findTop10Feeds(): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from feed where category_code = :category and page = :page and enabled = 1 order by update_date desc")
-    abstract fun findFeedsByCategory(page: Int, category: String): List<FeedWithSourcesEntity>?
+    @Query("SELECT * from feed where category_code = :category and page = :page and enabled = 1")
+    abstract fun findFeedsByCategory(
+        page: Int,
+        category: String
+    ): List<FeedWithSourcesEntity>?
 
     @Transaction
-    @Query("SELECT * from related_feed where parent_id = :parentId and enabled = 1 order by update_date desc")
+    @Query("SELECT * from feed where id = :id limit 1")
+    abstract fun findFeed(
+        id: String
+    ): FeedWithSourcesEntity?
+
+    @Transaction
+    @Query("SELECT * from feed where parent_id = :parentId and enabled = 1")
     abstract fun findRelatedFeeds(
         parentId: String
-    ): List<RelatedFeedWithSourcesEntity>?
+    ): Flow<List<FeedWithSourcesEntity>?>
 
     @Query("SELECT * from bookmark")
     abstract fun findBookmarkedFeeds(): Flow<List<BookmarkEntity>?>
@@ -58,12 +66,6 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
 
     @Query("SELECT * from tag")
     abstract fun findTags(): List<TagEntity>?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertRelatedFeeds(sources: List<RelatedFeedEntity>): List<Long>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertRelatedFeed(source: RelatedFeedEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertSources(sources: List<SourceEntity>): List<Long>

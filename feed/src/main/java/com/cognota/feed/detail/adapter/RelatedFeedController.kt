@@ -5,7 +5,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.airbnb.epoxy.EpoxyController
 import com.cognota.feed.commons.adapter.ProgressModel_
 import com.cognota.feed.commons.adapter.header
-import com.cognota.feed.commons.domain.RelatedFeedDTO
+import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.detail.ui.DetailFeedFragmentDirections
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
@@ -15,10 +15,10 @@ class RelatedFeedController @Inject constructor(
 ) :
     EpoxyController() {
 
-    private var feeds: List<RelatedFeedDTO> = mutableListOf()
+    private var feeds: List<FeedDTO> = mutableListOf()
     private var loading: Boolean = true
 
-    fun setFeeds(feeds: List<RelatedFeedDTO>?) {
+    fun setFeeds(feeds: List<FeedDTO>?) {
         if (!feeds.isNullOrEmpty()) {
             this.feeds = feeds
         } else {
@@ -38,22 +38,18 @@ class RelatedFeedController @Inject constructor(
                 id("related_heading")
                 title("Related news")
             }
-            feeds.forEachIndexed { index, feed ->
+            feeds.map { feed ->
                 relatedFeedList(picasso) {
                     id(feed.id)
                     feed(feed)
                     clickListener { model, parentView, clickedView, position ->
                         val extras = FragmentNavigatorExtras(
                             parentView.title to parentView.title.transitionName,
-                            parentView.preview to parentView.preview.transitionName,
-                            parentView.date to parentView.date.transitionName,
-                            parentView.image to parentView.image.transitionName,
-                            parentView.sourceIcon to parentView.sourceIcon.transitionName,
-                            parentView.category to parentView.category.transitionName
+                            parentView.image to parentView.image.transitionName
                         )
                         clickedView.findNavController().navigate(
                             DetailFeedFragmentDirections.detailAction(
-                                feed = model.feed().toFeedDto()
+                                feed = model.feed()
                             ),
                             extras
                         )

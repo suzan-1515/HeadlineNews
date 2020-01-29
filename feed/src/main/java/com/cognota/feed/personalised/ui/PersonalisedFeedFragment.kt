@@ -20,6 +20,7 @@ import com.cognota.feed.personalised.viewmodel.PersonalizedFeedViewModel
 import com.cognota.feed.personalised.viewmodel.PersonalizedFeedViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_personalised_feed.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,6 +36,7 @@ class PersonalisedFeedFragment : BaseFragment() {
     @Inject
     lateinit var personalisedFeedController: PersonalisedFeedController
 
+    @ExperimentalCoroutinesApi
     private val viewModel: PersonalizedFeedViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(PersonalizedFeedViewModel::class.java)
     }
@@ -63,19 +65,25 @@ class PersonalisedFeedFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_personalised_feed, container, false)
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Timber.d("personalized fragment: onViewCreated")
         rvFeeds.setControllerAndBuildModels(personalisedFeedController)
         srlFeeds.setOnRefreshListener {
+            viewModel.getLatestFeed()
             viewModel.getTrendingFeed()
             viewModel.getTags()
-            viewModel.getLatestFeed()
         }
+
+        viewModel.getLatestFeed()
+        viewModel.getTrendingFeed()
+        viewModel.getTags()
 
     }
 
+    @ExperimentalCoroutinesApi
     private fun initiateDataListener() {
         //Observe the outcome and update state of the screen  accordingly
         viewModel.latestFeeds.observe(
@@ -84,6 +92,9 @@ class PersonalisedFeedFragment : BaseFragment() {
                 snackBar?.dismiss()
 
                 when (resource.state) {
+                    StatefulResource.State.LOADING -> {
+                        srlFeeds.isRefreshing = resource.isLoading()
+                    }
                     StatefulResource.State.SUCCESS -> {
                         if (resource.hasData()) {
                             Timber.d("Feed data received ")
@@ -101,7 +112,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                                 .setAction(R.string.ok) { snackBar?.dismiss() }
                         }
                         snackBar?.show()
-                        srlFeeds.isRefreshing = false
+                        srlFeeds.isRefreshing = resource.isLoading()
                     }
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
@@ -118,7 +129,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                                 snackBar?.dismiss()
                             }
                         snackBar?.show()
-                        srlFeeds.isRefreshing = false
+                        srlFeeds.isRefreshing = resource.isLoading()
                     }
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
@@ -133,7 +144,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                                 snackBar?.dismiss()
                             }
                         snackBar?.show()
-                        srlFeeds.isRefreshing = false
+                        srlFeeds.isRefreshing = resource.isLoading()
                     }
                     else -> Timber.d("Unknown state")
                 }

@@ -20,7 +20,8 @@ data class FeedDTO(
     val type: FeedType,
     var source: SourceDTO,
     var category: CategoryDTO,
-    var page: Int
+    var page: Int,
+    val parentId: String? = null
 ) : Parcelable {
 
     fun thumbnail(): Uri? {

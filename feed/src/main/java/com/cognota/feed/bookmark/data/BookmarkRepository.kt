@@ -1,4 +1,4 @@
-package com.cognota.feed.commons.data
+package com.cognota.feed.bookmark.data
 
 import com.cognota.core.repository.BaseRepository
 import com.cognota.feed.commons.data.local.dao.NewsDao

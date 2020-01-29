@@ -1,8 +1,7 @@
-package com.cognota.core.application
+package com.cognota.core
 
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.cognota.core.BuildConfig
 import com.cognota.core.di.CoreComponent
 import com.cognota.core.di.DaggerCoreComponent
 import com.facebook.stetho.Stetho
@@ -11,7 +10,7 @@ import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import timber.log.Timber
 
-open class CoreApp : DaggerApplication() {
+open class App : DaggerApplication() {
 
     lateinit var coreComponent: CoreComponent
 

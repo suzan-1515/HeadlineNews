@@ -43,10 +43,7 @@ class CategoryFeedController @Inject constructor(
                         val extras = FragmentNavigatorExtras(
                             parentView.title to parentView.title.transitionName,
                             parentView.preview to parentView.preview.transitionName,
-                            parentView.date to parentView.date.transitionName,
-                            parentView.image to parentView.image.transitionName,
-                            parentView.sourceIcon to parentView.sourceIcon.transitionName,
-                            parentView.category to parentView.category.transitionName
+                            parentView.image to parentView.image.transitionName
                         )
                         if (clickedView.id == R.id.option) {
                             clickedView.findNavController().navigate(
@@ -55,7 +52,6 @@ class CategoryFeedController @Inject constructor(
                                 ),
                                 extras
                             )
-
                         } else {
                             clickedView.findNavController().navigate(
                                 CategoriesFeedFragmentDirections.detailAction(
@@ -75,10 +71,7 @@ class CategoryFeedController @Inject constructor(
                         val extras = FragmentNavigatorExtras(
                             parentView.title to parentView.title.transitionName,
                             parentView.preview to parentView.preview.transitionName,
-                            parentView.date to parentView.date.transitionName,
-                            parentView.image to parentView.image.transitionName,
-                            parentView.sourceIcon to parentView.sourceIcon.transitionName,
-                            parentView.category to parentView.category.transitionName
+                            parentView.image to parentView.image.transitionName
                         )
                         if (clickedView.id == R.id.option) {
                             clickedView.findNavController().navigate(
@@ -111,7 +104,7 @@ class CategoryFeedController @Inject constructor(
 
         ProgressModel_().apply {
             id("progress")
-        }.addIf(loading, this)
+        }.addIf(feeds.isNullOrEmpty() and loading, this)
 
     }
 

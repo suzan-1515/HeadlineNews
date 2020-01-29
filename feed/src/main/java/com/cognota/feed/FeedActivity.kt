@@ -3,7 +3,7 @@ package com.cognota.feed
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
-import com.cognota.core.application.CoreApp
+import com.cognota.core.App
 import com.cognota.core.di.ModuleScope
 import com.cognota.core.extensions.setupWithNavController
 import com.cognota.core.ui.BaseActivity
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_feed.*
 class FeedActivity : BaseActivity() {
 
     val feedComponent: FeedComponent by lazy {
-        SharedComponentProvider.feedComponent((applicationContext as CoreApp).coreComponent)
+        SharedComponentProvider.feedComponent((applicationContext as App).coreComponent)
     }
     var categoryFeedComponent: CategoryFeedComponent? = null
     private var currentNavController: LiveData<NavController>? = null

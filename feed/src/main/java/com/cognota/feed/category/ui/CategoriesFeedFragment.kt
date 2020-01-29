@@ -76,9 +76,6 @@ class CategoriesFeedFragment : BaseFragment() {
                 viewModel.currentCategory(position)
             }
         })
-
-//        if (savedInstanceState == null)
-//            viewModel.getCategories()
     }
 
     private fun initiateDataListener() {
