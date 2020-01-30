@@ -15,6 +15,9 @@
         <action
                 android:id="@+id/menuAction"
                 app:destination="@id/feedMenuDialogFragment" />
+        <action
+                android:id="@+id/searchAction"
+                app:destination="@id/search_nav" />
     </fragment>
 
     <activity
@@ -38,5 +41,7 @@
                 app:argType="com.cognota.feed.commons.domain.FeedDTO"
                 app:nullable="true" />
     </dialog>
+
+    <include app:graph="@navigation/search" />
 
 </navigation>

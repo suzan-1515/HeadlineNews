@@ -15,6 +15,9 @@
         <action
                 android:id="@+id/menuAction"
                 app:destination="@id/feedMenuDialogFragment" />
+        <action
+                android:id="@+id/searchAction"
+                app:destination="@id/search_nav" />
     </fragment>
 
 
@@ -41,5 +44,6 @@
                 app:nullable="true" />
     </dialog>
 
+    <include app:graph="@navigation/search" />
 
 </navigation>

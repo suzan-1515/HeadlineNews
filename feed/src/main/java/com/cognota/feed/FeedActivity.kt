@@ -1,6 +1,8 @@
 package com.cognota.feed
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.cognota.core.App
@@ -10,6 +12,7 @@ import com.cognota.core.ui.BaseActivity
 import com.cognota.feed.category.di.CategoryFeedComponent
 import com.cognota.feed.commons.di.FeedComponent
 import com.cognota.feed.commons.di.SharedComponentProvider
+import com.cognota.feed.search.FeedSearchActivity
 import kotlinx.android.synthetic.main.activity_feed.*
 
 @ModuleScope
@@ -30,6 +33,10 @@ class FeedActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
+        }
+
+        searchEditText.setOnClickListener {
+            ContextCompat.startActivity(this, Intent(this, FeedSearchActivity::class.java), null)
         }
 
     }

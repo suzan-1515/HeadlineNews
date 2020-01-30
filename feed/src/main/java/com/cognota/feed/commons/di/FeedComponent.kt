@@ -9,6 +9,7 @@ import com.cognota.feed.category.di.CategoryFeedComponent
 import com.cognota.feed.detail.di.DetailFeedComponent
 import com.cognota.feed.option.ui.FeedOptionDialogFragment
 import com.cognota.feed.personalised.di.PersonalizedFeedComponent
+import com.cognota.feed.search.di.SearchFeedComponent
 import dagger.Component
 
 @ModuleScope
@@ -32,6 +33,7 @@ interface FeedComponent {
     fun savedFeedComponent(): BookmarkFeedComponent.Factory
 
     fun detailFeedComponent(): DetailFeedComponent.Factory
+    fun searchFeedComponent(): SearchFeedComponent.Factory
 
     fun inject(fragment: FeedOptionDialogFragment)
     fun inject(fragment: BookmarkFeedOptionDialogFragment)

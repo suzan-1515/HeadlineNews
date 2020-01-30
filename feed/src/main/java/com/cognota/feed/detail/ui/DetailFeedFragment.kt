@@ -110,7 +110,7 @@ class DetailFeedFragment : BaseFragment() {
         toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
-        toolbar.inflateMenu(R.menu.menu_feed_detail)
+        toolbar.inflateMenu(R.menu.feed_detail)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.option -> {

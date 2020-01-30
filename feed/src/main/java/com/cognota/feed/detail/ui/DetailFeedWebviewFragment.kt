@@ -83,7 +83,7 @@ class DetailFeedWebviewFragment : BaseFragment() {
         toolbar.setNavigationOnClickListener {
             it?.findNavController()?.navigateUp()
         }
-        toolbar.inflateMenu(R.menu.menu_webview)
+        toolbar.inflateMenu(R.menu.webview)
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.refresh -> {

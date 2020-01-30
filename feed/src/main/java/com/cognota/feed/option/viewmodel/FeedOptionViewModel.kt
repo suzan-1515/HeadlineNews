@@ -8,7 +8,7 @@ import com.cognota.core.util.SingleLiveEvent
 import com.cognota.feed.bookmark.data.BookmarkDataContract
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.option.data.OptionEvent
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class FeedOptionViewModel(
@@ -67,14 +67,12 @@ class FeedOptionViewModel(
     }
 
     fun getBookmarkedStatus(id: String) {
-        if (mutableBookmarkStatus.value == null) {
-            viewModelScope.launch {
-                bookmarkFeedRepository.getBookmarkedFeed(id).collect {
-                    it?.let {
-                        mutableBookmarkStatus.value = OptionEvent.BOOKMARKED
-                    } ?: run {
-                        mutableBookmarkStatus.value = OptionEvent.UNBOOKMARKED
-                    }
+        viewModelScope.launch {
+            bookmarkFeedRepository.getBookmarkedFeed(id).collectLatest {
+                it?.let {
+                    mutableBookmarkStatus.value = OptionEvent.BOOKMARKED
+                } ?: run {
+                    mutableBookmarkStatus.value = OptionEvent.UNBOOKMARKED
                 }
             }
         }

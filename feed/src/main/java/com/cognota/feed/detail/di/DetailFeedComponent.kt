@@ -4,6 +4,7 @@ import com.cognota.core.di.FeatureScope
 import com.cognota.feed.detail.ui.DetailFeedActivity
 import com.cognota.feed.detail.ui.DetailFeedFragment
 import com.cognota.feed.detail.ui.DetailFeedWebviewFragment
+import com.cognota.feed.search.di.DetailFeedModule
 import dagger.Subcomponent
 
 @FeatureScope
