@@ -30,6 +30,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:text="@string/search_hint"
+                    android:textColor="?android:textColorSecondary"
                     android:background="@drawable/ic_edittext_bg"
                     android:padding="12dp"
                     android:textAlignment="textStart"

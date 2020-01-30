@@ -26,9 +26,10 @@ class DetailFeedModule {
     fun detailFeedRepo(
         newsDao: NewsDao,
         feedDTOMapper: FeedDTOMapper
-    ): DetailFeedDataContract.Repository = DetailFeedRepository(
-        newsDao,
-        feedDTOMapper
-    )
+    ): DetailFeedDataContract.Repository =
+        DetailFeedRepository(
+            newsDao,
+            feedDTOMapper
+        )
 
 }

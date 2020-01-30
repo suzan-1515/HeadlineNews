@@ -3,6 +3,7 @@ package com.cognota.feed.commons.data.remote.service
 import com.cognota.feed.commons.data.remote.model.NewsFeedResponse
 import com.cognota.feed.commons.data.remote.model.SourceResponse
 import com.cognota.feed.commons.data.remote.model.TagResponse
+import com.cognota.feed.search.data.SearchFeedResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -23,5 +24,8 @@ interface NewsAPIService {
 
     @GET("newsv3/tags.php")
     suspend fun getTags(): Response<TagResponse>
+
+    @GET("newsv2/search.php")
+    suspend fun searchFeeds(@Query("text") query: String): Response<SearchFeedResponse>
 
 }

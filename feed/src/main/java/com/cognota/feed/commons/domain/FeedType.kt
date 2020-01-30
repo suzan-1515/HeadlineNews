@@ -4,6 +4,7 @@ enum class FeedType(type: String) {
 
     LATEST("latest"),
     TOP("top"),
-    CATEGORY("category")
+    CATEGORY("category"),
+    SEARCH("search")
 
 }

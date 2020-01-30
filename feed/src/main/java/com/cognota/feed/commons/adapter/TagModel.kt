@@ -1,4 +1,4 @@
-package com.cognota.feed.personalised.adapter
+package com.cognota.feed.commons.adapter
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -10,7 +10,6 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.cognota.feed.R
 import com.cognota.feed.R2
-import com.cognota.feed.commons.adapter.BaseEpoxyHolder
 import com.google.android.material.chip.Chip
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Picasso.LoadedFrom

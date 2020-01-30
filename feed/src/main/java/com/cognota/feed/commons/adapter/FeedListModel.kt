@@ -37,7 +37,7 @@ abstract class FeedListModel(private val picasso: Picasso) :
                     feed.source.name,
                     feed.publishedDate()
                 )
-            feed.image?.let {
+            feed.thumbnail()?.let {
                 picasso.load(it)
                     .fit()
                     .transform(RoundedCornersTransformation(16, 4))

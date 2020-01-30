@@ -6,7 +6,7 @@ import dagger.Subcomponent
 
 @FeatureScope
 @Subcomponent(
-    modules = [DetailFeedModule::class]
+    modules = [SearchFeedModule::class]
 )
 interface SearchFeedComponent {
 

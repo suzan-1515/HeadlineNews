@@ -37,7 +37,7 @@ abstract class FeedCardModel(private val picasso: Picasso) :
                     feed.source.name,
                     feed.publishedDate()
                 )
-            feed.image?.let {
+            feed.thumbnail()?.let {
                 picasso.load(it)
                     .transform(RoundedCornersTransformation(12, 0))
                     .into(holder.image)

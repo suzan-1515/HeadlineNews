@@ -11,10 +11,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.cognota.core.di.FeatureScope
 import com.cognota.feed.R
-import com.cognota.feed.commons.adapter.feedCard
-import com.cognota.feed.commons.adapter.feedList
-import com.cognota.feed.commons.adapter.flowCarousel
-import com.cognota.feed.commons.adapter.header
+import com.cognota.feed.commons.adapter.*
 import com.cognota.feed.commons.domain.CategoryDTO
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.commons.domain.SourceDTO

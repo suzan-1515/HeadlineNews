@@ -43,14 +43,18 @@ data class FeedDTO(
     fun publishedDate(): String {
         return publishedDate?.let { date ->
             var dateTime = "N/A"
-            DateTimeUtil.parse(date)?.let {
-                dateTime = DateUtils.getRelativeTimeSpanString(
-                    it.time,
-                    Date().time,
-                    DateUtils.MINUTE_IN_MILLIS
-                ).toString()
+            return try {
+                DateTimeUtil.parse(date)?.let {
+                    dateTime = DateUtils.getRelativeTimeSpanString(
+                        it.time,
+                        Date().time,
+                        DateUtils.MINUTE_IN_MILLIS
+                    ).toString()
+                }
+                dateTime
+            } catch (e: Exception) {
+                date
             }
-            return dateTime
         } ?: run {
             return "N/A"
         }

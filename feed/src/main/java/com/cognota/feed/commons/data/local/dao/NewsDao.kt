@@ -67,6 +67,9 @@ abstract class NewsDao : BaseDao<FeedEntity>() {
     @Query("SELECT * from tag")
     abstract fun findTags(): List<TagEntity>?
 
+    @Query("SELECT * from tag")
+    abstract fun findTagsStream(): Flow<List<TagEntity>?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertSources(sources: List<SourceEntity>): List<Long>
 
