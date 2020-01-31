@@ -1,7 +1,8 @@
 package com.cognota.feed.search.di
 
 import com.cognota.core.di.FeatureScope
-import com.cognota.feed.search.FeedSearchActivity
+import com.cognota.feed.search.ui.SearchFeedActivity
+import com.cognota.feed.search.ui.SearchFeedFragment
 import dagger.Subcomponent
 
 @FeatureScope
@@ -16,6 +17,7 @@ interface SearchFeedComponent {
         fun create(): SearchFeedComponent
     }
 
-    fun inject(activity: FeedSearchActivity)
+    fun inject(feedActivity: SearchFeedActivity)
+    fun inject(fragment: SearchFeedFragment)
 
 }

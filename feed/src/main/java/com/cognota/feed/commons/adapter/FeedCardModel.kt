@@ -45,7 +45,7 @@ abstract class FeedCardModel(private val picasso: Picasso) :
                 holder.image.visibility = View.GONE
             }
             holder.category.text = feed.category.name
-            feed.source.icon().let {
+            feed.source.favIcon().let {
                 picasso.load(it)
                     .resize(64, 64)
                     .onlyScaleDown()

@@ -22,12 +22,15 @@ class SearchFeedController @Inject constructor(
     private var progress = false
     private var empty = false
 
+    var topicClickAction: ((String) -> Unit)? = null
+
     fun setFeeds(feeds: List<FeedDTO>?) {
-        feeds?.let {
+        if (feeds.isNullOrEmpty()) {
+            this.feeds = mutableListOf()
+            empty = true
+        } else {
             this.feeds = feeds
             empty = false
-        } ?: kotlin.run {
-            empty = true
         }
         requestModelBuild()
     }
@@ -41,6 +44,7 @@ class SearchFeedController @Inject constructor(
 
     fun setProgress(progress: Boolean) {
         this.progress = progress
+        this.empty = false
         requestModelBuild()
     }
 
@@ -67,13 +71,16 @@ class SearchFeedController @Inject constructor(
                             tag.icon()?.let { icon -> icon(icon) }
                             clickListener { model, parentView, clickedView, position ->
                                 Timber.d("Tag clicked: %s", model.title())
+                                topicClickAction?.let {
+                                    it(model.title())
+                                }
                             }
                         }
                     }
                 )
             }
         }
-        if (!feeds.isNullOrEmpty()) {
+        if (!feeds.isNullOrEmpty() && !progress) {
             header {
                 id("search_header")
                 title("Matching feeds for searched query")

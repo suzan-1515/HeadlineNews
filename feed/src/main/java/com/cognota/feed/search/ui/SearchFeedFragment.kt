@@ -1,33 +1,36 @@
-package com.cognota.feed.search
+package com.cognota.feed.search.ui
 
+import android.content.Context
 import android.os.Bundle
-import android.view.Menu
+import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.cognota.core.App
-import com.cognota.core.di.ModuleScope
+import androidx.navigation.fragment.navArgs
+import com.cognota.core.di.FeatureScope
 import com.cognota.core.extensions.hideKeyboard
-import com.cognota.core.ui.BaseActivity
+import com.cognota.core.ui.BaseFragment
 import com.cognota.core.ui.StatefulResource
 import com.cognota.feed.R
-import com.cognota.feed.commons.di.SharedComponentProvider
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.search.adapter.SearchFeedController
-import com.cognota.feed.search.di.SearchFeedComponent
 import com.cognota.feed.search.viewmodel.SearchFeedViewModel
 import com.cognota.feed.search.viewmodel.SearchFeedViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_feed_search.*
+import kotlinx.android.synthetic.main.fragment_feed_detail.*
 import timber.log.Timber
 import javax.inject.Inject
 
-@ModuleScope
-class FeedSearchActivity : BaseActivity() {
 
-    val feedComponent: SearchFeedComponent by lazy {
-        SharedComponentProvider.searchComponent((applicationContext as App).coreComponent)
-    }
+/**
+ * A simple [Fragment] subclass as the default destination in the navigation.
+ */
+
+@FeatureScope
+class SearchFeedFragment : BaseFragment() {
+
+    private val args: SearchFeedFragmentArgs by navArgs()
 
     @Inject
     lateinit var viewModelFactory: SearchFeedViewModelFactory
@@ -40,19 +43,38 @@ class FeedSearchActivity : BaseActivity() {
     lateinit var searchFeedController: SearchFeedController
 
     private var snackBar: Snackbar? = null
+    private lateinit var searchView: SearchView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        feedComponent.inject(this)
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        Timber.d("attaching search feed fragment")
+        (activity as SearchFeedActivity).feedComponent
+            .inject(this)
+        super.onAttach(context)
+    }
 
-        setContentView(R.layout.activity_feed_search)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        initiateDataListener()
+        super.onActivityCreated(savedInstanceState)
+    }
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        setHasOptionsMenu(true)
+        return inflater.inflate(R.layout.fragment_feed_search, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Timber.d("onViewCreated")
 
         rv.setControllerAndBuildModels(searchFeedController)
-
-        initiateDataListener()
+        searchFeedController.topicClickAction = {
+            if (::searchView.isInitialized)
+                searchView.setQuery(it, true)
+        }
 
     }
 
@@ -119,35 +141,39 @@ class FeedSearchActivity : BaseActivity() {
             Observer { data ->
                 searchFeedController.setTags(data)
             })
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.search, menu)
-        val searchView: SearchView = menu.findItem(R.id.search).actionView as SearchView
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Timber.d("onCreateOptionsMenu")
+        inflater.inflate(R.menu.search, menu)
+        searchView = menu.findItem(R.id.search).actionView as SearchView
         searchView.isSubmitButtonEnabled = true
         searchView.onActionViewExpanded()
-        searchView.requestFocus()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank() && query.length > 3) {
                     viewModel.getSearchFeed(query)
-                    hideKeyboard()
                 }
+                hideKeyboard()
+                searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
+
         })
-        return super.onCreateOptionsMenu(menu)
+        args.query?.let {
+            searchView.setQuery(it, true)
+        }
+        return super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onDestroy() {
-        SharedComponentProvider.destroySearchComponent()
-        super.onDestroy()
+    companion object {
+        fun newInstance(): SearchFeedFragment {
+            return SearchFeedFragment()
+        }
     }
-
 }
-
-

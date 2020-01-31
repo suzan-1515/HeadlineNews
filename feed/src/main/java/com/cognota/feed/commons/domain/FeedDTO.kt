@@ -63,10 +63,14 @@ data class FeedDTO(
     fun publishedDateRaw(): String {
         return publishedDate?.let { date ->
             var dateTime = "N/A"
-            DateTimeUtil.format(DateTimeUtil.parse(date))?.let {
-                dateTime = it
+            return try {
+                DateTimeUtil.format(DateTimeUtil.parse(date))?.let {
+                    dateTime = it
+                }
+                dateTime
+            } catch (e: Exception) {
+                date
             }
-            return dateTime
         } ?: run {
             return "N/A"
         }

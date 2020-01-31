@@ -105,6 +105,11 @@ class PersonalisedFeedController @Inject constructor(
                             tag.icon()?.let { icon -> icon(icon) }
                             clickListener { model, parentView, clickedView, position ->
                                 Timber.d("Tag clicked: %s", model.title())
+                                clickedView.findNavController().navigate(
+                                    PersonalisedFeedFragmentDirections.searchAction(
+                                        query = model.title()
+                                    )
+                                )
                             }
                         }
                     }

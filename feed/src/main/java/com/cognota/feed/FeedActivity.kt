@@ -12,7 +12,7 @@ import com.cognota.core.ui.BaseActivity
 import com.cognota.feed.category.di.CategoryFeedComponent
 import com.cognota.feed.commons.di.FeedComponent
 import com.cognota.feed.commons.di.SharedComponentProvider
-import com.cognota.feed.search.FeedSearchActivity
+import com.cognota.feed.search.ui.SearchFeedActivity
 import kotlinx.android.synthetic.main.activity_feed.*
 
 @ModuleScope
@@ -36,7 +36,7 @@ class FeedActivity : BaseActivity() {
         }
 
         searchEditText.setOnClickListener {
-            ContextCompat.startActivity(this, Intent(this, FeedSearchActivity::class.java), null)
+            ContextCompat.startActivity(this, Intent(this, SearchFeedActivity::class.java), null)
         }
 
     }

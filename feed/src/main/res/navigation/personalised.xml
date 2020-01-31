@@ -17,7 +17,7 @@
                 app:destination="@id/feedMenuDialogFragment" />
         <action
                 android:id="@+id/searchAction"
-                app:destination="@id/search_nav" />
+                app:destination="@id/searchFeedActivity" />
     </fragment>
 
 
@@ -33,6 +33,18 @@
                 app:nullable="true" />
     </activity>
 
+    <activity
+            android:id="@+id/searchFeedActivity"
+            android:name="com.cognota.feed.search.ui.SearchFeedActivity"
+            tools:layout="@layout/activity_feed_search">
+
+        <argument
+                android:name="query"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+    </activity>
+
     <dialog
             android:id="@+id/feedMenuDialogFragment"
             android:name="com.cognota.feed.option.ui.FeedOptionDialogFragment"
@@ -43,7 +55,5 @@
                 app:argType="com.cognota.feed.commons.domain.FeedDTO"
                 app:nullable="true" />
     </dialog>
-
-    <include app:graph="@navigation/search" />
 
 </navigation>
