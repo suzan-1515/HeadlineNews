@@ -1,4 +1,4 @@
-package com.cognota.core.data.persistence.dao
+package com.cognota.core.data
 
 import androidx.room.Delete
 import androidx.room.Insert

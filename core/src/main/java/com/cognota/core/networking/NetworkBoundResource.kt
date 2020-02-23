@@ -2,10 +2,10 @@ package com.cognota.core.networking
 
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
-import com.cognota.core.data.model.api.ApiEmptyResponse
-import com.cognota.core.data.model.api.ApiErrorResponse
-import com.cognota.core.data.model.api.ApiResponse
-import com.cognota.core.data.model.api.ApiSuccessResponse
+import com.cognota.core.data.ApiEmptyResponse
+import com.cognota.core.data.ApiErrorResponse
+import com.cognota.core.data.ApiResponse
+import com.cognota.core.data.ApiSuccessResponse
 import com.cognota.core.vo.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

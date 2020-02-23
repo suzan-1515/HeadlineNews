@@ -92,10 +92,10 @@ class CategoriesFeedFragment : BaseFragment() {
                         srl.isRefreshing = resource.isLoading()
                         if (resource.hasData()) {
                             fragmentAdapterFeed.setData(resource.getData())
-                            viewModel.selectedCategory.value?.let { viewpager.currentItem = it }
+//                            viewModel.selectedCategory.value?.let { viewpager.currentItem = it }
                         } else {
                             snackBar = Snackbar.make(
-                                root.rootView,
+                                root,
                                 getString(
                                     resource.message
                                         ?: R.string.unknown_error
@@ -108,7 +108,7 @@ class CategoriesFeedFragment : BaseFragment() {
                     }
                     StatefulResource.State.ERROR_NETWORK -> {
                         snackBar = Snackbar.make(
-                            root.rootView,
+                            root,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -125,7 +125,7 @@ class CategoriesFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            root.rootView,
+                            root,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG

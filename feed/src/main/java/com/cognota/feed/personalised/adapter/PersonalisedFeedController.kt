@@ -158,6 +158,7 @@ class PersonalisedFeedController @Inject constructor(
         }
 
         if (!latestFeeds.isNullOrEmpty()) {
+            Timber.d("building latest feeds models")
             header {
                 id("latest_feed_header")
                 title("Top stories for you right now")

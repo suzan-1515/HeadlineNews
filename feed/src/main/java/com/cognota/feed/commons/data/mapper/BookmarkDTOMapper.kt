@@ -22,8 +22,7 @@ class BookmarkDTOMapper @Inject constructor() {
             sourceFavicon = entity.sourceFavicon,
             sourceName = entity.sourceName,
             sourceIcon = entity.sourceIcon,
-            title = entity.title,
-            updateDate = entity.updateDate
+            title = entity.title
         )
 
     }
@@ -42,8 +41,7 @@ class BookmarkDTOMapper @Inject constructor() {
             sourceFavicon = feed.source.favicon,
             sourceName = feed.source.name,
             sourceIcon = feed.source.icon,
-            title = feed.title,
-            updateDate = feed.updatedDate
+            title = feed.title
         )
     }
 

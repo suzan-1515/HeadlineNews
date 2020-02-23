@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import org.joda.time.LocalDateTime
 
 @Entity(tableName = "feed")
 data class FeedEntity(
@@ -23,12 +24,6 @@ data class FeedEntity(
     val content: String?,
     @ColumnInfo(name = "description")
     val description: String?,
-    @ColumnInfo(name = "encloser_type")
-    val encloserType: String?,
-    @ColumnInfo(name = "encloser_url")
-    val encloserUrl: String?,
-    @ColumnInfo(name = "fetch_date")
-    val fetchDate: String?,
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: String,
@@ -37,7 +32,7 @@ data class FeedEntity(
     @ColumnInfo(name = "link")
     val link: String?,
     @ColumnInfo(name = "pub_date")
-    val pubDate: String?,
+    val pubDate: LocalDateTime?,
     @ForeignKey
         (
         entity = SourceEntity::class,
@@ -49,8 +44,6 @@ data class FeedEntity(
     val source: String?,
     @ColumnInfo(name = "title")
     val title: String,
-    @ColumnInfo(name = "update_date")
-    val updateDate: String?,
     @ColumnInfo(name = "uuid")
     val uuid: String?,
     @ColumnInfo(name = "type")

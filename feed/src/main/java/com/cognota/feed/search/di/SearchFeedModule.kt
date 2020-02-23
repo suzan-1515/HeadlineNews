@@ -5,6 +5,7 @@ import com.cognota.feed.commons.data.SourceAndCategoryDataContract
 import com.cognota.feed.commons.data.local.dao.NewsDao
 import com.cognota.feed.commons.data.mapper.TagDTOMapper
 import com.cognota.feed.commons.data.remote.service.NewsAPIService
+import com.cognota.feed.search.data.SearchFeedDTOMapper
 import com.cognota.feed.search.data.SearchFeedDataContract
 import com.cognota.feed.search.data.SearchFeedRepository
 import com.cognota.feed.search.viewmodel.SearchFeedViewModelFactory
@@ -29,13 +30,15 @@ class SearchFeedModule {
         newsAPIService: NewsAPIService,
         newsDao: NewsDao,
         sourceAndCategoryRepo: SourceAndCategoryDataContract.Repository,
-        tagDTOMapper: TagDTOMapper
+        tagDTOMapper: TagDTOMapper,
+        searchFeedDTOMapper: SearchFeedDTOMapper
     ): SearchFeedDataContract.Repository =
         SearchFeedRepository(
             newsAPIService,
             newsDao,
             sourceAndCategoryRepo,
-            tagDTOMapper
+            tagDTOMapper,
+            searchFeedDTOMapper
         )
 
 }

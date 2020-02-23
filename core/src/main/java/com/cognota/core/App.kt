@@ -5,7 +5,6 @@ import androidx.multidex.MultiDex
 import com.cognota.core.di.CoreComponent
 import com.cognota.core.di.DaggerCoreComponent
 import com.facebook.stetho.Stetho
-import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import timber.log.Timber
@@ -18,7 +17,6 @@ open class App : DaggerApplication() {
         super.onCreate()
         initStetho()
         initTimber()
-        AndroidThreeTen.init(this)
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

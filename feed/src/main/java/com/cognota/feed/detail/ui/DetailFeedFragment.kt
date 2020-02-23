@@ -96,7 +96,7 @@ class DetailFeedFragment : BaseFragment() {
             ViewCompat.setTransitionName(description, "preview$feed.id")
             ViewCompat.setTransitionName(image, "image$feed.id")
             ViewCompat.setTransitionName(sourceIcon, "source_icon$feed.id")
-            ViewCompat.setTransitionName(date, "date${feed.publishedDate()}")
+            ViewCompat.setTransitionName(date, "date${feed.publishedDateRelative()}")
             ViewCompat.setTransitionName(category, "category$feed.id")
         }
 
@@ -174,7 +174,7 @@ class DetailFeedFragment : BaseFragment() {
                 context?.getString(
                     R.string.source_with_time,
                     feed.source.name,
-                    feed.publishedDateRaw()
+                    feed.publishedDate()
                 )
             category.text = feed.category.name
 

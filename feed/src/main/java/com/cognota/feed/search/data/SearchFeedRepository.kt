@@ -1,9 +1,9 @@
 package com.cognota.feed.search.data
 
-import com.cognota.core.data.model.api.ApiEmptyResponse
-import com.cognota.core.data.model.api.ApiErrorResponse
-import com.cognota.core.data.model.api.ApiResponse
-import com.cognota.core.data.model.api.ApiSuccessResponse
+import com.cognota.core.data.ApiEmptyResponse
+import com.cognota.core.data.ApiErrorResponse
+import com.cognota.core.data.ApiResponse
+import com.cognota.core.data.ApiSuccessResponse
 import com.cognota.core.repository.BaseRepository
 import com.cognota.core.vo.Resource
 import com.cognota.core.vo.Status
@@ -21,7 +21,8 @@ class SearchFeedRepository @Inject constructor(
     private val newsApiAPIService: NewsAPIService,
     private val newsDao: NewsDao,
     private val sourceAndCategoryRepository: SourceAndCategoryDataContract.Repository,
-    private val tagDTOMapper: TagDTOMapper
+    private val tagDTOMapper: TagDTOMapper,
+    private val searchFeedDTOMapper: SearchFeedDTOMapper
 ) : BaseRepository(), SearchFeedDataContract.Repository {
 
 
@@ -79,19 +80,7 @@ class SearchFeedRepository @Inject constructor(
                                 findSourceByCode(hit.source.source, it.data!!)
                             val categoryDTO = findCategoryByCode(hit.source.category, it.data!!)
 
-                            FeedDTO(
-                                id = hit.id,
-                                description = hit.source.description,
-                                image = hit.source.image,
-                                link = hit.source.link,
-                                publishedDate = hit.source.pubDate,
-                                title = hit.source.title,
-                                updatedDate = hit.source.updateDate,
-                                type = FeedType.SEARCH,
-                                source = sourceDTO,
-                                category = categoryDTO,
-                                page = 1
-                            )
+                            searchFeedDTOMapper.toDTO(hit, sourceDTO, categoryDTO)
 
                         }
                         emit(Resource.success(feeds))

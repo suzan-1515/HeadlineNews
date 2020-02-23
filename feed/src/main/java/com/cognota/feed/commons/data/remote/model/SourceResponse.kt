@@ -1,7 +1,6 @@
 package com.cognota.feed.commons.data.remote.model
 
 
-import com.cognota.core.data.model.api.ApiResponseObject
 import com.google.gson.annotations.SerializedName
 
 data class SourceResponse(
@@ -9,7 +8,7 @@ data class SourceResponse(
     val categories: List<Category>,
     @SerializedName("sources")
     val sources: List<Source>
-) : ApiResponseObject {
+) {
     data class Source(
         @SerializedName("code")
         val code: String,
@@ -23,7 +22,7 @@ data class SourceResponse(
         val name: String,
         @SerializedName("priority")
         val priority: Int
-    ) : ApiResponseObject
+    )
 
     data class Category(
         @SerializedName("code")
@@ -40,5 +39,5 @@ data class SourceResponse(
         val nameNp: String,
         @SerializedName("priority")
         val priority: Int
-    ) : ApiResponseObject
+    )
 }

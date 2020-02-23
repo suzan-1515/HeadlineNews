@@ -1,11 +1,10 @@
 package com.cognota.core.util
 
 import android.content.SharedPreferences
-import org.threeten.bp.OffsetDateTime
 
 object RepositoryUtil {
 
-    fun getSecondsSinceEpoch() = OffsetDateTime.now().toEpochSecond()
+    fun getSecondsSinceEpoch() = System.currentTimeMillis()
 
     /**
      *

@@ -32,7 +32,7 @@ abstract class FeedMiniCardModel(private val picasso: Picasso) :
                 holder.date.context.getString(
                     R.string.source_with_time,
                     feed.source.name,
-                    feed.publishedDate()
+                    feed.publishedDateRelative()
                 )
             feed.thumbnail()?.let {
                 picasso.load(it)

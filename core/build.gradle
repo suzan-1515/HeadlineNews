@@ -86,7 +86,6 @@ dependencies {
     api deps.square.retrofitRxAdapter
 
     api deps.square.timber
-    api deps.square.threeten
 
     api deps.additional.jodaTime
 

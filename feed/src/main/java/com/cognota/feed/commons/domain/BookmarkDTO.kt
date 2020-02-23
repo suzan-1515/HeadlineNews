@@ -1,11 +1,10 @@
 package com.cognota.feed.commons.domain
 
 import android.net.Uri
-import android.text.format.DateUtils
 import android.util.Patterns
 import com.cognota.core.util.DateTimeUtil
+import org.joda.time.LocalDateTime
 import java.io.Serializable
-import java.util.*
 
 data class BookmarkDTO(
     val categoryCode: String,
@@ -15,13 +14,12 @@ data class BookmarkDTO(
     val id: String,
     val image: String?,
     val link: String?,
-    val publishedDate: String?,
+    val publishedDate: LocalDateTime?,
     val sourceCode: String,
     val sourceFavicon: String?,
     val sourceIcon: String?,
     val sourceName: String,
-    val title: String,
-    val updateDate: String?
+    val title: String
 
 ) : Serializable {
     fun sourceIcon(): Uri? {
@@ -58,27 +56,7 @@ data class BookmarkDTO(
 
     fun publishedDate(): String {
         return publishedDate?.let { date ->
-            var dateTime = "N/A"
-            DateTimeUtil.parse(date)?.let {
-                dateTime = DateUtils.getRelativeTimeSpanString(
-                    it.time,
-                    Date().time,
-                    DateUtils.MINUTE_IN_MILLIS
-                ).toString()
-            }
-            return dateTime
-        } ?: run {
-            return "N/A"
-        }
-    }
-
-    fun publishedDateRaw(): String {
-        return publishedDate?.let { date ->
-            var dateTime = "N/A"
-            DateTimeUtil.format(DateTimeUtil.parse(date))?.let {
-                dateTime = it
-            }
-            return dateTime
+            DateTimeUtil.fromLocalDateTime(date, DateTimeUtil.DEFAULT_DATE_FORMAT)
         } ?: run {
             return "N/A"
         }
@@ -92,7 +70,6 @@ data class BookmarkDTO(
             link = link,
             publishedDate = publishedDate,
             title = title,
-            updatedDate = updateDate,
             type = FeedType.LATEST,
             source = SourceDTO(
                 id = -1,

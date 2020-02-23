@@ -1,7 +1,6 @@
 package com.cognota.feed.commons.data.remote.model
 
 
-import com.cognota.core.data.model.api.ApiResponseObject
 import com.google.gson.annotations.SerializedName
 
 data class NewsFeedResponse(
@@ -43,7 +42,7 @@ data class NewsFeedResponse(
         val updateDate: String,
         @SerializedName("uuid")
         val uuid: String
-    ) : ApiResponseObject {
+    ) {
         data class Related(
             @SerializedName("author")
             val author: String?,
@@ -75,6 +74,6 @@ data class NewsFeedResponse(
             val updateDate: String,
             @SerializedName("uuid")
             val uuid: String
-        ) : ApiResponseObject
+        )
     }
 }

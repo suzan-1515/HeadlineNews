@@ -112,7 +112,7 @@ class CategoryFeedFragment : BaseFragment() {
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
-                                srl.rootView,
+                                srl,
                                 getString(
                                     resource.message
                                         ?: R.string.unknown_error
@@ -128,7 +128,7 @@ class CategoryFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
                         snackBar = Snackbar.make(
-                            srl.rootView,
+                            srl,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -146,7 +146,7 @@ class CategoryFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            srl.rootView,
+                            srl,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG
@@ -173,7 +173,7 @@ class CategoryFeedFragment : BaseFragment() {
                 when (data) {
                     OptionEvent.BOOKMARKED -> {
                         snackBar = Snackbar.make(
-                            srl.rootView,
+                            srl,
                             getString(
                                 R.string.feed_bookmarked
                             ),
@@ -183,7 +183,7 @@ class CategoryFeedFragment : BaseFragment() {
                     }
                     OptionEvent.UNBOOKMARKED -> {
                         snackBar = Snackbar.make(
-                            srl.rootView,
+                            srl,
                             getString(
                                 R.string.feed_bookmarked_removed
                             ),

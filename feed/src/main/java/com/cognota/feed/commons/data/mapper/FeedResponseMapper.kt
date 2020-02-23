@@ -1,5 +1,6 @@
 package com.cognota.feed.commons.data.mapper
 
+import com.cognota.core.util.DateTimeUtil
 import com.cognota.feed.commons.data.local.entity.FeedEntity
 import com.cognota.feed.commons.data.remote.model.NewsFeedResponse
 import com.cognota.feed.commons.domain.FeedType
@@ -18,16 +19,15 @@ class FeedResponseMapper @Inject constructor() {
             category = response.category,
             content = response.content,
             description = response.description,
-            encloserType = response.encloserType,
-            encloserUrl = response.encloserUrl,
-            fetchDate = response.fetchDate,
             id = response.id,
             image = response.image,
             link = response.link,
-            pubDate = response.pubDate,
+            pubDate = DateTimeUtil.toLocalDateTime(
+                response.pubDate,
+                DateTimeUtil.DEFAULT_SERVER_DATE_TIME_FORMAT
+            ),
             source = response.source,
             title = response.title,
-            updateDate = response.updateDate,
             uuid = response.uuid,
             type = feedType.toString(),
             enabled = true,
@@ -48,16 +48,15 @@ class FeedResponseMapper @Inject constructor() {
             category = response.category,
             content = response.content,
             description = response.description,
-            encloserType = response.encloserType,
-            encloserUrl = response.encloserUrl,
-            fetchDate = response.fetchDate,
             id = response.id,
             image = response.image,
             link = response.link,
-            pubDate = response.pubDate,
+            pubDate = DateTimeUtil.toLocalDateTime(
+                response.pubDate,
+                DateTimeUtil.DEFAULT_SERVER_DATE_TIME_FORMAT
+            ),
             source = response.source,
             title = response.title,
-            updateDate = response.updateDate,
             uuid = response.uuid,
             type = parentEntity.type,
             enabled = true,
@@ -66,5 +65,4 @@ class FeedResponseMapper @Inject constructor() {
         )
 
     }
-
 }

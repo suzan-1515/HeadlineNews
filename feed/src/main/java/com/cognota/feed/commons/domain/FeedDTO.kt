@@ -6,7 +6,7 @@ import android.text.format.DateUtils
 import android.util.Patterns
 import com.cognota.core.util.DateTimeUtil
 import kotlinx.android.parcel.Parcelize
-import java.util.*
+import org.joda.time.LocalDateTime
 
 @Parcelize
 data class FeedDTO(
@@ -14,9 +14,8 @@ data class FeedDTO(
     val id: String,
     val image: String?,
     val link: String?,
-    val publishedDate: String?,
+    val publishedDate: LocalDateTime?,
     val title: String,
-    val updatedDate: String?,
     val type: FeedType,
     var source: SourceDTO,
     var category: CategoryDTO,
@@ -40,37 +39,19 @@ data class FeedDTO(
         }
     }
 
-    fun publishedDate(): String {
+    fun publishedDateRelative(): String {
         return publishedDate?.let { date ->
-            var dateTime = "N/A"
-            return try {
-                DateTimeUtil.parse(date)?.let {
-                    dateTime = DateUtils.getRelativeTimeSpanString(
-                        it.time,
-                        Date().time,
-                        DateUtils.MINUTE_IN_MILLIS
-                    ).toString()
-                }
-                dateTime
-            } catch (e: Exception) {
-                date
-            }
+            DateUtils.getRelativeTimeSpanString(
+                date.toDateTime().millis
+            ).toString()
         } ?: run {
             return "N/A"
         }
     }
 
-    fun publishedDateRaw(): String {
+    fun publishedDate(): String {
         return publishedDate?.let { date ->
-            var dateTime = "N/A"
-            return try {
-                DateTimeUtil.format(DateTimeUtil.parse(date))?.let {
-                    dateTime = it
-                }
-                dateTime
-            } catch (e: Exception) {
-                date
-            }
+            DateTimeUtil.fromLocalDateTime(date, DateTimeUtil.DEFAULT_DATE_FORMAT)
         } ?: run {
             return "N/A"
         }

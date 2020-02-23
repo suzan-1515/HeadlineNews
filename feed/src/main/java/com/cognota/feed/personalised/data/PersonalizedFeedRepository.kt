@@ -75,7 +75,7 @@ class PersonalizedFeedRepository @Inject constructor(
                                 sharedPreferences,
                                 "latest_feed",
                                 "latest_feed",
-                                TimeUnit.SECONDS.toSeconds(120)
+                                TimeUnit.MINUTES.toMillis(2)
                             )
                 }
 
@@ -83,7 +83,7 @@ class PersonalizedFeedRepository @Inject constructor(
                     Timber.d("loadFromDb")
                     return flow {
                         emit(
-                            newsDao.findLatestFeeds()?.map { feed ->
+                            newsDao.findLatestFeeds()?.distinct()?.map { feed ->
                                 feedDTOMapper.toDTO(feed)
                             }
                         )
@@ -136,7 +136,7 @@ class PersonalizedFeedRepository @Inject constructor(
                                 sharedPreferences,
                                 "top5_feed",
                                 "top5_feed",
-                                TimeUnit.SECONDS.toSeconds(120)
+                                TimeUnit.MINUTES.toMillis(2)
                             )
                 }
 
@@ -144,7 +144,7 @@ class PersonalizedFeedRepository @Inject constructor(
                     Timber.d("loadFromDb")
                     return flow {
                         emit(
-                            newsDao.findTop10Feeds()?.map { data ->
+                            newsDao.findTop10Feeds()?.distinct()?.map { data ->
                                 feedDTOMapper.toDTO(data)
                             }
                         )
@@ -189,7 +189,7 @@ class PersonalizedFeedRepository @Inject constructor(
                             sharedPreferences,
                             "feed_tags",
                             "feed_tags",
-                            TimeUnit.SECONDS.toSeconds(120)
+                            TimeUnit.MINUTES.toMillis(2)
                         )
             }
 
@@ -197,7 +197,7 @@ class PersonalizedFeedRepository @Inject constructor(
                 Timber.d("loadFromDb")
                 return flow {
                     emit(
-                        newsDao.findTags()?.map {
+                        newsDao.findTags()?.distinct()?.map {
                             tagDTOMapper.toDTO(it)
                         }
                     )

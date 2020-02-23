@@ -1,7 +1,7 @@
 package com.cognota.feed.commons.data.local.dao
 
 import androidx.room.*
-import com.cognota.core.data.persistence.dao.BaseDao
+import com.cognota.core.data.BaseDao
 import com.cognota.feed.commons.data.local.entity.*
 import com.cognota.feed.commons.data.local.relation.FeedWithSourcesEntity
 import kotlinx.coroutines.flow.Flow

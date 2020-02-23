@@ -60,7 +60,7 @@ class SourceAndCategoryRepository @Inject constructor(
                             sharedPreferences,
                             "feed_sources",
                             "feed_sources",
-                            TimeUnit.SECONDS.toSeconds(120)
+                            TimeUnit.MINUTES.toMillis(2)
                         )
             }
 

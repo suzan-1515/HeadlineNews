@@ -3,8 +3,8 @@ package com.cognota.feed.search.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.cognota.core.data.model.api.ApiErrorException
-import com.cognota.core.data.model.api.NetworkErrorException
+import com.cognota.core.data.ApiErrorException
+import com.cognota.core.data.NetworkErrorException
 import com.cognota.core.ui.BaseViewModel
 import com.cognota.core.ui.StatefulResource
 import com.cognota.core.vo.Status

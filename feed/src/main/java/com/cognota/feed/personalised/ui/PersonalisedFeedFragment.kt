@@ -15,6 +15,9 @@ import com.cognota.feed.FeedActivity
 import com.cognota.feed.R
 import com.cognota.feed.commons.domain.FeedDTO
 import com.cognota.feed.commons.domain.TagDTO
+import com.cognota.feed.option.data.OptionEvent
+import com.cognota.feed.option.viewmodel.FeedOptionViewModel
+import com.cognota.feed.option.viewmodel.FeedOptionViewModelFactory
 import com.cognota.feed.personalised.adapter.PersonalisedFeedController
 import com.cognota.feed.personalised.viewmodel.PersonalizedFeedViewModel
 import com.cognota.feed.personalised.viewmodel.PersonalizedFeedViewModelFactory
@@ -39,6 +42,14 @@ class PersonalisedFeedFragment : BaseFragment() {
     @ExperimentalCoroutinesApi
     private val viewModel: PersonalizedFeedViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(PersonalizedFeedViewModel::class.java)
+    }
+
+    @Inject
+    lateinit var feedOptionViewModelFactory: FeedOptionViewModelFactory
+
+    private val feedOptionViewModel: FeedOptionViewModel by lazy {
+        ViewModelProviders.of(requireActivity(), feedOptionViewModelFactory)
+            .get(FeedOptionViewModel::class.java)
     }
 
     private var snackBar: Snackbar? = null
@@ -102,7 +113,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
-                                srlFeeds.rootView,
+                                srlFeeds,
                                 getString(
                                     resource.message
                                         ?: R.string.unknown_error
@@ -117,7 +128,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
                         snackBar = Snackbar.make(
-                            srlFeeds.rootView,
+                            srlFeeds,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -134,7 +145,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            srlFeeds.rootView,
+                            srlFeeds,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG
@@ -163,7 +174,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
-                                srlFeeds.rootView,
+                                srlFeeds,
                                 getString(
                                     resource.message
                                         ?: R.string.unknown_error
@@ -178,7 +189,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
                         snackBar = Snackbar.make(
-                            srlFeeds.rootView,
+                            srlFeeds,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -195,7 +206,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            srlFeeds.rootView,
+                            srlFeeds,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG
@@ -223,7 +234,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                         } else {
                             Timber.d("Empty data received")
                             snackBar = Snackbar.make(
-                                srlFeeds.rootView,
+                                srlFeeds,
                                 getString(
                                     resource.message
                                         ?: R.string.unknown_error
@@ -238,7 +249,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_NETWORK -> {
                         Timber.d("Network error")
                         snackBar = Snackbar.make(
-                            srlFeeds.rootView,
+                            srlFeeds,
                             getString(
                                 resource.message
                                     ?: R.string.no_network_connection
@@ -255,7 +266,7 @@ class PersonalisedFeedFragment : BaseFragment() {
                     StatefulResource.State.ERROR_API -> {
                         Timber.d("Api error")
                         snackBar = Snackbar.make(
-                            srlFeeds.rootView,
+                            srlFeeds,
                             getString(
                                 resource.message ?: R.string.service_error
                             ), Snackbar.LENGTH_LONG
@@ -282,6 +293,37 @@ class PersonalisedFeedFragment : BaseFragment() {
             Observer { data ->
                 personalisedFeedController.setCategory(data)
             })
+
+        feedOptionViewModel.optionEventLiveData.observe(
+            viewLifecycleOwner,
+            Observer { data ->
+                when (data) {
+                    OptionEvent.BOOKMARKED -> {
+                        snackBar = Snackbar.make(
+                            srlFeeds,
+                            getString(
+                                R.string.feed_bookmarked
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar?.show()
+                    }
+                    OptionEvent.UNBOOKMARKED -> {
+                        snackBar = Snackbar.make(
+                            srlFeeds,
+                            getString(
+                                R.string.feed_bookmarked_removed
+                            ),
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackBar?.show()
+                    }
+                    else -> {
+                        Timber.d("Unknown bookmark state")
+                    }
+                }
+            }
+        )
 
     }
 

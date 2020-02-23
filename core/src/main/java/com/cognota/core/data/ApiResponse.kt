@@ -1,4 +1,4 @@
-package com.cognota.core.data.model.api
+package com.cognota.core.data
 
 import retrofit2.Response
 
@@ -11,7 +11,9 @@ sealed class ApiResponse<T> {
     companion object {
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
             return ApiErrorResponse(
-                NetworkErrorException(error.message ?: "Unknown Error")
+                NetworkErrorException(
+                    error.message ?: "Unknown Error"
+                )
             )
         }
 
@@ -32,7 +34,11 @@ sealed class ApiResponse<T> {
                 } else {
                     msg
                 }
-                ApiErrorResponse(ApiErrorException(errorMsg ?: "Unknown Error"))
+                ApiErrorResponse(
+                    ApiErrorException(
+                        errorMsg ?: "Unknown Error"
+                    )
+                )
             }
         }
     }

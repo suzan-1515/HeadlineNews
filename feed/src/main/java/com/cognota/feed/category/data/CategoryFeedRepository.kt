@@ -61,14 +61,14 @@ class CategoryFeedRepository @Inject constructor(
                             sharedPreferences,
                             "category_feed$category$page",
                             "latest_feed",
-                            TimeUnit.SECONDS.toSeconds(120)
+                            TimeUnit.MINUTES.toMillis(2)
                         )
             }
 
             override fun loadFromDb(): Flow<List<FeedDTO>?> {
                 return flow {
                     emit(
-                        newsDao.findFeedsByCategory(page, category)?.map { feed ->
+                        newsDao.findFeedsByCategory(page, category)?.distinct()?.map { feed ->
                             feedDTOMapper.toDTO(feed)
                         }
                     )
